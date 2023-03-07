@@ -13,4 +13,6 @@ public interface ItemRepositoryCustom {
     Page<BestSellerItemDto> getBestSellerItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
 
     Page<LatestItemDto> getLatestItemDto(ItemSearchDto itemSearchDto, Pageable pageable);
+
+    Page<ResultSellingItemDto> getResultSellingItemDto(ItemSearchDto itemSearchDto,Pageable pageable);
 }

@@ -97,7 +97,6 @@
     </div>
 
     <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-85">
-
       <table class="table table">
         <thead class="text-center">
         <tr>
@@ -109,16 +108,15 @@
         </tr>
         </thead>
         <tbody class="text-center">
-        <tr th:each="list:${list}">
-          <td th:text="${list.noticeId}">NO</td>
+        <tr th:each="list:${noticeList}">
+          <td th:text="${list.id}">NO</td>
           <td th:text="${list.noticeTitle}">TITLE</td>
-          <td th:text="${list.noticeWriter}">POSTED BY</td>
-          <td th:text="${list.noticeRegDate}"}>DATE</td>
+          <td th:text="${list.createdBy}">POSTED BY</td>
+          <td th:text="${list.regTime}"}>DATE</td>
           <td th:text="${list.noticeView}">VIEW</td>
         </tr>
         </tbody>
       </table>
-
     </div>
 
   </div>

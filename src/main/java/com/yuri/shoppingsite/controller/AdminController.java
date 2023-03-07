@@ -2,10 +2,7 @@ package com.yuri.shoppingsite.controller;
 
 import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.domain.community.NoticeFormDto;
-import com.yuri.shoppingsite.domain.shop.CartOrderDto;
-import com.yuri.shoppingsite.domain.shop.Item;
-import com.yuri.shoppingsite.domain.shop.ItemFormDto;
-import com.yuri.shoppingsite.domain.shop.ItemSearchDto;
+import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.user.MemberSearchDto;
 import com.yuri.shoppingsite.domain.user.Member;
 import com.yuri.shoppingsite.service.ItemService;
@@ -170,8 +167,6 @@ public class AdminController {
 //    }
 //
 
-
-
     //유저 삭제
     @DeleteMapping(value = "/admin/member/{id}")
     public @ResponseBody ResponseEntity deleteMember(
@@ -186,17 +181,28 @@ public class AdminController {
     }
 
 
-    @Autowired
+
+
+    //통계보기
+
+    //상품별 통계 페이지 가기
+    @GetMapping("admin/productselling")
+    public String productselling(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<ResultSellingItemDto> items = itemService.getResultSellingItemPage(itemSearchDto, pageable);
+        model.addAttribute("items",items);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 1);
+        return "admin/productsellingresult";
+    }
+
     NoticeService noticeService;
 
     //커뮤니티
     //공지사항 목록보기
     @GetMapping("admin/noticelist")
     public String adminnoticelist(Model model){
-
-        model.addAttribute("list",noticeService.listAll());
-
-
+        model.addAttribute("noticeList",noticeService.getNotice());
         return "admin/adminnoticelist";
     }
 

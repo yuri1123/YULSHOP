@@ -105,4 +105,10 @@ public class ItemService {
         return itemRepository.getLatestItemDto(itemSearchDto, pageable);
     }
 
+    @Transactional(readOnly = true)
+    public Page<ResultSellingItemDto> getResultSellingItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getResultSellingItemDto(itemSearchDto, pageable);
+    }
+
+
 }

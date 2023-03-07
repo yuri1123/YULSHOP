@@ -9,6 +9,7 @@ import com.yuri.shoppingsite.domain.shop.QItem;
 import com.yuri.shoppingsite.domain.shop.QItemImg;
 import com.yuri.shoppingsite.domain.shop.QLatestItemDto;
 import com.yuri.shoppingsite.domain.shop.QMainItemDto;
+import com.yuri.shoppingsite.domain.shop.QResultSellingItemDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -196,5 +197,44 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
         return new PageImpl<>(content, pageable, total);
     }
+
+    @Override
+    public Page<ResultSellingItemDto> getResultSellingItemDto(ItemSearchDto itemSearchDto, Pageable pageable) {
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+
+        List<ResultSellingItemDto> content = queryFactory
+                .select(
+                        new QResultSellingItemDto(
+                                item.id,
+                                item.itemNm,
+//                                item.category,
+                                item.itemDetail,
+                                itemImg.imgUrl,
+                                item.price,
+                                item.orderTotalCount,
+                                item.orderTotalIncome)
+                ).from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .orderBy(item.orderTotalIncome.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = queryFactory
+                .select(Wildcard.count)
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+
+
 
 }

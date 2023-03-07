@@ -17,10 +17,8 @@ public class Notice extends BaseEntity {
     @Column(name="notice_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String noticeTitle;
     private String noticeContent;
-    private String noticeWriter;
     private int noticeView;
 
 }

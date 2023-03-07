@@ -98,15 +98,36 @@
             <input type="text" th:field="*{noticeTitle}" class="form-control">
           </div>
           <p th:if="${#fields.hasErrors('noticeTitle')}" th:errors="*{noticeTitle}" class="fieldError">Incorrect data</p>
-          <div class="mb-3">
-              <label th:for="noticeWriter" class="form-label">글쓴이</label>
-              <input type="text" th:field="*{noticeWriter}" class="form-control">
-          </div>
-          <p th:if="${#fields.hasErrors('noticeWriter')}" th:errors="*{noticeWriter}" class="fieldError">Incorrect data</p>
+
           <div class="mb-3">
             <label th:for="noticeContent" class="form-label">글내용</label>
               <textarea  th:field="*{noticeContent}" id="summernote" type="text" th:class="form-control"
                         name="boardContents" rows="10"></textarea>
+
+<!--              <script>-->
+<!--                  $('#summernote').summernote({-->
+<!--                      placeholder: 'Hello stand alone ui',-->
+<!--                      tabsize: 2,-->
+<!--                      height: 450,-->
+<!--                      focus: true,-->
+<!--                      lang: "ko-KR",-->
+<!--                      toolbar: [-->
+<!--                          // [groupName, [list of button]]-->
+<!--                          ['fontname', ['fontname']],-->
+<!--                          ['fontsize', ['fontsize']],-->
+<!--                          ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],-->
+<!--                          ['color', ['forecolor', 'color']],-->
+<!--                          ['table', ['table']],-->
+<!--                          ['para', ['ul', 'ol', 'paragraph']],-->
+<!--                          ['height', ['height']],-->
+<!--                          ['insert', ['picture', 'link', 'video']],-->
+<!--                          ['view', ['fullscreen', 'help']]-->
+<!--                      ],-->
+
+<!--                      fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],-->
+<!--                  });-->
+<!--              </script>-->
+<!--              -->
               <script>
     $('#summernote').summernote({
         // 에디터 높이
@@ -130,6 +151,8 @@
             ['para', ['ul', 'ol', 'paragraph']],
             // 줄간격
             ['height', ['height']],
+            // 이미지
+            ['insert', ['picture', 'link', 'video']],
             // 코드보기, 확대해서보기, 도움말
             ['view', ['codeview','fullscreen', 'help']]
         ],
