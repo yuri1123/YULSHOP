@@ -48,7 +48,7 @@ public class CommunityController {
     @GetMapping("community/noticelist")
     public String goNotice(Model model){
         System.out.println("notice 리스트로 이동하기");
-        model.addAttribute("list",noticeService.listAll());
+        model.addAttribute("list",noticeService.getNotice());
     return "community/noticelist";
     }
     //noitce

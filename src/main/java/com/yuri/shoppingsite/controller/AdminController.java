@@ -184,9 +184,8 @@ public class AdminController {
 
 
     //통계보기
-
     //상품별 통계 페이지 가기
-    @GetMapping("admin/productselling")
+    @GetMapping(value={"/admin/productselling", "/admin/productselling/{page}"})
     public String productselling(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<ResultSellingItemDto> items = itemService.getResultSellingItemPage(itemSearchDto, pageable);
@@ -195,7 +194,6 @@ public class AdminController {
         model.addAttribute("maxPage", 1);
         return "admin/productsellingresult";
     }
-
     NoticeService noticeService;
 
     //커뮤니티

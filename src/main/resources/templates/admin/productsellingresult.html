@@ -78,7 +78,7 @@
     let searchBy = $("#searchBy").val();
     let searchQuery = $("#searchQuery").val();
 
-    location.href="/admin/items/" + page
+    location.href="/admin/productselling/" + page
             + "?searchDateType=" + searchDateType
             + "&searchSellStatus=" + searchSellStatus
             + "&searchBy=" + searchBy
@@ -138,7 +138,7 @@
 
 
     <th:block th:each="item, status: ${items.getContent()}">
-    <tr class="text-center align-self-center justify-content-center">
+    <tr class="text-center align-items-center">
       <td><img th:src="${item.imgUrl}" height="100" th:alt="${item.imgUrl}"/></td>
       <td class="mt-3">[[${item.category}]]</td>
       <td><a href="#" class="text-primary fw-bold">[[${item.itemNm}]]</a></td>

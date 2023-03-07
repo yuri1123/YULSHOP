@@ -208,7 +208,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                         new QResultSellingItemDto(
                                 item.id,
                                 item.itemNm,
-//                                item.category,
+                                item.category,
                                 item.itemDetail,
                                 itemImg.imgUrl,
                                 item.price,
@@ -218,7 +218,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
-                .orderBy(item.orderTotalIncome.desc())
+                .orderBy(item.orderTotalCount.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
