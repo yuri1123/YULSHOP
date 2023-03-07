@@ -1,0 +1,169 @@
+<!doctype html>
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:include="/include/common_css.html"></th:block>
+    <style>
+        #gap {
+            margin-top: 80px;
+            margin-bottom: 50px;
+        }
+
+        .hover:hover {
+            color: #a367e7;
+        }
+
+        .backcol {
+            background: #1e1e1e;
+            border: #1e1e1e;
+        }
+        .backcol:hover{
+            background: #a367e7;
+            border: #a367e7;
+        }
+        .fontcolors {
+            margin-top:40px;
+            margin-bottom: 40px;
+            font-size: 15px;
+        }
+
+        .page-link {
+            color: #000;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+        .page-item.active .page-link {
+            z-index: 1;
+            color: #555;
+            font-weight:bold;
+            background-color: #f1f1f1;
+            border-color: #ccc;
+
+        }
+        .page-link:focus, .page-link:hover {
+            color: #000;
+            background-color: #fafafa;
+            border-color: #ccc;
+        }
+
+        .rad{
+            border-radius: 10px;
+            padding: 10px 30px;
+        }
+
+        .mar {
+            margin-right: 20px;
+        }
+    </style>
+
+
+
+</head>
+<body>
+<!-- Preloader Start -->
+<!--<th:block th:include="/include/preloader.html"></th:block>-->
+
+<th:block th:include="/include/community_header.html"></th:block>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12" id="gap">
+                <h1 class="text-center">Q & A 게시판</h1>
+        </div>
+
+        <div class="col-lg-2 col-md-3 offset-lg-9 offset-7 pb-4">
+            <button class="btn-primary backcol rad"><a th:href="@{/question/create}">질문 등록하기</a></button>
+        </div>
+
+<!--        검색하기-->
+        <div class="col-lg-4 col-md-5 offset-lg-7 offset-6 pb-4">
+            <div class="input-group">
+                <input type="text" id="search_kw" class="form-control mar" th:value="${kw}">
+                <button class="btn-primary backcol rad" type="button" id="btn_search">찾기</button>
+            </div>
+        </div>
+    </div>
+
+
+        <div class="col-lg-10 col-md-10 col-sm-10 offset-1">
+            <table class="table table">
+                <thead class="text-center">
+                <tr>
+                    <th>NO</th>
+                    <th>TITLE</th>
+                    <th>WRITER</th>
+                    <th>DATE</th>
+                </tr>
+                </thead>
+                <tbody class="text-center">
+                <tr th:each="list:${paging}">
+                    <td th:text="${list.id}">NO</td>
+                    <td><a th:href="@{|/community/qnadetail/${list.id}|}" th:text="${list.subject}" class="black-color hover">TITLE</a>
+<!--                    댓글개수 표시하기-->
+                    <span class="text-danger small ms-2"
+                    th:if="${#lists.size(list.answerList) > 0}"
+                    th:text="${#lists.size(list.answerList)}">
+                    </span>
+                    </td>
+                    <td th:if="${list.author !=null}" th:text="${list.author.username}"}>WRITER</td>
+                    <td th:text="${list.createDate}"}>DATE</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-lg-10 col-md-10 col-sm-10 offset-1 fontcolors">
+<!--        페이징 처리 시작-->
+        <div th:if="${!paging.isEmpty()}">
+<!--          이전 -->
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${!paging.hasPrevious()}?'disabled'">
+                    <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number-1}">
+                    <span>이전</span>
+                </a>
+                </li>
+<!--                중간-->
+                <li th:each="page:${#numbers.sequence(0, paging.totalPages-1)}"
+                    th:if="${page >= paging.number-5 and page <=paging.number+5}"
+                th:classappend="${page==paging.number} ? 'active'" class="page-item">
+                    <a th:text="${page}" class="page-link" href="javascript:void(0)" th:data-page="${page}"></a>
+                </li>
+<!--                다음-->
+                <li class="page-item" th:classappend="${!paging.hasNext()} ? 'disabled'">
+                    <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number+1}">
+                        <span>다음</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+<!--페이징처리 끝-->
+
+<!--            page,kw get요청-->
+            <form th:action="@{/community/qna}" method="get" id="searchForm">
+                <input type="hidden" id="kw" name="kw" th:value="${kw}">
+                <input type="hidden" id="page" name="page" th:value="${paging.number}">
+            </form>
+</div>
+
+    <script>
+        const page_elements = document.getElementsByClassName("page-link");
+        Array.from(page_elements).forEach(function(element) {
+            element.addEventListener('click', function() {
+                document.getElementById('page').value = this.dataset.page;
+                document.getElementById('searchForm').submit();
+            });
+        });
+        const btn_search = document.getElementById("btn_search");
+        btn_search.addEventListener('click', function() {
+            document.getElementById('kw').value = document.getElementById('search_kw').value;
+            document.getElementById('page').value = 0;  // 검색버튼을 클릭할 경우 0페이지부터 조회한다.
+            document.getElementById('searchForm').submit();
+        });
+    </script>
+
+
+</div>
+
+</body>
+</html>
+

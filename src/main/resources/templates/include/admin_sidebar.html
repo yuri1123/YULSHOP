@@ -1,0 +1,128 @@
+<html lang="ko" xmlns:th="http://www.thymleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+  <ul class="sidebar-nav" id="sidebar-nav">
+
+    <li class="nav-item">
+      <a class="nav-link " href="index.html">
+        <i class="bi bi-grid"></i>
+        <span>대시보드 보기</span>
+      </a>
+    </li><!-- End Dashboard Nav -->
+
+    <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-menu-button-wide"></i><span>상품 관리</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul sec:authorize="hasAnyAuthority('ROLE_ADMIN')" id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+      <li>
+        <a th:href="@{/admin/items}">
+          <i class="bi bi-circle"></i><span>전체 보기/조회/수정</span>
+        </a>
+      </li>
+      <li>
+        <a th:href="@{/admin/uploadproduct}">
+          <i class="bi bi-circle"></i><span>신규 상품 등록</span>
+        </a>
+      </li>
+      <li>
+        <a href="components-accordion.html">
+          <i class="bi bi-circle"></i><span>상품 카테고리 관리</span>
+        </a>
+      </li>
+      <li>
+        <a href="components-accordion.html">
+          <i class="bi bi-circle"></i><span>상품 판매상태 관리</span>
+        </a>
+      </li>
+
+    </ul>
+    </li><!-- End Components Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-journal-text"></i><span>기본 정보 관리</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a href="forms-elements.html">
+            <i class="bi bi-circle"></i><span>자사 정보 관리</span>
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/admin/userauth}">
+            <i class="bi bi-circle"></i><span>사용자 권한 관리</span>
+          </a>
+        </li>
+      </ul>
+    </li><!-- End Forms Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-layout-text-window-reverse"></i><span>재고 관리</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a href="tables-general.html">
+            <i class="bi bi-circle"></i><span>재고 현황 조회</span>
+          </a>
+        </li>
+        <li>
+          <a href="tables-data.html">
+            <i class="bi bi-circle"></i><span>재고 변경</span>
+          </a>
+        </li>
+      </ul>
+    </li><!-- End Tables Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-bar-chart"></i><span>수익 분석</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a href="charts-chartjs.html">
+            <i class="bi bi-circle"></i><span>카테고리별 매출현황</span>
+          </a>
+        </li>
+        <li>
+          <a href="charts-apexcharts.html">
+            <i class="bi bi-circle"></i><span>상품별 판매량 조회</span>
+          </a>
+        </li>
+        <li>
+          <a href="charts-echarts.html">
+            <i class="bi bi-circle"></i><span>전체 매출 현황</span>
+          </a>
+        </li>
+      </ul>
+    </li><!-- End Charts Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-gem"></i><span>커뮤니티</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a th:href="@{/admin/noticelist}">
+            <i class="bi bi-circle"></i><span>공지사항 목록</span>
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/admin/noticeenroll}">
+            <i class="bi bi-circle"></i><span>공지사항 등록</span>
+          </a>
+        </li>
+        <li>
+          <a href="icons-remix.html">
+            <i class="bi bi-circle"></i><span>Q&A 답변 등록</span>
+          </a>
+        </li>
+      </ul>
+    </li><!-- End Icons Nav -->
+
+
+
+  </ul>
+
+</aside><!-- End Sidebar-->

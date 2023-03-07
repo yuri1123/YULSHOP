@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="/include/common_css.html"></th:block>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+    <style>
+        #gap {
+            margin-top: 80px;
+            margin-bottom: 50px;
+        }
+
+        .hover:hover {
+            color: #a367e7;
+        }
+
+        .backcol {
+            background: #1e1e1e;
+            border: #1e1e1e;
+        }
+        .backcol:hover{
+            background: #a367e7;
+            border: #a367e7;
+        }
+        .fontcolors {
+            margin-top:40px;
+            margin-bottom: 40px;
+            font-size: 15px;
+        }
+
+        .page-link {
+            color: #000;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+        .page-item.active .page-link {
+            z-index: 1;
+            color: #555;
+            font-weight:bold;
+            background-color: #f1f1f1;
+            border-color: #ccc;
+
+        }
+        .page-link:focus, .page-link:hover {
+            color: #000;
+            background-color: #fafafa;
+            border-color: #ccc;
+        }
+
+
+        .repImgDiv{
+            margin-right:15px;
+            height:auto;
+            width:50%;
+        }
+        .repImg{
+            width:100%;
+            height:400px;
+        }
+
+        .repImgDiv{
+            margin-right:15px;
+            height:auto;
+            width:50%;
+        }
+        .repImg{
+            width:100%;
+            height:400px;
+        }
+
+        .repImgDiv{
+            margin-right:15px;
+            margin-left:15px;
+            height:auto;
+        }
+        .repImg{
+            height:100px;
+            width:100px;
+        }
+        .card{
+            width:750px;
+            height:100%;
+            padding:30px;
+            margin-bottom:20px;
+        }
+        .fs18{
+            font-size:18px
+        }
+        .fswe{
+            font-size:19px;
+            font-weight: 500;
+        }
+    </style>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+</head>
+<body>
+<script th:inline="javascript">
+    function cancelOrder(orderId) {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        var url = "/order/" + orderId + "/cancel";
+        var paramData = {
+            orderId : orderId,
+        };
+
+        var param = JSON.stringify(paramData);
+
+        $.ajax({
+            url      : url,
+            type     : "POST",
+            contentType : "application/json",
+            data     : param,
+            beforeSend : function(xhr){
+                /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                xhr.setRequestHeader(header, token);
+            },
+            dataType : "json",
+            cache   : false,
+            success  : function(result, status){
+                alert("주문이 취소 되었습니다.");
+                location.href='/orders/' + [[${page}]];
+            },
+            error : function(jqXHR, status, error){
+                if(jqXHR.status == '401'||jqXHR.status == '500'){
+                    alert('로그인 후 이용해주세요');
+                    location.href='/member/login';
+                } else{
+                    alert(jqXHR.responseText);
+                }
+            }
+        });
+    }
+</script>
+<th:block th:include="/include/header.html"></th:block>
+
+<section class="latest-product-area">
+
+    <div class="container">
+        <div class="row product-btn d-flex text-start" id="gap">
+            <!-- Section Tittle -->
+            <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-2">
+                <div class="section-tittle mb-30">
+                    <h2>MY ACCOUNT</h2>
+                </div>
+            </div>
+        </div>
+            <div th:each="order : ${orders.getContent()}">
+        <div class="row col-8 offset-2 mt-40 text-center justify-content-center ">
+                <div class="d-flex col-11 mb-3 m-3">
+                    <p th:text="'주문일시 : '+${order.orderDate}" class="fswe"> </p>
+                    <div class="ml-2">
+                        <th:block th:if="${order.orderStatus == T(com.yuri.shoppingsite.constant.OrderStatus).ORDER}">
+                            <button type="button" class="backcol" th:value="${order.orderId}" onclick="cancelOrder(this.value)">주문취소하기</button>
+                        </th:block>
+                        <th:block th:unless="${order.orderStatus == T(com.yuri.shoppingsite.constant.OrderStatus).ORDER}">
+                            <h4>(취소 완료)</h4>
+                        </th:block>
+                    </div>
+                </div>
+                <div class="card d-flex col-10 offset-1">
+                    <div th:each="orderItem : ${order.orderItemDtoList}" class="d-flex mb-3">
+                        <div class="repImgDiv">
+                            <img th:src="${orderItem.imgUrl}" class = "rounded repImg" th:alt="${orderItem.itemNm}">
+                        </div>
+                        <div class="align-self-center">
+                            <span th:text="${orderItem.itemNm}" class="fs18 font-weight-bold"></span>
+                            <div class="fs18 font-weight-light">
+                                <span th:text="${orderItem.orderPrice} +'원'"></span> *
+                                <span th:text="${orderItem.count} +'개'"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col-12 mt-80 text-center justify-content-center ">
+            <div th:with="start=${(orders.number/maxPage)*maxPage + 1}, end=(${(orders.totalPages == 0) ? 1 : (start + (maxPage - 1) < orders.totalPages ? start + (maxPage - 1) : orders.totalPages)})" >
+                <ul class="pagination justify-content-center">
+
+                    <li class="page-item" th:classappend="${orders.number eq 0}?'disabled':''">
+                        <a th:href="@{'/orders/' + ${orders.number -1}}" aria-label='Previous' class="page-link">
+                            <span aria-hidden='true'>Previous</span>
+                        </a>
+                    </li>
+
+                    <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${orders.number eq page -1}?'active':''">
+                        <a th:href="@{'/orders/' + ${page -1}}" th:inline="text" class="page-link">[[${page}]]</a>
+                    </li>
+
+                    <li class="page-item" th:classappend="${orders.number+1 ge orders.totalPages}?'disabled':''">
+                        <a th:href="@{'/orders/' + ${orders.number +1}}" aria-label='Next' class="page-link">
+                            <span aria-hidden='true'>Next</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+<th:block th:include="include/user_footer.html"/>
+
+<th:block th:include="/include/common_js.html"></th:block>
+</body>
+</html>

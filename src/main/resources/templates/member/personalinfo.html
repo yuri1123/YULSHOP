@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="/include/common_css.html"></th:block>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+    <style>
+        #gap {
+            margin-top: 80px;
+            margin-bottom: 50px;
+        }
+
+        .hover:hover {
+            color: #a367e7;
+        }
+
+        .backcol {
+            background: #1e1e1e;
+            border: #1e1e1e;
+        }
+        .backcol:hover{
+            background: #a367e7;
+            border: #a367e7;
+        }
+        .fontcolors {
+            margin-top:40px;
+            margin-bottom: 40px;
+            font-size: 15px;
+        }
+
+        .page-link {
+            color: #000;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+        .page-item.active .page-link {
+            z-index: 1;
+            color: #555;
+            font-weight:bold;
+            background-color: #f1f1f1;
+            border-color: #ccc;
+
+        }
+        .page-link:focus, .page-link:hover {
+            color: #000;
+            background-color: #fafafa;
+            border-color: #ccc;
+        }
+
+
+        .repImgDiv{
+            margin-right:15px;
+            height:auto;
+            width:50%;
+        }
+        .repImg{
+            width:100%;
+            height:400px;
+        }
+
+        .repImgDiv{
+            margin-right:15px;
+            height:auto;
+            width:50%;
+        }
+        .repImg{
+            width:100%;
+            height:400px;
+        }
+
+        .repImgDiv{
+            margin-right:15px;
+            margin-left:15px;
+            height:auto;
+        }
+        .repImg{
+            height:100px;
+            width:100px;
+        }
+        .card{
+            width:750px;
+            height:100%;
+            padding:30px;
+            margin-bottom:20px;
+        }
+        .fs18{
+            font-size:18px
+        }
+
+        .fs14 {
+            font-size:14px;
+        }
+        .fswe{
+            font-size:19px;
+            font-weight: 500;
+        }
+        .inputwidth {
+            width:40vw;
+        }
+
+    </style>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+</head>
+<body>
+<th:block th:include="/include/header.html"></th:block>
+
+<section class="latest-product-area">
+
+    <div class="container">
+        <form role="form" th:object="${memberFormDto}" method="post">
+        <div class="row product-btn d-flex text-start" id="gap">
+
+            <!-- Section Tittle -->
+            <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-2">
+                <div class="section-tittle mb-30">
+                    <h2>PERSONAL INFO</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row col-12 mt-40 text-start justify-content-start ">
+            <table>
+                <colgroup>
+                    <col style="width:150px;">
+                    <col style="width:auto;">
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th scope="row">아이디 <img src="//img.echosting.cafe24.com/skin/base/common/ico_required.gif" alt="필수"></th>
+                    <td>
+                        <input id="member_id" th:field="*{name}"  fw-filter="isFill&amp;isFill&amp;isMin[4]&amp;isMax[16]&amp;isIdentity" fw-label="아이디" fw-msg="" class="" placeholder="" readonly="readonly" value="" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th><hr></th>
+                    <td><hr></td>
+                </tr>
+                <tr>
+                    <th scope="row">새 비밀번호</th>
+                    <td><input id="passwd" name="passwd" th:field="*{password}" fw-filter="isMin[4]&amp;isMax[16]" fw-label="비밀번호" fw-msg="" autocomplete="off" maxlength="16"  value="" type="password"> (영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 10자~16자)</td>
+                </tr>
+                <tr>
+                    <th><hr></th>
+                    <td><hr></td>
+                </tr>
+                <tr class="">
+                    <th scope="row">새 비밀번호 확인</th>
+                    <td><input id="user_passwd_confirm" name="user_passwd_confirm" fw-filter="isMatch[passwd]" fw-label="비밀번호 확인" fw-msg="비밀번호가 일치하지 않습니다." autocomplete="off" maxlength="16" value="" type="password"> <span id="pwConfirmMsg"></span>
+                        </td>
+                </tr>
+                <tr>
+                    <th><hr></th>
+                    <td><hr></td>
+                </tr>
+
+                <tr>
+                    <th scope="row">이메일 <img src="//img.echosting.cafe24.com/skin/base/common/ico_required.gif" alt="필수"></th>
+                    <td>
+                        <input id="email" th:field="*{email}" fw-filter="isFill&amp;isEmail" fw-label="이메일" fw-alone="N" fw-msg="" value="" type="text"> <span id="emailMsg"><br></span>
+                        <span class="displaynone fs14">이메일 주소 변경 시 로그아웃 후 재인증을 하셔야만 로그인이 가능합니다.<br>인증 메일은 24시간 동안 유효하며, 유효 시간이 만료된 후에는 가입 정보로 로그인 하셔서 재발송 요청을 해주시기 바랍니다.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><hr></th>
+                    <td><hr></td>
+                </tr>
+
+                <tr>
+                    <th scope="row">이름  <img src="//img.echosting.cafe24.com/skin/base/common/ico_required.gif" alt="필수"></th>
+                    <td>
+                        <input id="nickname" th:field="*{nickname}" class="" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th><hr></th>
+                    <td><hr></td>
+                </tr>
+                <tr class="">
+                    <th scope="row">주소 <img src="//img.echosting.cafe24.com/skin/base/common/ico_required.gif" class="" alt="필수"></th>
+                    <td>
+                        <input  th:field="*{postcode}" id="postcode" fw-filter="isLengthRange[1][14]" fw-label="우편번호1" fw-msg="" class=" mb-1" placeholder="" readonly="readonly" maxlength="14" value="" type="text">
+                        <a href="#none" onclick="sample6_execDaumPostcode()" id="postBtn"><img src="//img.echosting.cafe24.com/skin/base_ko_KR/member/btn_zipcode.gif" alt="우편번호"></a><br>
+                        <input id="address1" th:field="*{address1}"   fw-filter="isFill" fw-label="주소" fw-msg="" class="inputwidth mb-1" placeholder="기본주소" readonly="readonly" value="" type="text"><br>
+                        <input id="address2" th:field="*{address2}"  fw-filter="" fw-label="주소" fw-msg="" class="inputwidth mb-1" placeholder="나머지주소" value="" type="text">
+
+                        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+                        <script>
+                          function sample6_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("address2").value = extraAddr;
+
+                } else {
+                    document.getElementById("address2").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById("address1").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("address2").focus();
+            }
+        }).open();
+    }
+</script>
+                    </td>
+                </tr>
+                <tr>
+                    <th><hr></th>
+                    <td><hr></td>
+                </tr>
+                <tr class="">
+                    <th scope="row">전화번호</th>
+                    <td>
+                        <input th:field="*{phone}" id="comphone" name="comphone" class="" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th><hr></th>
+                    <td><hr></td>
+                </tr>
+
+                <tr class="">
+                    <th scope="row">생년월일 </th>
+                    <td>
+                        <input th:field="*{birth}"  id="birth" name="birth" class="" type="date">
+                    </td>
+                </tr>
+                <tr>
+                    <th><hr></th>
+                    <td><hr></td>
+                </tr>
+                <tr class="displaynone">
+                    <th scope="row">환불계좌 </th>
+                    <td>
+                        <span id=""></span> <a href="#none"><img src="//img.echosting.cafe24.com/skin/base_ko_KR/member/btn_account_change.gif"
+                                                                 alt="환불계좌변경" id="id_has_bank_img" class="displaynone">   <img src="//img.echosting.cafe24.com/skin/base_ko_KR/member/btn_account.gif"
+                                                                                                                            alt="환불계좌등록" id="id_reg_bank_img" class="displaynone"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <th><hr></th>
+                    <td><hr></td>
+                </tr>
+                <tr class="">
+                    <th scope="row">SMS 수신여부 <img src="//img.echosting.cafe24.com/skin/base/common/ico_required.gif" alt="필수"></th>
+                    <td><input th:field="*{smsreceive}"  fw-filter="isFill" name = "smsreceive" th:value="true"  th:checked="${memberFormDto.smsreceive == 'true'}" type="radio" id="smsreceivet"><th:label for="smsreceivet">수신함</th:label>
+                        <input th:field="*{smsreceive}"  th:value="false" fw-filter="isFill" name = "smsreceive"  th:checked="${memberFormDto.smsreceive  == 'false'}"  type="radio" id="smsreceivef"><label for="smsreceivef">수신안함</label><p class="fs14">율스샵에서 제공하는 유익한 이벤트 소식을 SMS로 받으실 수 있습니다.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th><hr></th>
+                    <td><hr></td>
+                </tr>
+
+                <tr class="">
+                    <th scope="row">이메일 수신여부 <img src="//img.echosting.cafe24.com/skin/base/common/ico_required.gif" alt="필수"></th>
+                    <td><input th:field="*{emailreceive}"  th:value="true"  name = "emailreceive" th:checked="${memberFormDto.emailreceive == 'true'}"  type="radio" id="emailreceivet"><label for="emailreceivet">수신함</label>
+                        <input  th:field="*{emailreceive}" th:value="false" type="radio" name = "emailreceive"   th:checked="${memberFormDto.emailreceive == 'false'}" id="emailreceivef"><label for="emailreceivef">수신안함</label><p class="fs14">율스샵에서 제공하는 유익한 이벤트 소식을 이메일로 받으실 수 있습니다.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th><hr></th>
+                    <td><hr></td>
+                </tr>
+                </tbody>
+            </table>
+
+
+        <div class="row col-12 mt-40 text-start justify-content-end ">
+            <div>
+                <button class="btn-primary backcol rad" type="submit" th:formaction="@{/member/update}">저장하기</button>
+                <button class="btn-primary backcol rad" >실행취소하기</button>
+            </div>
+        </div>
+
+        </div>
+        </form>
+       </div>
+</section>
+<th:block th:include="include/user_footer.html"/>
+
+<th:block th:include="/include/common_js.html"></th:block>
+</body>
+</html>

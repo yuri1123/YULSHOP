@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<html xmlns:th="http://www.thymleaf.org">
+<head>
+    <th:block th:include="/include/common_css.html"></th:block>
+    <style>
+        #gap {
+            margin-top: 80px;
+            margin-bottom: 50px;
+        }
+
+    </style>
+</head>
+<body>
+<!-- Preloader Start -->
+<th:block th:include="/include/community_header.html"></th:block>
+
+
+<div class="container-fluid">
+    <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 mt" id="gap">
+        <h1 class="text-center">NOTICE</h1>
+    </div>
+    <div class="col-lg-10 col-md-10 col-sm-10 offset-1">
+        <table class="table table">
+            <thead class="text-center">
+                <tr>
+                    <th>NO</th>
+                    <th>TITLE</th>
+                    <th>POSTED BY</th>
+                    <th>DATE</th>
+                    <th>VIEW</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+            <tr th:each="list:${list}">
+                <td th:text="${list.noticeId}">NO</td>
+                <td th:text="${list.noticeTitle}">TITLE</td>
+                <td th:text="${list.noticeWriter}">POSTED BY</td>
+                <td th:text="${list.noticeRegDate}"}>DATE</td>
+                <td th:text="${list.noticeView}">VIEW</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    </div>
+</div>
+
+</body>
+</html>
+
+

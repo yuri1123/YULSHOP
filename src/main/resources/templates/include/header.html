@@ -1,0 +1,150 @@
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<div class="header-area">
+  <div class="main-header ">
+    <div class="header-top top-bg d-none d-lg-block">
+      <div class="container-fluid">
+        <div class="col-xl-12">
+          <div class="row d-flex justify-content-between align-items-center">
+            <div class="header-info-left d-flex">
+          <div class="logo">
+              <a href="/"><img src="/assets/img/logo/logo.png" alt=""></a>
+            </div>
+              <div class="select-this">
+                <form action="#">
+                  <div class="select-itms">
+<!--                    <select name="select" id="select1">-->
+<!--                      <option value="kor">KOR</option>-->
+<!--                      <option value="usa">USA</option>-->
+<!--                    </select>-->
+                  </div>
+                </form>
+              </div>
+              <ul class="contact-now">
+<!--                <li>+777 2345 7886</li>-->
+              </ul>
+            </div>
+            <div class="header-info-right">
+              <ul>
+<!--                  <li class=" d-none d-xl-block">-->
+<!--                      <div class="favorit-items">-->
+<!--                          <i class="far fa-heart"></i>-->
+<!--                      </div>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                      <div class="shopping-card">-->
+<!--                          <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>-->
+<!--                      </div>-->
+<!--                  </li>-->
+                 <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a href="/admin/adminmain">관리자페이지</a></li>
+                <li><a sec:authorize="isAuthenticated()" th:href="@{/member/mypage}">마이페이지</a></li>
+                <li><a th:href="@{/cart}">장바구니</a></li>
+                <li><a href="/community/noticelist">커뮤니티</a></li>
+                  <li sec:authorize="isAnonymous()">
+                      <a th:href="@{/member/login}">로그인</a>
+                  </li>
+                  <li sec:authorize="isAuthenticated()">
+                      <a th:href="@{/member/logout}">로그아웃</a>
+                  </li>
+
+
+<!--                  <li class="nav-item">-->
+<!--                      <a class="nav-link"  th:href="@{/member/login}">로그인</a>-->
+<!--                      <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">로그아웃</a>-->
+<!--                  </li>-->
+<!--                  <li class="nav-item">-->
+
+<!--                <li>-->
+<!--                <a sec:authorize="isAnonymous()" th:href="@{/member/login}">로그인</a>-->
+<!--                <a sec:authorize="isAuthenticated()" href="@{/member/logout}">로그아웃</a>-->
+<!--                </li>-->
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-bottom header-sticky">
+      <div class="container-fluid">
+        <div class="row align-items-center">
+          <!-- Logo -->
+<!--          <div class="col-xl-1 col-lg-1 col-md-1 col-sm-3">-->
+<!--            <div class="logo">-->
+<!--              <a href="../index.html"><img src="../assets/img/logo/logo.png" alt=""></a>-->
+<!--            </div>-->
+<!--          </div>-->
+          <div class="col-10 offset-1 align-items-center justify-content-center text-center">
+            <!-- Main-menu -->
+            <div class="main-menu d-none d-lg-block">
+              <nav>
+                <ul id="navigation">
+                  <li class="hot"><a th:href="@{/shopping/bestseller}">BESTSELLER</a></li>
+                  <li><a th:href="@{/shopping/latest}">LATEST</a></li>
+                  <li><a href="/shopping/shopping">PRODUCTS</a>
+                    <ul class="submenu">
+                      <li><a href="product_list.html">DIARY</a></li>
+                      <li><a href="single-product.html">WALL DECO</a></li>
+                      <li><a href="single-product.html">PEN&CASE</a></li>
+                      <li><a href="single-product.html">LIVING</a></li>
+                      <li><a href="single-product.html">CARD&POSTCARD</a></li>
+                      <li><a href="single-product.html">ACCESSORY</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="blog.html">SALES</a>
+<!--                    <ul class="submenu">-->
+<!--                      <li><a href="blog.html">Blog</a></li>-->
+<!--                      <li><a href="single-blog.html">Blog Details</a></li>-->
+<!--                    </ul>-->
+                  </li>
+                  <li sec:authorize="isAuthenticated()"><a th:href="@{/orders}">PURCHASE</a>
+                    <ul class="submenu">
+                      <li><a href="login.html">Login</a></li>
+                      <li><a href="cart.html">Card</a></li>
+                      <li><a href="elements.html">Element</a></li>
+                      <li><a href="about.html">About</a></li>
+                      <li><a href="confirmation.html">Confirmation</a></li>
+                      <li><a href="cart.html">Shopping Cart</a></li>
+                      <li><a href="checkout.html">Product Checkout</a></li>
+                    </ul>
+                  </li>
+                  <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+                      <a th:href="@{/admin/items}">ENROLL</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+<!--          <div class="col-xl-5 col-lg-3 col-md-3 col-sm-3 fix-card">-->
+<!--            <ul class="header-right f-right d-none d-lg-block d-flex justify-content-between">-->
+<!--              <li class="d-none d-xl-block">-->
+<!--                <div class="form-box f-right ">-->
+<!--                  <input type="text" name="Search" placeholder="Search products">-->
+<!--                  <div class="search-icon">-->
+<!--                    <i class="fas fa-search special-tag"></i>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </li>-->
+<!--              <li class=" d-none d-xl-block">-->
+<!--                <div class="favorit-items">-->
+<!--                  <i class="far fa-heart"></i>-->
+<!--                </div>-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                <div class="shopping-card">-->
+<!--                  <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>-->
+<!--                </div>-->
+<!--              </li>-->
+<!--              <li class="d-none d-lg-block"> <a href="#" class="btn header-btn">Sign in</a></li>-->
+<!--            </ul>-->
+          </div>
+          <!-- Mobile Menu -->
+          <div class="col-12">
+            <div class="mobile_menu d-block d-lg-none"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Header End -->
+

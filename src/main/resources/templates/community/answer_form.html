@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko">
+<html xmlns:th="http://www.thymleaf.org"/>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>YULSHOP입니다.</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" crossorigin="use-credentials" href="/manifest.json">
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/img/favicon.ico">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS here -->
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="/assets/css/flaticon.css">
+  <link rel="stylesheet" href="/assets/css/slicknav.css">
+  <link rel="stylesheet" href="/assets/css/animate.min.css">
+  <link rel="stylesheet" href="/assets/css/magnific-popup.css">
+  <link rel="stylesheet" href="/assets/css/fontawesome-all.min.css">
+  <link rel="stylesheet" href="/assets/css/themify-icons.css">
+  <link rel="stylesheet" href="/assets/css/slick.css">
+  <link rel="stylesheet" href="/assets/css/nice-select.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <style>
+    #gap {
+      margin-top: 80px;
+      margin-bottom: 50px;
+    }
+
+    .hover:hover {
+      color: #a367e7;
+    }
+
+    .backcol {
+      background: #1e1e1e;
+      border: #1e1e1e;
+    }
+    .backcol:hover{
+      background: #a367e7;
+      border: #a367e7;
+    }
+    .fontcolors {
+      margin-top:40px;
+      margin-bottom: 40px;
+      font-size: 15px;
+    }
+
+    .page-link {
+      color: #000;
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+    .page-item.active .page-link {
+      z-index: 1;
+      color: #555;
+      font-weight:bold;
+      background-color: #f1f1f1;
+      border-color: #ccc;
+
+    }
+    .page-link:focus, .page-link:hover {
+      color: #000;
+      background-color: #fafafa;
+      border-color: #ccc;
+    }
+
+    .rad{
+      border-radius: 10px;
+      padding: 10px 30px;
+    }
+
+
+  </style>
+</head>
+<body>
+<th:block th:include="/include/community_header.html"></th:block>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-10 col-md-10 col-sm-10 offset-1 gap">
+      <h5 class="my-3 border-bottom pb-2">답변 수정</h5>
+    </div>
+    <!--    th:action="@{/question/create}"-->
+    <div class="col-lg-10 col-md-10 col-sm-10 offset-1" id="gap">
+  <form th:object="${answerForm}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+      <div th:each="err:${#fields.allErrors()}" th:text="${err}"/>
+    </div>
+    <div class="mb-3">
+      <label>내용</label>
+      <textarea th:field="*{content}" class="form-control" rows="10"></textarea>
+    </div>
+    <input type="submit" value="저장하기" class="btn-primary backcol rad col-lg-2 col-md-2 col-sm-12 offset-lg-9 offset-md-9">
+  </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+</body>
+</html>

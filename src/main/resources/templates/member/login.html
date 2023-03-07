@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<html xmlns:th="http://www.thymleaf.org">
+<head>
+    <th:block th:include="/include/common_css.html"></th:block>
+    <meta charset="UTF-8">
+    <title>로그인페이지</title>
+
+    <style>
+
+        hr {
+            width:60%;
+        }
+
+        a {
+            color: #6A24FE;
+            text-decoration-color: #6A24FE;
+            text-decoration-line: underline;
+        }
+
+        a:hover {
+            color: #c738d8;
+            text-decoration-color: #c738d8;
+            text-decoration-line: underline;
+        }
+        .fontstyle {
+            font-size: 32px;
+            color: white;
+        }
+
+         #gap {
+             margin-top: 100px;
+             margin-bottom: 15px;
+         }
+
+         #flex-align {
+             width:100vw;
+             display: flex;
+             flex-direction: column;
+             justify-content: center;
+             align-items: center;
+         }
+        .login-wrapper{
+            width: 400px;
+            height: 300px;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .login-wrapper > h2{
+            font-size: 24px;
+            color: #0b0b0b;
+            margin-bottom: 20px;
+        }
+        #login-form > input{
+            width: 100%;
+            height: 48px;
+            padding: 0 10px;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+            border-radius: 6px;
+            background-color: #F8F8F8;
+        }
+        #login-form > input::placeholder{
+            color: #D2D2D2;
+        }
+        #login-form > input[type="submit"]{
+            color: #fff;
+            font-size: 16px;
+            background-color: #0b0b0b;
+            margin-top: 20px;
+        }
+
+
+        #login-form > input[type="checkbox"]{
+            display: none;
+        }
+        #login-form > label{
+            color: #999999;
+        }
+        #login-form input[type="checkbox"] + label{
+            cursor: pointer;
+            padding-left: 26px;
+            /*background-image: url("checkbox.png");*/
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+        #login-form input[type="checkbox"]:checked + label{
+            /*background-image: url("checkbox-active.png");*/
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+
+        .error {
+            color: #bd2130;
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+<div class="header-area">
+    <div class="main-header ">
+        <div class="header-top top-bg d-none d-lg-block">
+            <div class="container-fluid">
+                <div class="col-xl-12">
+                    <div class="row d-flex justify-content-between align-items-center">
+                        <div class="header-info-left d-flex">
+                            <div class="logo">
+                                <a href="/"><img src="/assets/img/logo/logo.png" alt=""></a>
+                            </div>
+                            <div class="contact-now">
+                              <p class="fontstyle">로그인</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Header End -->
+
+<!--로그인화면-->
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12" id="gap">
+            <h1 class="text-center">LOGIN</h1>
+            </div>
+
+             <div class="col-lg-12 col-md-12 col-sm-12">
+             <div class="text-center" id="flex-align">
+                 <div class="login-wrapper">
+                    <form role="form" method="post" th:action="@{/member/login}" id="login-form" class="text-center">
+<!--                        <div th:if="${param.error}">-->
+<!--                            <div class="alert alert-danger">-->
+<!--                                사용자 ID 또는 비밀번호를 확인해 주세요!-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <label th:for="name">LOGIN</label>-->
+                        <input type="text" name="name" id ="name" placeholder="ID">
+                        <input type="password" name="password" id="password" placeholder="Password">
+                        <label for="remember-check">
+                            <input type="checkbox" id="remember-check">아이디 저장하기
+                        </label>
+                        <input type="submit" value="로그인">
+                     </form>
+
+                     <script th:inline="javascript">
+                         // $(document).ready(function (){
+                         let errorMessage = [[${loginErrorMsg}]];
+                         if(errorMessage!= null){
+                             alert(errorMessage);
+                         }
+                         // });
+                     </script>
+
+                </div>
+              </div>
+             </div>
+
+<!--            <div> <p th:if="${loginErrorMsg}" class="error m-2" th:text="${loginErrorMsg}"></p></div>-->
+
+
+              <div class="col-lg-12 col-md-12 col-sm-12">
+              <hr class="text-center">
+               <div class="text-center">
+               <p> 혹시 YULSHOP 아이디가 없으신가요? <a href = "/member/signup">회원가입</a></p>
+<!--               <button type="button" >회원가입</button>-->
+               <input type="hidden" th:name="${_csrf.parameterName}"
+                                    th:value="${_csrf.token}">
+               </div>
+              </div>
+
+  </div>
+ </div>
+
+</th:block>
+
+</body>
+</html>

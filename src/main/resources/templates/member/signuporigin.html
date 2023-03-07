@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<html xmlns:th="http://www.thymleaf.org">
+<head>
+    <th:block th:include="/include/common_css.html"></th:block>
+    <meta charset="UTF-8">
+    <title>회원가입페이지</title>
+
+    <style>
+
+        hr {
+            width:60%;
+        }
+
+        a {
+            color: #6A24FE;
+            text-decoration-color: #6A24FE;
+            text-decoration-line: underline;
+        }
+
+        a:hover {
+            color: #c738d8;
+            text-decoration-color: #c738d8;
+            text-decoration-line: underline;
+        }
+        .fontstyle {
+            font-size: 32px;
+            color: white;
+        }
+
+        #gap {
+            margin-top: 100px;
+            margin-bottom: 5px;
+        }
+
+        #flex-align {
+            width:100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-wrapper{
+            width: 400px;
+            height: 300px;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .login-wrapper > h2{
+            font-size: 24px;
+            color: #0b0b0b;
+            margin-bottom: 20px;
+        }
+        #login-form > input{
+            width: 100%;
+            height: 48px;
+            padding: 0 10px;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+            border-radius: 6px;
+            background-color: white;
+        }
+        #login-form > input::placeholder{
+            color: lightgrey;
+        }
+        #login-form > input[type="submit"]{
+            color: #fff;
+            font-size: 16px;
+            background-color: #0b0b0b;
+            margin-top: 20px;
+        }
+
+        #configtwo {
+            color: #fff;
+            font-size: 16px;
+            background-color: #0b0b0b;
+        }
+
+
+        #login-form > input[type="checkbox"]{
+            display: none;
+        }
+        #login-form > label{
+            color: #1e1e1e;
+        }
+        #login-form input[type="checkbox"] + label{
+            cursor: pointer;
+            padding-left: 26px;
+            /*background-image: url("checkbox.png");*/
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+        #login-form input[type="checkbox"]:checked + label{
+            /*background-image: url("checkbox-active.png");*/
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+
+        .fieldError {
+            color:#bd2130;
+        }
+
+
+    </style>
+
+
+</head>
+<body>
+
+
+<div class="header-area">
+    <div class="main-header ">
+        <div class="header-top top-bg d-none d-lg-block">
+            <div class="container-fluid">
+                <div class="col-xl-12">
+                    <div class="row d-flex justify-content-between align-items-center">
+                        <div class="header-info-left d-flex">
+                            <div class="logo">
+                                <a href="/"><img src="/assets/img/logo/logo.png" alt=""></a>
+                            </div>
+                            <div class="contact-now">
+                                <p class="fontstyle">회원가입</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Header End -->
+
+<!--회원가입 화면-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12" id="gap">
+            <h1 class="text-center">SIGN UP</h1>
+        </div>
+
+
+                        <label th:for="name">아이디</label>
+                        <input type="text" th:field="*{name}" placeholder="아이디를 입력해주세요" >
+                        <p th:if="${#fields.hasErrors('name')}"
+                           th:errors="*{name}" class="fieldError">Incorrect data</p>
+
+                        <label th:for="email">이메일</label>
+                        <input type="email" th:field="*{email}" placeholder="이메일을 입력해주세요">
+                        <p th:if="${#fields.hasErrors('email')}"
+                           th:errors="*{email}" class="fieldError">Incorrect data</p>
+
+                        <label th:for="password">패스워드</label>
+                        <input type="password" th:field="*{password}" placeholder="비밀번호를 입력해주세요">
+                        <p th:if="${#fields.hasErrors('password')}"
+                           th:errors="*{password}" class="fieldError">Incorrect data</p>
+                        <!--                        <label>패스워드확인</label>&ndash;&gt;-->
+                        <!--                        <input type="password" th:field="*{password2}" placeholder="Password 확인">-->
+
+                        <label th:for="address">주소</label>
+                        <input type="text" th:field="*{address}" placeholder="이메일을 입력해주세요">
+                        <p th:if="${#fields.hasErrors('address')}"
+                           th:errors="*{address}" class="fieldError">Incorrect data</p>
+
+                        <label th:for="nickname">닉네임</label>
+                        <input type="text" th:field="*{nickname}" placeholder="닉네임을 입력해주세요">
+                        <p th:if="${#fields.hasErrors('nickname')}"
+                           th:errors="*{nickname}" class="fieldError">Incorrect data</p>
+
+                        <label th:for="birth">생년월일</label>
+                        <input type="date" th:field="*{birth}" placeholder="생일을 입력해주세요">
+                        <p th:if="${#fields.hasErrors('birth')}"
+                           th:errors="*{birth}" class="fieldError">Incorrect data</p>
+
+                        <label th:for="phone">휴대전화</label>
+                        <input type="text" th:field="*{phone}" placeholder="전화번호를 입력해주세요">
+                        <p th:if="${#fields.hasErrors('phone')}"
+                           th:errors="*{phone}" class="fieldError">Incorrect data</p>
+
+                        <input type="submit" value="회원가입">
+
+                        <!--회원가입 시 실패하면 에러메시지를 경고창을 이용해서 보여줌-->
+                        <script th:inline="javascript">
+                            // $(document).ready(function (){
+                            let errorMessage = [[${errorMessage}]];
+                            if(errorMessage!= null){
+                                alert(errorMessage);
+                            }
+                            // });
+                        </script>
+
+                        <!--                        스프링 시큐리티를 사용하면 기본적으로 CSRF(Cross Site Request Forgery)를 방어하기 위해 모든 POST 방식의-->
+                        <!--                        데이터 전송에는 CSRF 토큰 값이 있어야 한다. CSRF 토큰은 실제 서버에서 허용한 요청이 맞는지 확인하기 위한 토큰이다.-->
+                        <!--                        사용자의 세션에 임의의 값을 저장하여 요청마다 그 값을 포함하여 전송하면 서버에서 세션에 저장된 값과 요청이 온 값이-->
+                        <!--                        일치하는지 확인하여 CSRF를 방어한다.-->
+                        <input type="hidden" th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
+        </div>
+
+
+
+
+    </div>
+</div>
+
+
+</th:block>
+
+
+
+</body>
+</html>

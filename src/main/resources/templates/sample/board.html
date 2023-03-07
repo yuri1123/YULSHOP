@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>게시판 crud test</title>
+</head>
+<body>
+
+게시판이옵니다.
+타임리프 쉽다!
+
+<a th:href="@{/sample}">나ㅓ와라</a>
+
+<table>
+
+    <tr>
+       <th>글번호</th>
+        <th>글제목</th>
+        <th>글내용</th>
+        <th>작성자</th>
+    </tr>
+
+    <tr th:each="list:${list}">
+        <td th:text="${list.bid}">글번호</td>
+        <td> <a th:href="@{/selectOne/{id}(id = ${list.bid})}" th:text="${list.title}">글제목</a></td>
+        <td th:text="${list.content}">글내용</td>
+        <td th:text="${list.userid}">작성자</td>
+    </tr>
+
+</table>
+
+
+
+</body>
+</html>

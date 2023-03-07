@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:include="/include/common_css.html"></th:block>
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+  <style>
+    #gap {
+      margin-top: 80px;
+      margin-bottom: 50px;
+    }
+
+    .hover:hover {
+      color: #a367e7;
+    }
+
+    .backcol {
+      background: #1e1e1e;
+      border: #1e1e1e;
+    }
+    .backcol:hover{
+      background: #a367e7;
+      border: #a367e7;
+    }
+    .fontcolors {
+      margin-top:40px;
+      margin-bottom: 40px;
+      font-size: 15px;
+    }
+
+    .page-link {
+      color: #000;
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+    .page-item.active .page-link {
+      z-index: 1;
+      color: #555;
+      font-weight:bold;
+      background-color: #f1f1f1;
+      border-color: #ccc;
+
+    }
+    .page-link:focus, .page-link:hover {
+      color: #000;
+      background-color: #fafafa;
+      border-color: #ccc;
+    }
+
+
+    .repImgDiv{
+      margin-right:15px;
+      height:auto;
+      width:50%;
+    }
+    .repImg{
+      width:100%;
+      height:400px;
+    }
+
+    .repImgDiv{
+      margin-right:15px;
+      height:auto;
+      width:50%;
+    }
+    .repImg{
+      width:100%;
+      height:400px;
+    }
+
+    .repImgDiv{
+      margin-right:15px;
+      margin-left:15px;
+      height:auto;
+    }
+    .repImg{
+      height:100px;
+      width:100px;
+    }
+    .card{
+      width:750px;
+      height:100%;
+      padding:30px;
+      margin-bottom:20px;
+    }
+    .fs18{
+      font-size:18px
+    }
+
+    .fs14 {
+      font-size:14px;
+    }
+    .fswe{
+      font-size:19px;
+      font-weight: 500;
+    }
+    .inputwidth {
+      width:40vw;
+    }
+
+  </style>
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+</head>
+<body>
+<th:block th:include="/include/header.html"></th:block>
+
+<section class="latest-product-area">
+
+  <div class="container">
+    <div class="row product-btn d-flex text-start" id="gap">
+      <!-- Section Tittle -->
+      <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-2">
+        <div class="section-tittle mb-30">
+          <h2>Register Address</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row col-12 mt-40 text-start justify-content-start ">
+
+      <table>
+        <colgroup>
+          <col style="width:150px;">
+          <col style="width:auto;">
+        </colgroup>
+        <tbody>
+        <tr>
+          <th scope="row">배송지명<img src="//img.echosting.cafe24.com/skin/base/common/ico_required.gif" alt="필수"></th>
+          <td>
+            <input id="deliveryPlace" name="deliveryPlace" fw-filter="isFill&amp;isFill&amp;isMin[4]&amp;isMax[16]&amp;isIdentity" fw-label="아이디" fw-msg="" class="" placeholder="" readonly="readonly" value="" type="text">
+          </td>
+        </tr>
+        <tr>
+          <th><hr></th>
+          <td><hr></td>
+        </tr>
+        <tr>
+          <th scope="row">수령인<img src="//img.echosting.cafe24.com/skin/base/common/ico_required.gif" alt="필수"></th>
+          <td>
+            <input id="orderName" name="orderName" fw-filter="isFill&amp;isFill&amp;isMin[4]&amp;isMax[16]&amp;isIdentity" fw-label="아이디" fw-msg="" class="" placeholder="" readonly="readonly" value="" type="text">
+          </td>
+        </tr>
+        <tr>
+          <th><hr></th>
+          <td><hr></td>
+        </tr>
+
+        <tr class="">
+          <th scope="row">주소<img src="//img.echosting.cafe24.com/skin/base/common/ico_required.gif" class="" alt="필수"></th>
+          <td>
+            <input id="postcode1" name="postcode1" fw-filter="isLengthRange[1][14]" fw-label="우편번호1" fw-msg="" class=" mb-1" placeholder="" readonly="readonly" maxlength="14" value="" type="text">
+            <a href="#none" onclick="ZipcodeFinder.Opener.bind('postBtn', 'postcode1', 'postcode2', 'addr1', 'layer', 'ko_KR');" id="postBtn"><img src="//img.echosting.cafe24.com/skin/base_ko_KR/member/btn_zipcode.gif" alt="우편번호"></a><br>
+            <input id="addr1" name="addr1" fw-filter="isFill" fw-label="주소" fw-msg="" class="inputwidth mb-1" placeholder="" readonly="readonly" value="" type="text"> 기본주소<br>
+            <input id="addr2" name="addr2" fw-filter="" fw-label="주소" fw-msg="" class="inputwidth mb-1" placeholder="" value="" type="text"> 나머지주소               </td>
+        </tr>
+        <tr>
+          <th><hr></th>
+          <td><hr></td>
+        </tr>
+          <th scope="row">전화번호<img src="//img.echosting.cafe24.com/skin/base/common/ico_required.gif" alt="필수"></th>
+          <td>
+            <input id="deliveryPhone" name="deliveryPhone" fw-filter="isFill&amp;isFill&amp;isMin[4]&amp;isMax[16]&amp;isIdentity" fw-label="아이디" fw-msg="" class="" placeholder="" readonly="readonly" value="" type="text">
+          </td>
+        </tr>
+        <tr>
+          <th><hr></th>
+          <td><hr></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td><input type="checkbox">기본 배송지로 저장</td>
+        </tr>
+
+        </tbody>
+      </table>
+
+    </div>
+    <div class="row col-12 mt-40 text-start justify-content-end ">
+      <div>
+
+        <button class="btn-primary backcol rad"><a th:href="@{/member/delivery/enroll}">저장하기</a></button>
+        <button class="btn-primary backcol rad"><a th:href="@{/member/delivery/enroll}">실행취소하기</a></button>
+      </div>
+    </div>
+  </div>
+</section>
+<th:block th:include="include/user_footer.html"/>
+
+<th:block th:include="/include/common_js.html"></th:block>
+</body>
+</html>

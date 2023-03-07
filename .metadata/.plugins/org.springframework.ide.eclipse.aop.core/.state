@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aop-reference-model>
+<aop-project name="hi"/>
+<aop-project name="minibootm"/>
+<aop-project name="bootpractice-master"/>
+<aop-project name="bootpractice"/>
+<aop-project name="yuripage"/>
+<aop-project name="exSpringBoot"/>
+</aop-reference-model>

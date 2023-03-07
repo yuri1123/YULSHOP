@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+  <th:block th:include="/include/common_css.html"></th:block>
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+  <style>
+    #gap {
+      margin-top: 80px;
+      margin-bottom: 50px;
+    }
+
+    .hover:hover {
+      color: #a367e7;
+    }
+
+    .backcol {
+      background: #1e1e1e;
+      border: #1e1e1e;
+    }
+    .backcol:hover{
+      background: #a367e7;
+      border: #a367e7;
+    }
+    .fontcolors {
+      margin-top:40px;
+      margin-bottom: 40px;
+      font-size: 15px;
+    }
+
+    .page-link {
+      color: #000;
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+    .page-item.active .page-link {
+      z-index: 1;
+      color: #555;
+      font-weight:bold;
+      background-color: #f1f1f1;
+      border-color: #ccc;
+
+    }
+    .page-link:focus, .page-link:hover {
+      color: #000;
+      background-color: #fafafa;
+      border-color: #ccc;
+    }
+
+    .rad{
+      border-radius: 10px;
+      padding: 10px 30px;
+    }
+
+    .mar {
+      margin-right: 20px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<script th:inline="javascript">
+
+  $(document).ready(function(){
+    $("#searchBtn").on("click",function(e) {
+      e.preventDefault();
+      page(0);
+    });
+  });
+
+  function page(page){
+    let searchDateType = $("#searchDateType").val();
+    let searchSellStatus = $("#searchSellStatus").val();
+    let searchBy = $("#searchBy").val();
+    let searchQuery = $("#searchQuery").val();
+
+    location.href="/admin/items/" + page
+            + "?searchDateType=" + searchDateType
+            + "&searchSellStatus=" + searchSellStatus
+            + "&searchBy=" + searchBy
+            + "&searchQuery=" + searchQuery;
+  }
+
+</script>
+
+<th:block th:include="/include/header.html"></th:block>
+
+<section class="latest-product-area">
+
+  <div class="container">
+    <div class="row product-btn d-flex text-start" id="gap">
+      <!-- Section Tittle -->
+      <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-2">
+        <div class="section-tittle mb-30">
+          <h2>MY BOARD</h2>
+        </div>
+      </div>
+    </div>
+
+    <!--    <form th:action="@{'/admin/items/' + ${items.number}}" role="form" method="get" th:object="${items}">-->
+    <!--      <div class="col-8 offset-4 pb-2">-->
+    <!--        &lt;!&ndash;        검색하기&ndash;&gt;-->
+    <!--        <div  class="form-inline justify-content-center" th:object="${itemSearchDto}">-->
+    <!--          <select th:field="*{searchDateType}" class="form-control m-1" style="width:auto;">-->
+    <!--            <option value="all">전체기간</option>-->
+    <!--            <option value="1d">1일</option>-->
+    <!--            <option value="1w">1주</option>-->
+    <!--            <option value="1m">1개월</option>-->
+    <!--            <option value="6m">6개월</option>-->
+    <!--          </select>-->
+    <!--          <select th:field="*{searchSellStatus}" class="form-control m-1" style="width:auto;">-->
+    <!--            <option value="">판매상태(전체)</option>-->
+    <!--            <option value="SELL">판매</option>-->
+    <!--            <option value="SOLD_OUT">품절</option>-->
+    <!--          </select>-->
+    <!--          <select th:field="*{searchBy}" class="form-control m-1" style="width:auto;">-->
+    <!--            <option value="itemNm">상품명</option>-->
+    <!--            <option value="createdBy">등록자</option>-->
+    <!--          </select>-->
+    <!--          <input th:field="*{searchQuery}" type="text" class="form-control m-1" placeholder="검색어를 입력해주세요">-->
+    <!--          <button id="searchBtn" type="submit" class="btn-primary backcol rad">검색</button>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <div class="col-lg-10 col-md-10 col-sm-10 offset-1">
+
+      <table class="table table">
+        <thead class="text-center">
+        <tr>
+          <th>순번</th>
+          <th>분류</th>
+          <th>제목</th>
+          <th>작성자</th>
+          <th>등록일</th>
+          <th>조회수</th>
+        </tr>
+        </thead>
+        <tbody class="text-center">
+
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+        <!--          <tr th:each="item, status: ${items.getContent()}">-->
+        <!--            <td th:text="${item.id}"></td>-->
+        <!--            <td>-->
+        <!--              <a th:href="'/admin/item/'+${item.id}" th:text="${item.itemNm}" class="black-color hover"></a>-->
+        <!--            </td>-->
+        <!--            <td th:text="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL} ? '판매중' : '품절'"></td>-->
+        <!--            <td th:text="${item.createdBy}"></td>-->
+        <!--            <td th:text="${item.regTime}"></td>-->
+        <!--          </tr>-->
+        </tbody>
+      </table>
+
+      <!--        <div class="justify-content-center mb-5 mt-5">-->
+
+      <!--          &lt;!&ndash;        페이징 처리 시작&ndash;&gt;-->
+      <!--          <div th:with="start=${(items.number/maxPage)*maxPage +1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >-->
+      <!--            <ul class="pagination justify-content-center">-->
+
+      <!--              <li class="page-item" th:classappend="${items.first}?'disabled'">-->
+      <!--                <a th:onclick="'javascript:page(' + ${items.number -1} + ')'" aria-label='Previous' class="page-link">-->
+      <!--                  <span aria-hidden='true'>Previous</span>-->
+      <!--                </a>-->
+      <!--              </li>-->
+
+      <!--              <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq (page -1)}?'active':''">-->
+      <!--                <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>-->
+      <!--              </li>-->
+
+      <!--              <li class="page-item" th:classappend="${items.last}?'disabled'">-->
+      <!--                <a th:onclick="'javascript:page(' + ${items.number +   1} + ')'" aria-label='Next' class="page-link">-->
+      <!--                  <span aria-hidden='true'>Next</span>-->
+      <!--                </a>-->
+      <!--              </li>-->
+
+      <!--            </ul>-->
+      <!--          </div>-->
+
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--    </form>-->
+    </div>
+  </div>
+</section>
+
+
+<th:block th:include="include/user_footer.html"/>
+<th:block th:include="/include/common_js.html"></th:block>
+</body>
+</html>
