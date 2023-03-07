@@ -142,9 +142,20 @@
       <td><img th:src="${item.imgUrl}" height="100" th:alt="${item.imgUrl}"/></td>
       <td class="mt-3">[[${item.category}]]</td>
       <td><a href="#" class="text-primary fw-bold">[[${item.itemNm}]]</a></td>
-      <td class="mt-3">[[${item.price}]]원</td>
+      <td class="mt-3" id="money3" >[[${item.price}]]원</td>
+        <script>
+            let money3 = $('#money3').text();
+            let money2 = money3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $('#money3').text(money2);
+        </script>
       <td class="mt-3">[[${item.orderTotalCount}]]건</td>
-      <td class="mt-3">[[${item.orderTotalIncome}]]원</td>
+      <td class="mt-3" id="money">[[${item.orderTotalIncome}]]원</td>
+
+        <script>
+            let money = $('#money').text();
+            let money2 = money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $('#money').text(money2);
+        </script>
     </tr>
     </th:block>
     </tbody>
