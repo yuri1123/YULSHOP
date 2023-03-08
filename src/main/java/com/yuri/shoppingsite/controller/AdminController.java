@@ -8,6 +8,7 @@ import com.yuri.shoppingsite.domain.user.Member;
 import com.yuri.shoppingsite.service.ItemService;
 import com.yuri.shoppingsite.service.MemberService;
 import com.yuri.shoppingsite.service.NoticeService;
+import com.yuri.shoppingsite.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,16 +33,22 @@ import java.util.Optional;
 public class AdminController {
 
     private final ItemService itemService;
+    private final OrderService orderService;
     private final MemberRepository memberRepository;
     @Autowired
     private final MemberService memberService;
 
     //관리자 페이지로 가기
     @GetMapping("admin/adminmain")
-    public String adminmain(){
+    public String adminmain(Model model){
+        int memberCount = memberService.getMemberCount();
+        int sellingCount = itemService.getSellingCount();
+        int sellingIncome = itemService.getSellingIncome();
+        model.addAttribute("memberCount",memberCount);
+        model.addAttribute("sellingCount",sellingCount);
+        model.addAttribute("sellingIncome",sellingIncome);
         return "admin/adminmain";
     }
-
 
     //상품관리
 

@@ -110,5 +110,18 @@ public class ItemService {
         return itemRepository.getResultSellingItemDto(itemSearchDto, pageable);
     }
 
+    //총 아이템의주문 횟수를 가져옴
+    public int getSellingCount(){
+        int sellingCount = itemRepository.sellingCount();
+        return sellingCount;
+    }
+
+    //총 아이템의주문 금액합을 가져옴
+    public int getSellingIncome(){
+        int sellingIncome = itemRepository.sellingIncome();
+        return sellingIncome;
+    }
+
+
 
 }

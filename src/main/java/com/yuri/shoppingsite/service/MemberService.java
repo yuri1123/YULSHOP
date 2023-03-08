@@ -110,5 +110,13 @@ public class MemberService implements UserDetailsService {
 //        memberRepository.
 //    }
 
+    //회원수 가져오기
+    public int getMemberCount(){
+        int memberCount = (int) memberRepository.count();
+        return memberCount;
+    }
+
+
+
 }
 

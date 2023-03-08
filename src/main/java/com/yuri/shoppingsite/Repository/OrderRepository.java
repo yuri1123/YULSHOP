@@ -20,5 +20,4 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Long countOrder(@Param("name") String name);
 
 
-
 }

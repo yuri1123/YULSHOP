@@ -36,5 +36,12 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
     @Query(value="select * from item i where i.item_detail like %:itemDetail% order by i.price desc",nativeQuery = true)
     List<Item> findByItemDetailByNativ(@Param("itemDetail") String itemDetail);
 
+    //아이템 주문 횟수의 합을 조회
+    @Query("select sum(i.orderTotalCount) from Item i")
+    int sellingCount();
+
+    //아이템의 주문 총합을 조회
+    @Query("select sum(i.orderTotalIncome) from Item i")
+    int sellingIncome();
 
 }
