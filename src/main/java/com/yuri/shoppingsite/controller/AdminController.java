@@ -188,6 +188,12 @@ public class AdminController {
     }
 
 
+    //재고관리
+    //재고현황페이지 가기
+    @GetMapping("admin/stocknow")
+    public String stocknow(){
+        return "admin/stocknow";
+    }
 
 
     //통계보기

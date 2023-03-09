@@ -10,6 +10,11 @@ public interface ItemRepositoryCustom {
 
     Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
     Page<MainItemDto> getDiaryItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
+    Page<MainItemDto> getWallDecoItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
+    Page<MainItemDto> getPenItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
+    Page<MainItemDto> getLivingItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
+    Page<MainItemDto> getCardItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
+    Page<MainItemDto> getAccItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
 
     Page<BestSellerItemDto> getBestSellerItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
 

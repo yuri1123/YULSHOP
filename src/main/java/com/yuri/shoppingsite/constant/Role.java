@@ -1,5 +1,5 @@
 package com.yuri.shoppingsite.constant;
 
 public enum Role {
-    USER,ADMIN
+    USER,ADMIN,SILVER,GOLD,PLATINUM
 }

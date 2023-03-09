@@ -26,11 +26,6 @@
       background: #a367e7;
       border: #a367e7;
     }
-    .fontcolors {
-      margin-top:40px;
-      margin-bottom: 40px;
-      font-size: 15px;
-    }
 
     .page-link {
       color: #000;
@@ -56,12 +51,6 @@
       padding: 10px 30px;
     }
 
-    .img-div {
-      margin-bottom: 10px;
-    }
-    .fieldError {
-      color: #bd2130;
-    }
   </style>
 
   <meta name="_csrf" th:content="${_csrf.token}"/>
@@ -91,15 +80,20 @@
             + "&searchQuery=" + searchQuery;
   }
 
-  // function updateUserAuth(cartItemId, count){
+
+  // function deleteMember(obj){
+  //
+  //  if(confirm("정말로 이 유저를 삭제하시겠습니까?")){
+  //
+  //   var id = obj.dataset.id;
   //   var token = $("meta[name='_csrf']").attr("content");
   //   var header = $("meta[name='_csrf_header']").attr("content");
   //
-  //   var url = "/cartItem/" + cartItemId+"?count=" + count;
+  //   var url = "/admin/member/" + id;
   //
   //   $.ajax({
   //     url      : url,
-  //     type     : "PATCH", //부분업데이트이므로 PATCH TYPE으로 설정
+  //     type     : "DELETE", //삭제요청이므로 delete type 사용
   //     beforeSend : function(xhr){
   //       /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
   //       xhr.setRequestHeader(header, token);
@@ -107,11 +101,12 @@
   //     dataType : "json",
   //     cache   : false,
   //     success  : function(result, status){
-  //       console.log("cartItem count update success");
+  //       //삭제 요청이 정상 처리되면 유저권한 페이지 새로고침
+  //       location.href='/admin/userauth';
   //     },
   //     error : function(jqXHR, status, error){
   //
-  //       if(jqXHR.status == '401'){
+  //       if(jqXHR.status == '401' || jqXHR.status == '500'){
   //         alert('로그인 후 이용해주세요');
   //         location.href='/member/login';
   //       } else{
@@ -121,44 +116,7 @@
   //     }
   //   });
   // }
-
-
-  function deleteMember(obj){
-
-   if(confirm("정말로 이 유저를 삭제하시겠습니까?")){
-
-    var id = obj.dataset.id;
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-
-    var url = "/admin/member/" + id;
-
-    $.ajax({
-      url      : url,
-      type     : "DELETE", //삭제요청이므로 delete type 사용
-      beforeSend : function(xhr){
-        /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
-        xhr.setRequestHeader(header, token);
-      },
-      dataType : "json",
-      cache   : false,
-      success  : function(result, status){
-        //삭제 요청이 정상 처리되면 유저권한 페이지 새로고침
-        location.href='/admin/userauth';
-      },
-      error : function(jqXHR, status, error){
-
-        if(jqXHR.status == '401' || jqXHR.status == '500'){
-          alert('로그인 후 이용해주세요');
-          location.href='/member/login';
-        } else{
-          alert(jqXHR.responseJSON.message);
-        }
-
-      }
-    });
-  }
-  }
+  // }
 
 </script>
 
@@ -171,11 +129,11 @@
 
 
     <div class="col-lg-12 col-md-12 col-sm-12 gap">
-        <h1 class="text-center">유저 권한 관리</h1>
+        <h1 class="text-center">카테고리 변경</h1>
 
     </div>
 
-    <form th:action="@{'/admin/userauth/' + ${members.number}}" role="form" method="get" th:object="${members}">
+    <form th:action="@{'/admin/category/' + ${members.number}}" role="form" method="get" th:object="${members}">
       <div class="col-8 offset-4 pb-2">
         <!--        검색하기-->
         <div  class="form-inline justify-content-center" th:object="${memberSearchDto}">
@@ -230,38 +188,11 @@
             <select>
               <th:block th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).ADMIN}" >
                 <option th:value="ADMIN" selected>관리자</option>
-                <option th:value="USER">일반회원</option>
-                <option th:value="SILVER" >실버회원</option>
-                <option th:value="GOLD" >골드회원</option>
-                <option th:value="PLATINUM" >플래티넘회원</option>
+                <option th:value="USER" >회원</option>
               </th:block>
-              <th:block th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).USER}" >
+              <th:block th:unless="${member.role == T(com.yuri.shoppingsite.constant.Role).ADMIN}" >
                 <option th:value="ADMIN">관리자</option>
                 <option th:value="USER" selected>회원</option>
-                <option th:value="SILVER" >실버회원</option>
-                <option th:value="GOLD" >골드회원</option>
-                <option th:value="PLATINUM" >플래티넘회원</option>
-              </th:block>
-              <th:block th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).SILVER}" >
-                <option th:value="ADMIN">관리자</option>
-                <option th:value="USER">일반회원</option>
-                <option th:value="SILVER" selected>실버회원</option>
-                <option th:value="GOLD" >골드회원</option>
-                <option th:value="PLATINUM" >플래티넘회원</option>
-              </th:block>
-              <th:block th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).GOLD}" >
-                <option th:value="ADMIN">관리자</option>
-                <option th:value="USER">일반회원</option>
-                <option th:value="SILVER" >실버회원</option>
-                <option th:value="GOLD" selected >골드회원</option>
-                <option th:value="PLATINUM" >플래티넘회원</option>
-              </th:block>
-              <th:block th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).PLATINUM}" >
-                <option th:value="ADMIN">관리자</option>
-                <option th:value="USER">일반회원</option>
-                <option th:value="SILVER" >실버회원</option>
-                <option th:value="GOLD" >골드회원</option>
-                <option th:value="PLATINUM" selected>플래티넘회원</option>
               </th:block>
             </select>
           </td>

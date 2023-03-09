@@ -1,5 +1,7 @@
 package com.yuri.shoppingsite.controller;
 
+import com.yuri.shoppingsite.Repository.MemberRepository;
+import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.domain.shop.ItemFormDto;
 import com.yuri.shoppingsite.domain.user.Member;
 import com.yuri.shoppingsite.domain.user.MemberFormDto;
@@ -68,10 +70,15 @@ public class MemberController {
         return "member/login";
     }
 
+    MemberRepository memberRepository;
+    Member member;
     //마이페이지로 이동
     @GetMapping("/mypage")
-    public String mypage(Model model){
-
+    public String mypage(Model model,Principal principal){
+        String nickname = memberService.getNickname(principal.getName());
+        Role member = memberService.getAuth(principal.getName());
+        model.addAttribute("member",member);
+        model.addAttribute("nickname",nickname);
         return "member/mypage";
     }
 

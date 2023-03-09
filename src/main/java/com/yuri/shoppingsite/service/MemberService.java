@@ -86,6 +86,19 @@ public class MemberService implements UserDetailsService {
         return true;
     }
 
+    //현재 로그인한 회원의 권한가져오기
+    @Transactional(readOnly = true)
+    public Role getAuth(String name){
+        Role member = memberRepository.findByName(name).getRole();
+    return member;
+    }
+
+    //회원의 닉네임 가져오기
+    public String getNickname(String name){
+        String nickname = memberRepository.findByName(name).getNickname();
+        return nickname;
+    }
+
     public Page<Member> getMemberAuth(MemberSearchDto memberSearchDto,Pageable pageable){
         return memberRepository.getAdminMemberPage(memberSearchDto, pageable);
     }
