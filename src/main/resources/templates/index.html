@@ -73,11 +73,60 @@
         </section>
         <!-- Category Area End-->
 
-
-
-
         <!-- Latest Products Start -->
-        <th:block th:include="/include/latestproducts.html"></th:block>
+        <div class="container">
+            <div class="row product-btn d-flex justify-content-end align-items-end" id="gap">
+                <!-- Section Tittle -->
+                <div class="col-lg-12">
+                    <div class="section-tittle text-center mb-85">
+                        <h2>BESTSELLER</h2>
+                    </div>
+                </div>
+                <div class="col-xl-8 col-lg-7 col-md-7">
+                    <div class="properties__button f-right">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nav Card -->
+            <div class="tab-content" id="nav-tabContent">
+                <!-- card one -->
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+
+                    <input type="hidden" name="searchQuery" th:value="${itemSearchDto.searchQuery}">
+                    <div th:if="${not #strings.isEmpty(itemSearchDto.searchQuery)}" class="center">
+                        <p class="h3 font-weight-bold" th:text="${itemSearchDto.searchQuery} + '검색 결과'"></p>
+                    </div>
+
+                    <div class="row">
+                        <th:block th:each="item, status: ${items.getContent()}">
+                            <div class="col-xl-4 col-lg-6 col-md-6">
+
+                                <div class="single-product mb-60">
+                                    <a th:href="'/item/'+${item.id}">
+                                        <div class="product-img">
+                                            <img th:src="${item.imgUrl}" height="300" th:alt="${item.imgUrl}"/>
+                                        </div>
+                                        <div class="product-caption">
+                                            <h5>[[${item.itemNm}]]</h5>
+                                            <div class="price">
+                                                <p>[[${item.price}]]원</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </th:block>
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Nav Card -->
+        </div>
+
+        </section>
         <!-- Latest Products End -->
 
 

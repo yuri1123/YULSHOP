@@ -96,6 +96,11 @@ public class ItemService {
     }
 
     @Transactional(readOnly = true)
+    public Page<MainItemDto> getDiaryItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getDiaryItemPage(itemSearchDto, pageable);
+    }
+
+    @Transactional(readOnly = true)
     public Page<BestSellerItemDto> getBestSellerItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return itemRepository.getBestSellerItemPage(itemSearchDto, pageable);
     }

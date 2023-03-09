@@ -9,6 +9,7 @@ public interface ItemRepositoryCustom {
     Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
 
     Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
+    Page<MainItemDto> getDiaryItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
 
     Page<BestSellerItemDto> getBestSellerItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
 

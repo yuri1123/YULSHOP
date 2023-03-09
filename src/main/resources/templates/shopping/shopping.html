@@ -1,6 +1,5 @@
 <!doctype html>
-<html lagn="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:include="/include/common_css.html"></th:block>
     <style>
@@ -74,8 +73,8 @@
         <div class="row product-btn d-flex justify-content-end align-items-end">
             <!-- Section Tittle -->
             <div class="col-xl-4 col-lg-5 col-md-5">
-                <div class="section-tittle mb-30">
-                    <h2>Latest Products</h2>
+                <div class="section-tittle mb-30" id="gap">
+                    <h2>ALL PRODUCTS</h2>
                 </div>
             </div>
             <div class="col-xl-8 col-lg-7 col-md-7">
@@ -84,9 +83,12 @@
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                             <a class="nav-item nav-link active" id="nav-all-tab" data-toggle="tab" href="#nav-all" role="tab" aria-controls="nav-all" aria-selected="true">All</a>
-                            <a class="nav-item nav-link" id="nav-diary-tab" data-toggle="tab" href="#nav-diary" role="tab" aria-controls="nav-diary" aria-selected="false">New</a>
-                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Featured</a>
-                            <a class="nav-item nav-link" id="nav-last-tab" data-toggle="tab" href="#nav-last" role="tab" aria-controls="nav-contact" aria-selected="false">Offer</a>
+                            <a class="nav-item nav-link" id="nav-diary-tab" data-toggle="tab" href="#nav-diary" role="tab" aria-controls="nav-diary" aria-selected="false">DIARY</a>
+                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">WALL DECO</a>
+                            <a class="nav-item nav-link" id="nav-last-tab" data-toggle="tab" href="#nav-last" role="tab" aria-controls="nav-contact" aria-selected="false">PEN & CASE</a>
+<!--                            <a class="nav-item nav-link" id="nav-last-tab" data-toggle="tab" href="#nav-last" role="tab" aria-controls="nav-contact" aria-selected="false">LIVING</a>-->
+<!--                            <a class="nav-item nav-link" id="nav-last-tab" data-toggle="tab" href="#nav-last" role="tab" aria-controls="nav-contact" aria-selected="false">CARD & POSTCARD</a>-->
+<!--                            <a class="nav-item nav-link" id="nav-last-tab" data-toggle="tab" href="#nav-last" role="tab" aria-controls="nav-contact" aria-selected="false">ACCESSORY</a>-->
                         </div>
                     </nav>
                     <!--End Nav Button  -->
@@ -110,7 +112,7 @@
                                         <img th:src="${item.imgUrl}" height="300" th:alt="${item.imgUrl}"/>
                                     </div>
                                     <div class="product-caption">
-                                        <h5>[[${item.itemNm}]]</h5>
+                                        <h5 th:text="|[${item.category}]${item.itemNm}|"></h5>
                                         <div class="price">
                                             <p>[[${item.price}]]원</p>
                                         </div>
@@ -120,7 +122,8 @@
 
                         </div>
                     </th:block>
-
+                    </div>
+                <div class="col-xl-8 col-lg-7 col-md-7">
                     <div class="justify-content-center" th:with="start=${(items.number/maxPage)*maxPage + 1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})">
                         <ul class="pagination justify-content-center">
 
@@ -145,12 +148,53 @@
 
                 </div>
             </div>
+
             <!-- Card two -->
             <div class="tab-pane fade" id="nav-diary" role="tabpanel" aria-labelledby="nav-diary-tab">
                 <div class="row">`
 
-                    꺄르꺄르
+                    <th:block th:each="diaryItems, status: ${diaryItems.getContent()}">
+                        <div class="col-xl-4 col-lg-4 col-md-6">
 
+                            <div class="single-product mb-60">
+                                <a th:href="'/item/'+${diaryItems.id}">
+                                    <div class="product-img">
+                                        <img th:src="${diaryItems.imgUrl}" height="300" th:alt="${diaryItems.imgUrl}"/>
+                                    </div>
+                                    <div class="product-caption">
+                                        <h5 th:text="|[${diaryItems.category}]${diaryItems.itemNm}|"></h5>
+                                        <div class="price">
+                                            <p>[[${diaryItems.price}]]원</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                    </th:block>
+                    </div>
+                <div class="col-xl-8 col-lg-7 col-md-7">
+                    <div class="justify-content-center" th:with="start=${(items.number/maxPage)*maxPage + 1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})">
+                        <ul class="pagination justify-content-center">
+
+                            <li class="page-item" th:classappend="${items.number eq 0}?'disabled':''">
+                                <a th:href="@{'/shopping/shopping/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number -1}}" aria-label='Previous' class="page-link">
+                                    <span aria-hidden='true'>이전</span>
+                                </a>
+                            </li>
+
+                            <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq page -1}?'active':''">
+                                <a th:href="@{'/shopping/shopping/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${page -1}}" th:inline="text" class="page-link">[[${page}]]</a>
+                            </li>
+
+                            <li class="page-item" th:classappend="${items.number +1 ge items.totalPages}?'disabled':''">
+                                <a th:href="@{'/shopping/shopping/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number+1}}" aria-label='Next' class="page-link">
+                                    <span aria-hidden='true'>다음</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
 
                 </div>
             </div>
