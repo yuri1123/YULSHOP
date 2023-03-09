@@ -133,6 +133,186 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
+    public Page<MainItemDto> getWallDecoItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+
+        List<MainItemDto> content = queryFactory
+                .select(
+                        new QMainItemDto(
+                                item.id,
+                                item.category,
+                                item.itemNm,
+                                item.itemDetail,
+                                itemImg.imgUrl,
+                                item.price)
+                )
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(item.category.eq(Category.WALLDECO))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .orderBy(item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = queryFactory
+                .select(Wildcard.count)
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public Page<MainItemDto> getPenItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+
+        List<MainItemDto> content = queryFactory
+                .select(
+                        new QMainItemDto(
+                                item.id,
+                                item.category,
+                                item.itemNm,
+                                item.itemDetail,
+                                itemImg.imgUrl,
+                                item.price)
+                )
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(item.category.eq(Category.PEN))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .orderBy(item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = queryFactory
+                .select(Wildcard.count)
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public Page<MainItemDto> getLivingItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+
+        List<MainItemDto> content = queryFactory
+                .select(
+                        new QMainItemDto(
+                                item.id,
+                                item.category,
+                                item.itemNm,
+                                item.itemDetail,
+                                itemImg.imgUrl,
+                                item.price)
+                )
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(item.category.eq(Category.LIVING))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .orderBy(item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = queryFactory
+                .select(Wildcard.count)
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public Page<MainItemDto> getCardItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+
+        List<MainItemDto> content = queryFactory
+                .select(
+                        new QMainItemDto(
+                                item.id,
+                                item.category,
+                                item.itemNm,
+                                item.itemDetail,
+                                itemImg.imgUrl,
+                                item.price)
+                )
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(item.category.eq(Category.CARD))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .orderBy(item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = queryFactory
+                .select(Wildcard.count)
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public Page<MainItemDto> getAccItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+
+        List<MainItemDto> content = queryFactory
+                .select(
+                        new QMainItemDto(
+                                item.id,
+                                item.category,
+                                item.itemNm,
+                                item.itemDetail,
+                                itemImg.imgUrl,
+                                item.price)
+                )
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(item.category.eq(Category.ACCESSORY))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .orderBy(item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = queryFactory
+                .select(Wildcard.count)
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
     public Page<MainItemDto> getDiaryItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
         QItem item = QItem.item;
         QItemImg itemImg = QItemImg.itemImg;

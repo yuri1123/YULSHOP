@@ -1,5 +1,6 @@
 package com.yuri.shoppingsite.domain.shop;
 
+import com.yuri.shoppingsite.constant.ItemSellStatus;
 import com.yuri.shoppingsite.domain.common.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -49,6 +50,9 @@ public class OrderItem extends BaseEntity {
         item.removeStock(count);
         item.addOrderTotalCount(count);
         item.addOrderTotalIncome(item.getPrice() * count);
+        if(item.getStockNumber() == 0){
+            item.setItemSellStatus(ItemSellStatus.SOLD_OUT);
+        }
         return orderItem;
     }
     //주문 가격과 주문 수량을 곱해서 해당 상품을 주문한 총 가격을 계산하는 메소드이다.
@@ -61,6 +65,11 @@ public class OrderItem extends BaseEntity {
         this.getItem().addStock(count);
         this.getItem().removeOrderCount(count);
         this.getItem().removeOrderTotalIncome(item.getPrice() * count);
+
+        if(item.getStockNumber() != 0){
+            item.setItemSellStatus(ItemSellStatus.SELL);
+        }
+
     }
 
     }

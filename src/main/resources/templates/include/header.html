@@ -82,34 +82,34 @@
                   <li><a th:href="@{/shopping/latest}">LATEST</a></li>
                   <li><a href="/shopping/shopping">PRODUCTS</a>
                     <ul class="submenu">
-                      <li><a href="/shopping/shopping/#nav-diary">DIARY</a></li>
-                      <li><a href="single-product.html">WALL DECO</a></li>
-                      <li><a href="single-product.html">PEN&CASE</a></li>
-                      <li><a href="single-product.html">LIVING</a></li>
-                      <li><a href="single-product.html">CARD&POSTCARD</a></li>
-                      <li><a href="single-product.html">ACCESSORY</a></li>
+                      <li><a href="/shopping/shopping#nav-diary">DIARY</a></li>
+                      <li><a href="/shopping/shopping#nav-wall">WALL DECO</a></li>
+                      <li><a href="/shopping/shopping#nav-pen">PEN&CASE</a></li>
+                      <li><a href="/shopping/shopping#nav-living">LIVING</a></li>
+                      <li><a href="/shopping/shopping#nav-card">CARD&POSTCARD</a></li>
+                      <li><a href="/shopping/shopping#nav-acc">ACCESSORY</a></li>
                     </ul>
                   </li>
-                  <li><a href="blog.html">SALES</a>
+                  <li><a href="/shopping/shopping">SALES</a>
 <!--                    <ul class="submenu">-->
 <!--                      <li><a href="blog.html">Blog</a></li>-->
 <!--                      <li><a href="single-blog.html">Blog Details</a></li>-->
 <!--                    </ul>-->
                   </li>
-                  <li sec:authorize="isAuthenticated()"><a th:href="@{/orders}">PURCHASE</a>
-                    <ul class="submenu">
-                      <li><a href="login.html">Login</a></li>
-                      <li><a href="cart.html">Card</a></li>
-                      <li><a href="elements.html">Element</a></li>
-                      <li><a href="about.html">About</a></li>
-                      <li><a href="confirmation.html">Confirmation</a></li>
-                      <li><a href="cart.html">Shopping Cart</a></li>
-                      <li><a href="checkout.html">Product Checkout</a></li>
-                    </ul>
-                  </li>
-                  <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-                      <a th:href="@{/admin/items}">ENROLL</a>
-                  </li>
+<!--                  <li sec:authorize="isAuthenticated()"><a th:href="@{/orders}">PURCHASE</a>-->
+<!--                    <ul class="submenu">-->
+<!--                      <li><a href="login.html">Login</a></li>-->
+<!--                      <li><a href="cart.html">Card</a></li>-->
+<!--                      <li><a href="elements.html">Element</a></li>-->
+<!--                      <li><a href="about.html">About</a></li>-->
+<!--                      <li><a href="confirmation.html">Confirmation</a></li>-->
+<!--                      <li><a href="cart.html">Shopping Cart</a></li>-->
+<!--                      <li><a href="checkout.html">Product Checkout</a></li>-->
+<!--                    </ul>-->
+<!--                  </li>-->
+<!--                  <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">-->
+<!--                      <a th:href="@{/admin/items}">ENROLL</a>-->
+<!--                  </li>-->
                 </ul>
               </nav>
             </div>

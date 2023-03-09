@@ -35,39 +35,91 @@
                     <div class="col-xl-4 col-lg-6">
                         <div class="single-category mb-30">
                             <div class="category-img">
-                                <img src="assets/img/categori/cat1.jpg" alt="">
+                                <a th:href="@{shopping/shopping}">
+                                <img src="assets/yuls/diary.jpg" width="400" height="300" alt="">
                                 <div class="category-caption">
-                                    <h2>Owmen`s</h2>
-                                    <span class="best"><a href="#">Best New Deals</a></span>
-                                    <span class="collection">New Collection</span>
+                                    <!--                                    <h2>Man`s Cloth</h2>-->
+                                    <!--                                    <span class="best"><a href="#">Best New Deals</a></span>-->
+                                    <!--                                    <span class="collection">New Collection</span>-->
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="col-xl-4 col-lg-6">
-                        <div class="single-category mb-30">
-                            <div class="category-img text-center">
-                                <img src="assets/img/categori/cat2.jpg" alt="">
-                                <div class="category-caption">
-                                    <span class="collection">Discount!</span>
-                                    <h2>Winter Cloth</h2>
-                                   <p>New Collection</p>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-6">
                         <div class="single-category mb-30">
                             <div class="category-img">
-                                <img src="assets/img/categori/cat3.jpg" alt="">
+                                <a th:href="@{shopping/shopping}">
+                                <img src="assets/yuls/walldeco.jpg" width="400" height="300" alt="">
                                 <div class="category-caption">
-                                    <h2>Man`s Cloth</h2>
-                                    <span class="best"><a href="#">Best New Deals</a></span>
-                                    <span class="collection">New Collection</span>
+                                    <!--                                    <h2>Man`s Cloth</h2>-->
+                                    <!--                                    <span class="best"><a href="#">Best New Deals</a></span>-->
+                                    <!--                                    <span class="collection">New Collection</span>-->
                                 </div>
+                                </a>
                             </div>
                         </div>
                     </div>
+                    <div class="col-xl-4 col-lg-6">
+                        <div class="single-category mb-30">
+                            <div class="category-img">
+                                <a th:href="@{shopping/shopping}">
+                                <img src="assets/yuls/pen.jpg" width="400" height="300" alt="">
+                                <div class="category-caption">
+<!--                                    <h2>Man`s Cloth</h2>-->
+<!--                                    <span class="best"><a href="#">Best New Deals</a></span>-->
+<!--                                    <span class="collection">New Collection</span>-->
+                                </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-6">
+                        <div class="single-category mb-30">
+                            <div class="category-img">
+                                <a th:href="@{shopping/shopping}">
+                                <img src="assets/yuls/living.jpg" width="400" height="300" alt="">
+                                <div class="category-caption">
+                                    <!--                                    <h2>Man`s Cloth</h2>-->
+                                    <!--                                    <span class="best"><a href="#">Best New Deals</a></span>-->
+                                    <!--                                    <span class="collection">New Collection</span>-->
+                                </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-6">
+                        <div class="single-category mb-30">
+                            <div class="category-img">
+                                <a th:href="@{shopping/shopping}">
+                                <img src="assets/yuls/card.jpg" width="400" height="300" alt="">
+                                <div class="category-caption">
+                                    <!--                                    <h2>Man`s Cloth</h2>-->
+                                    <!--                                    <span class="best"><a href="#">Best New Deals</a></span>-->
+                                    <!--                                    <span class="collection">New Collection</span>-->
+                                </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-6">
+                        <div class="single-category mb-30">
+                            <div class="category-img">
+                                <a th:href="@{shopping/shopping}">
+                                <img src="assets/yuls/acc.jpg" width="400" height="300"  alt="">
+                                <div class="category-caption">
+                                    <!--                                    <h2>Man`s Cloth</h2>-->
+                                    <!--                                    <span class="best"><a href="#">Best New Deals</a></span>-->
+                                    <!--                                    <span class="collection">New Collection</span>-->
+                                </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -101,12 +153,11 @@
 
                     <div class="row">
                         <th:block th:each="item, status: ${items.getContent()}">
-                            <div class="col-xl-4 col-lg-6 col-md-6">
-
+                            <div class="col-xl-4 col-lg-6">
                                 <div class="single-product mb-60">
                                     <a th:href="'/item/'+${item.id}">
                                         <div class="product-img">
-                                            <img th:src="${item.imgUrl}" height="300" th:alt="${item.imgUrl}"/>
+                                            <img th:src="${item.imgUrl}" height="300" width="400" th:alt="${item.imgUrl}"/>
                                         </div>
                                         <div class="product-caption">
                                             <h5>[[${item.itemNm}]]</h5>

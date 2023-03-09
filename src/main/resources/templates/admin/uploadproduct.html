@@ -137,6 +137,18 @@
                     <option value="SELL">판매중</option>
                     <option value="SOLD_OUT">품절</option>
                 </select>
+
+                <select th:field = "*{category}" class="form-select mb-1">
+                    <option value="DIARY">Diary</option>
+                    <option value="WALLDECO">Wall Deco</option>
+                    <option value="PEN">PEN & PENCASE</option>
+                    <option value="LIVING">Living</option>
+                    <option value="CARD">Card & PostCard</option>
+                    <option value="ACCESSORY">Accessory</option>
+                </select>
+
+
+
         <!-- 상품명-->
              <div class="mb-3">
                  <label th:for="itemNm" class="form-label mt-2">상품명</label>

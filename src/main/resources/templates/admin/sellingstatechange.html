@@ -230,38 +230,11 @@
             <select>
               <th:block th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).ADMIN}" >
                 <option th:value="ADMIN" selected>관리자</option>
-                <option th:value="USER">일반회원</option>
-                <option th:value="SILVER" >실버회원</option>
-                <option th:value="GOLD" >골드회원</option>
-                <option th:value="PLATINUM" >플래티넘회원</option>
+                <option th:value="USER" >회원</option>
               </th:block>
-              <th:block th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).USER}" >
+              <th:block th:unless="${member.role == T(com.yuri.shoppingsite.constant.Role).ADMIN}" >
                 <option th:value="ADMIN">관리자</option>
                 <option th:value="USER" selected>회원</option>
-                <option th:value="SILVER" >실버회원</option>
-                <option th:value="GOLD" >골드회원</option>
-                <option th:value="PLATINUM" >플래티넘회원</option>
-              </th:block>
-              <th:block th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).SILVER}" >
-                <option th:value="ADMIN">관리자</option>
-                <option th:value="USER">일반회원</option>
-                <option th:value="SILVER" selected>실버회원</option>
-                <option th:value="GOLD" >골드회원</option>
-                <option th:value="PLATINUM" >플래티넘회원</option>
-              </th:block>
-              <th:block th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).GOLD}" >
-                <option th:value="ADMIN">관리자</option>
-                <option th:value="USER">일반회원</option>
-                <option th:value="SILVER" >실버회원</option>
-                <option th:value="GOLD" selected >골드회원</option>
-                <option th:value="PLATINUM" >플래티넘회원</option>
-              </th:block>
-              <th:block th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).PLATINUM}" >
-                <option th:value="ADMIN">관리자</option>
-                <option th:value="USER">일반회원</option>
-                <option th:value="SILVER" >실버회원</option>
-                <option th:value="GOLD" >골드회원</option>
-                <option th:value="PLATINUM" selected>플래티넘회원</option>
               </th:block>
             </select>
           </td>

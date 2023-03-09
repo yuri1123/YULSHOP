@@ -99,6 +99,27 @@ public class ItemService {
     public Page<MainItemDto> getDiaryItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return itemRepository.getDiaryItemPage(itemSearchDto, pageable);
     }
+    @Transactional(readOnly = true)
+    public Page<MainItemDto> getWallDecoItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getWallDecoItemPage(itemSearchDto, pageable);
+    }
+    @Transactional(readOnly = true)
+    public Page<MainItemDto> getPenItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getPenItemPage(itemSearchDto, pageable);
+    }
+    @Transactional(readOnly = true)
+    public Page<MainItemDto> getLivingItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getLivingItemPage(itemSearchDto, pageable);
+    }
+    @Transactional(readOnly = true)
+    public Page<MainItemDto> getCardItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getCardItemPage(itemSearchDto, pageable);
+    }
+    @Transactional(readOnly = true)
+    public Page<MainItemDto> getAccItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getCardItemPage(itemSearchDto, pageable);
+    }
+
 
     @Transactional(readOnly = true)
     public Page<BestSellerItemDto> getBestSellerItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
