@@ -10,6 +10,7 @@ import com.yuri.shoppingsite.domain.shop.QItem;
 import com.yuri.shoppingsite.domain.shop.QItemImg;
 import com.yuri.shoppingsite.domain.shop.QLatestItemDto;
 import com.yuri.shoppingsite.domain.shop.QMainItemDto;
+import com.yuri.shoppingsite.domain.shop.QResultCategoryItemDto;
 import com.yuri.shoppingsite.domain.shop.QResultSellingItemDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -110,7 +111,51 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemNm,
                                 item.itemDetail,
                                 itemImg.imgUrl,
-                                item.price)
+                                item.price,
+                                item.stockNumber,
+                                item.itemSellStatus,
+                                item.regTime)
+                )
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT))
+                )
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .orderBy(item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = queryFactory
+                .select(Wildcard.count)
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public Page<MainItemDto> getALLMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+
+        List<MainItemDto> content = queryFactory
+                .select(
+                        new QMainItemDto(
+                                item.id,
+                                item.category,
+                                item.itemNm,
+                                item.itemDetail,
+                                itemImg.imgUrl,
+                                item.price,
+                                item.stockNumber,
+                                item.itemSellStatus,
+                                item.regTime)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
@@ -145,7 +190,10 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemNm,
                                 item.itemDetail,
                                 itemImg.imgUrl,
-                                item.price)
+                                item.price,
+                                item.stockNumber,
+                                item.itemSellStatus,
+                                item.regTime)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
@@ -162,6 +210,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL), item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .fetchOne();
 
@@ -181,12 +230,18 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemNm,
                                 item.itemDetail,
                                 itemImg.imgUrl,
-                                item.price)
+                                item.price,
+                                item.stockNumber,
+                                item.itemSellStatus,
+                                item.regTime)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
                 .where(item.category.eq(Category.PEN))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT))
+                )
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .orderBy(item.id.desc())
                 .offset(pageable.getOffset())
@@ -217,12 +272,18 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemNm,
                                 item.itemDetail,
                                 itemImg.imgUrl,
-                                item.price)
+                                item.price,
+                                item.stockNumber,
+                                item.itemSellStatus,
+                                item.regTime)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
                 .where(item.category.eq(Category.LIVING))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT))
+                )
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .orderBy(item.id.desc())
                 .offset(pageable.getOffset())
@@ -253,12 +314,18 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemNm,
                                 item.itemDetail,
                                 itemImg.imgUrl,
-                                item.price)
+                                item.price,
+                                item.stockNumber,
+                                item.itemSellStatus,
+                                item.regTime)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
                 .where(item.category.eq(Category.CARD))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT))
+                )
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .orderBy(item.id.desc())
                 .offset(pageable.getOffset())
@@ -289,12 +356,18 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemNm,
                                 item.itemDetail,
                                 itemImg.imgUrl,
-                                item.price)
+                                item.price,
+                                item.stockNumber,
+                                item.itemSellStatus,
+                                item.regTime)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
                 .where(item.category.eq(Category.ACCESSORY))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT))
+                )
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .orderBy(item.id.desc())
                 .offset(pageable.getOffset())
@@ -305,6 +378,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .select(Wildcard.count)
                 .from(itemImg)
                 .join(itemImg.item, item)
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL), item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT))
                 .where(itemImg.repimgYn.eq("Y"))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .fetchOne();
@@ -325,12 +399,18 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemNm,
                                 item.itemDetail,
                                 itemImg.imgUrl,
-                                item.price)
+                                item.price,
+                                item.stockNumber,
+                                item.itemSellStatus,
+                                item.regTime)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
                 .where(item.category.eq(Category.DIARY))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT))
+                )
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .orderBy(item.id.desc())
                 .offset(pageable.getOffset())
@@ -451,5 +531,42 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
         return new PageImpl<>(content, pageable, total);
     }
+
+    @Override
+    public Page<ResultCategoryItemDto> getResultCategoryItemDto(ItemSearchDto itemSearchDto, Pageable pageable) {
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+
+        List<ResultCategoryItemDto> content = queryFactory
+                .select(
+                        new QResultCategoryItemDto(
+                                item.category,
+                                item.orderTotalCount.sum(),
+                                item.orderTotalIncome.sum())
+                ).from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .groupBy(item.category)
+                .orderBy(item.orderTotalIncome.sum().desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = queryFactory
+                .select(Wildcard.count)
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+
+
+
+
 
 }

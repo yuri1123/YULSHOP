@@ -1,5 +1,6 @@
 package com.yuri.shoppingsite.domain.shop;
 
+import com.yuri.shoppingsite.constant.Category;
 import com.yuri.shoppingsite.constant.ItemSellStatus;
 import com.yuri.shoppingsite.domain.common.BaseEntity;
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class OrderItem extends BaseEntity {
     @Column(name="order_item_id")
     private Long id;
 
+    private Category category;
     //하나의 상품은 여러 주문 상품으로 들어갈 수 있으므로 주문 상품 기준으로 단방향 매핑을 설정
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="item_id")

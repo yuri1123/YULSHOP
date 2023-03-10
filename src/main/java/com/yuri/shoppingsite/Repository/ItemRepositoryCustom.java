@@ -8,6 +8,7 @@ public interface ItemRepositoryCustom {
 
     Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
 
+    Page<MainItemDto> getALLMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
     Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
     Page<MainItemDto> getDiaryItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
     Page<MainItemDto> getWallDecoItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
@@ -21,4 +22,6 @@ public interface ItemRepositoryCustom {
     Page<LatestItemDto> getLatestItemDto(ItemSearchDto itemSearchDto, Pageable pageable);
 
     Page<ResultSellingItemDto> getResultSellingItemDto(ItemSearchDto itemSearchDto,Pageable pageable);
+
+    Page<ResultCategoryItemDto> getResultCategoryItemDto(ItemSearchDto itemSearchDto, Pageable pageable);
 }

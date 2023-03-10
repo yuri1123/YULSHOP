@@ -1,9 +1,6 @@
 package com.yuri.shoppingsite.service;
 
-import com.yuri.shoppingsite.Repository.ItemImgRepository;
-import com.yuri.shoppingsite.Repository.ItemRepository;
-import com.yuri.shoppingsite.Repository.MemberRepository;
-import com.yuri.shoppingsite.Repository.OrderRepository;
+import com.yuri.shoppingsite.Repository.*;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.user.Member;
 import lombok.RequiredArgsConstructor;
@@ -111,7 +108,11 @@ public class OrderService {
         return order.getId();
     }
 
+    OrderItemRepository orderItemRepository;
+//    public List<OrderItem> getlatestSellingitems(){
+//        List<OrderItem> orderItemList = orderItemRepository.latestSellingitems();
+//        return orderItemList;
+    }
 
 
 
-}

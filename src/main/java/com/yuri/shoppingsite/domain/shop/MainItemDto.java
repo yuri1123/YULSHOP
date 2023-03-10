@@ -2,8 +2,11 @@ package com.yuri.shoppingsite.domain.shop;
 
 import com.querydsl.core.annotations.QueryProjection;
 import com.yuri.shoppingsite.constant.Category;
+import com.yuri.shoppingsite.constant.ItemSellStatus;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Getter @Setter
 public class MainItemDto {
@@ -15,16 +18,22 @@ public class MainItemDto {
     private String itemDetail;
 
     private String imgUrl;
+    private int stockNumber;
 
     private Integer price;
+    private ItemSellStatus itemSellStatus;
+    private LocalDateTime regTime;
 
     @QueryProjection
-    public MainItemDto(Long id, Category category, String itemNm, String itemDetail, String imgUrl,Integer price){
+    public MainItemDto(Long id, Category category, String itemNm, String itemDetail, String imgUrl,Integer price, int stockNumber, ItemSellStatus itemSellStatus,LocalDateTime regTime){
         this.id = id;
         this.category = category;
         this.itemNm = itemNm;
         this.itemDetail = itemDetail;
         this.imgUrl = imgUrl;
         this.price = price;
+        this.stockNumber = stockNumber;
+        this.itemSellStatus = itemSellStatus;
+        this.regTime = regTime;
     }
 }

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <th:block th:include="/include/admin_head.html"></th:block>
+    <th:block th:include="/include/common_css.html"></th:block>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+    <style>
+        #gap {
+            margin-top: 80px;
+            margin-bottom: 50px;
+        }
+
+        .hover:hover {
+            color: #a367e7;
+        }
+
+        .backcol {
+            background: #1e1e1e;
+            border: #1e1e1e;
+        }
+        .backcol:hover{
+            background: #a367e7;
+            border: #a367e7;
+        }
+        .fontcolors {
+            margin-top:40px;
+            margin-bottom: 40px;
+            font-size: 15px;
+        }
+
+        .page-link {
+            color: #000;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+        .page-item.active .page-link {
+            z-index: 1;
+            color: #555;
+            font-weight:bold;
+            background-color: #f1f1f1;
+            border-color: #ccc;
+
+        }
+        .page-link:focus, .page-link:hover {
+            color: #000;
+            background-color: #fafafa;
+            border-color: #ccc;
+        }
+
+        .rad{
+            border-radius: 10px;
+            padding: 10px 30px;
+        }
+
+        .mar {
+            margin-right: 20px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<script th:inline="javascript">
+
+    $(document).ready(function(){
+        $("#searchBtn").on("click",function(e) {
+            e.preventDefault();
+            page(0);
+        });
+    });
+
+    function page(page){
+        let searchDateType = $("#searchDateType").val();
+        let searchSellStatus = $("#searchSellStatus").val();
+        let searchBy = $("#searchBy").val();
+        let searchQuery = $("#searchQuery").val();
+
+        location.href="/admin/categoryselling/" + page
+            + "?searchDateType=" + searchDateType
+            + "&searchSellStatus=" + searchSellStatus
+            + "&searchBy=" + searchBy
+            + "&searchQuery=" + searchQuery;
+    }
+
+</script>
+
+<th:block th:include="/include/admin_header.html"/>
+<th:block th:include="/include/admin_sidebar.html"/>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12" id="gap">
+            <h1 class="text-center">카테고리별 판매량 조회</h1>
+        </div>
+
+        <div class="col-9 offset-4 pb-2">
+            <!--        검색하기-->
+            <div  class="form-inline justify-content-center" th:object="${itemSearchDto}">
+                <select th:field="*{searchDateType}" class="form-control m-1" style="width:auto;">
+                    <option value="all">전체기간</option>
+                    <option value="1d">1일</option>
+                    <option value="1w">1주</option>
+                    <option value="1m">1개월</option>
+                    <option value="6m">6개월</option>
+                </select>
+                <select th:field="*{searchSellStatus}" class="form-control m-1" style="width:auto;">
+                    <option value="">판매상태(전체)</option>
+                    <option value="SELL">판매</option>
+                    <option value="SOLD_OUT">품절</option>
+                </select>
+                <select th:field="*{searchBy}" class="form-control m-1" style="width:auto;">
+                    <option value="itemNm">상품명</option>
+                    <option value="createdBy">등록자</option>
+                </select>
+                <input th:field="*{searchQuery}" type="text" class="form-control m-1" placeholder="검색어를 입력해주세요">
+                <button id="searchBtn" type="submit" class="btn-primary backcol rad">검색</button>
+            </div>
+        </div>
+
+
+        <div class="col-lg-10 offset-1 text-center">
+
+            <table class="table table text-center align-self-center justify-content-center">
+                <thead>
+                <tr>
+                    <th scope="col">카테고리 사진</th>
+                    <th scope="col">카테고리</th>
+                    <th scope="col">판매량</th>
+                    <th scope="col">총판매수익</th>
+                </tr>
+                </thead>
+                <tbody class="align-self-center">
+
+
+                <th:block th:each="item, status: ${items.getContent()}">
+                    <tr class="text-center align-items-center">
+                        <td>
+                            <th:block th:if="|${item.category == T(com.yuri.shoppingsite.constant.Category).DIARY}">
+                                <img th:src="@{/assets/yuls/diary.jpg}" height="100" width="150" th:alt="DIARY"/>
+                            </th:block>
+                            <th:block th:if="|${item.category == T(com.yuri.shoppingsite.constant.Category).WALLDECO}">
+                                <img th:src="@{/assets/yuls/walldeco.jpg}" height="100" width="150" th:alt="WALLDECO"/>
+                            </th:block>
+                            <th:block th:if="|${item.category == T(com.yuri.shoppingsite.constant.Category).PEN}">
+                                <img th:src="@{/assets/yuls/pen.jpg}" height="100" width="150" th:alt="PEN"/>
+                            </th:block>
+                            <th:block th:if="|${item.category == T(com.yuri.shoppingsite.constant.Category).LIVING}">
+                                <img th:src="@{/assets/yuls/living.jpg}" height="100" width="150" th:alt="LIVING"/>
+                            </th:block>
+                            <th:block th:if="|${item.category == T(com.yuri.shoppingsite.constant.Category).CARD}">
+                                <img th:src="@{/assets/yuls/card.jpg}" height="100" width="150" th:alt="CARD"/>
+                            </th:block>
+                            <th:block th:if="|${item.category == T(com.yuri.shoppingsite.constant.Category).ACCESSORY}">
+                                <img th:src="@{/assets/yuls/acc.jpg}" height="100" width="150" th:alt="ACCESSORY"/>
+                            </th:block>
+                        </td>
+                        <td class="mt-3"><br><h5 class="pt-3" th:text="${item.category}"><br></h5></td>
+                        <td class="mt-3"><br><p class="pt-3" th:text="|${item.sumCount} 건|"><br></p></td>
+                        <td class="mt-3"><br><p class="pt-3" th:text="|${item.sumIncome} 원|"><br></p></td>
+
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="mb-80">
+            <div class="justify-content-center" th:with="start=${(items.number/maxPage)*maxPage + 1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
+                <ul class="pagination justify-content-center">
+
+                    <li class="page-item" th:classappend="${items.number eq 0}?'disabled':''">
+                        <a th:href="@{'/shopping/shopping/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number -1}}" aria-label='Previous' class="page-link">
+                            <span aria-hidden='true'>이전</span>
+                        </a>
+                    </li>
+
+                    <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq page -1}?'active':''">
+                        <a th:href="@{'/shopping/shopping/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${page -1}}" th:inline="text" class="page-link">[[${page}]]</a>
+                    </li>
+
+                    <li class="page-item" th:classappend="${items.number +1 ge items.totalPages}?'disabled':''">
+                        <a th:href="@{'/shopping/shopping/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number+1}}" aria-label='Next' class="page-link">
+                            <span aria-hidden='true'>다음</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div><!-- End Top Selling -->
+
+</div>
+<th:block th:include="/include/admin_footer.html"/>
+<th:block th:include="/include/admin_js.html"/>
+</body>
+
+</html>

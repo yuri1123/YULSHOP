@@ -220,8 +220,11 @@
           <td th:text="${member.name}"></td>
           <td th:text="${member.nickname}"></td>
           <td>
-                <span th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).ADMIN}" class="badge badge-danger">관리자</span>
-               <span th:unless="${member.role == T(com.yuri.shoppingsite.constant.Role).ADMIN}" class="badge badge-primary">회원</span>
+                <span th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).ADMIN}" class="badge alert-danger">관리자</span>
+               <span th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).USER}" class="badge alert-primary">일반회원</span>
+               <span th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).SILVER}" class="badge alert-dark">실버회원</span>
+               <span th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).GOLD}" class="badge alert-warning">골드회원</span>
+               <span th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).PLATINUM}" class="badge alert-success">플래티넘회원</span>
           </td>
 
           <td th:text="${member.regTime}"></td>

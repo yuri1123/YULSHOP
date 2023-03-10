@@ -90,6 +90,10 @@ public class ItemService {
         return itemRepository.getAdminItemPage(itemSearchDto, pageable);
     }
 
+    public Page<MainItemDto> getAllMain(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getALLMainItemPage(itemSearchDto, pageable);
+    }
+
     @Transactional(readOnly = true)
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return itemRepository.getMainItemPage(itemSearchDto, pageable);
@@ -117,7 +121,7 @@ public class ItemService {
     }
     @Transactional(readOnly = true)
     public Page<MainItemDto> getAccItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
-        return itemRepository.getCardItemPage(itemSearchDto, pageable);
+        return itemRepository.getAccItemPage(itemSearchDto, pageable);
     }
 
 
@@ -134,6 +138,10 @@ public class ItemService {
     @Transactional(readOnly = true)
     public Page<ResultSellingItemDto> getResultSellingItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return itemRepository.getResultSellingItemDto(itemSearchDto, pageable);
+    }
+    @Transactional(readOnly = true)
+    public Page<ResultCategoryItemDto> getResultCategoryItemDto(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getResultCategoryItemDto(itemSearchDto, pageable);
     }
 
     //총 아이템의주문 횟수를 가져옴

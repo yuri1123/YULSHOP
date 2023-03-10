@@ -6,6 +6,6 @@ package com.yuri.shoppingsite.constant;
 
 public enum ItemSellStatus {
 
-    SELL, SOLD_OUT
+    SELL, SOLD_OUT, NOT_SELL
 
 }

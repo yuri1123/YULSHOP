@@ -1,7 +1,10 @@
 package com.yuri.shoppingsite.domain.shop;
 
+import com.yuri.shoppingsite.constant.Category;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,11 +16,15 @@ public class OrderItemDto {
         this.count = orderItem.getCount();
         this.orderPrice = orderItem.getOrderPrice();
         this.imgUrl = imgUrl;
+        this.category = category;
+        this.regTime = regTime;
     }
 
+    private Category category;
     private String itemNm; //상품명
     private int count; //주문수량
     private int orderPrice; // 주문 금액
     private String imgUrl; // 상품 이미지 경로
+    private LocalDateTime regTime;
 
 }

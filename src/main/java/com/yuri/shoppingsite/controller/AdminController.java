@@ -1,6 +1,7 @@
 package com.yuri.shoppingsite.controller;
 
 import com.yuri.shoppingsite.Repository.MemberRepository;
+import com.yuri.shoppingsite.Repository.OrderItemRepository;
 import com.yuri.shoppingsite.domain.community.NoticeFormDto;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.user.MemberSearchDto;
@@ -44,9 +45,11 @@ public class AdminController {
         int memberCount = memberService.getMemberCount();
         int sellingCount = itemService.getSellingCount();
         int sellingIncome = itemService.getSellingIncome();
+//        List<OrderItem> orderItemList = orderService.getlatestSellingitems();
         model.addAttribute("memberCount",memberCount);
         model.addAttribute("sellingCount",sellingCount);
         model.addAttribute("sellingIncome",sellingIncome);
+//        model.addAttribute("orderItemList",orderItemList);
         return "admin/adminmain";
     }
 
@@ -140,6 +143,30 @@ public class AdminController {
         return "redirect:/admin/items";
     }
 
+    //상품 카테고리 관리페이지로 이동
+    @GetMapping(value={"/admin/categorychange","/admin/catecorychange/{page}"})
+    public String categoryChange(Model model, @PathVariable("page") Optional<Integer> page,
+                                 ItemSearchDto itemSearchDto){
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<MainItemDto> categoryItem = itemService.getAllMain(itemSearchDto, pageable);
+        model.addAttribute("items",categoryItem);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 10);
+        return "admin/categorychange";
+    }
+
+    //상품 판매상태 관리 페이지로 이동
+    @GetMapping(value={"/admin/sellingstatechange","/admin/sellingstatechange/{page}"})
+    public String sellingStateChange(Model model, @PathVariable("page") Optional<Integer> page,
+                                     ItemSearchDto itemSearchDto){
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<MainItemDto> sellingStateChange = itemService.getAllMain(itemSearchDto, pageable);
+        model.addAttribute("items",sellingStateChange);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 10);
+        return "admin/sellingstatechange";
+    }
+
     //기본 정보 관리
 
     //자사 정보 관리
@@ -190,13 +217,55 @@ public class AdminController {
 
     //재고관리
     //재고현황페이지 가기
-    @GetMapping("admin/stocknow")
-    public String stocknow(){
+    @GetMapping(value={"/admin/stocknow","/admin/stocknow/{page}"})
+    public String stocknow(Model model, @PathVariable("page") Optional<Integer> page,
+                           ItemSearchDto itemSearchDto){
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<MainItemDto> sellingStateChange = itemService.getAllMain(itemSearchDto, pageable);
+        model.addAttribute("items",sellingStateChange);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 10);
         return "admin/stocknow";
     }
 
+    //재고변경 페이지 가기
+    @GetMapping(value={"/admin/stockupdate","/admin/stockupdate/{page}"})
+    public String stockupdate(Model model, @PathVariable("page") Optional<Integer> page,
+                           ItemSearchDto itemSearchDto){
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<MainItemDto> sellingStateChange = itemService.getAllMain(itemSearchDto, pageable);
+        model.addAttribute("items",sellingStateChange);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 10);
+        return "admin/stockupdate";
+    }
+
+
 
     //통계보기
+
+    //전체 통계 페이지 가기
+    @GetMapping(value = {"admin/totalresult", "admin/totalresult/{page}"})
+        public String totalResult(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+         Page<ResultSellingItemDto> items = itemService.getResultSellingItemPage(itemSearchDto, pageable);
+        model.addAttribute("items",items);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 1);
+        return "admin/totalresult";
+}
+
+    //카테고리별 통계 페이지 가기
+    @GetMapping(value={"admin/categoryselling", "/admin/admin/categoryselling/{page}"})
+    public String categoryselling(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<ResultCategoryItemDto> items = itemService.getResultCategoryItemDto(itemSearchDto, pageable);
+        model.addAttribute("items",items);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 1);
+        return "admin/categorysellingresult";
+    }
+
     //상품별 통계 페이지 가기
     @GetMapping(value={"/admin/productselling", "/admin/productselling/{page}"})
     public String productselling(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){

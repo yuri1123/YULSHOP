@@ -5,7 +5,7 @@
   <ul class="sidebar-nav" id="sidebar-nav">
 
     <li class="nav-item">
-      <a class="nav-link " href="index.html">
+      <a class="nav-link " href="/admin/adminmain">
         <i class="bi bi-grid"></i>
         <span>대시보드 보기</span>
       </a>
@@ -26,12 +26,12 @@
         </a>
       </li>
       <li>
-        <a href="components-accordion.html">
+        <a th:href="@{/admin/categorychange}">
           <i class="bi bi-circle"></i><span>상품 카테고리 관리</span>
         </a>
       </li>
       <li>
-        <a href="components-accordion.html">
+        <a th:href="@{/admin/sellingstatechange}">
           <i class="bi bi-circle"></i><span>상품 판매상태 관리</span>
         </a>
       </li>
@@ -68,7 +68,7 @@
           </a>
         </li>
         <li>
-          <a href="tables-data.html">
+          <a th:href="@{/admin/stockupdate}">
             <i class="bi bi-circle"></i><span>재고 변경</span>
           </a>
         </li>
@@ -81,12 +81,12 @@
       </a>
       <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="charts-chartjs.html">
+          <a th:href="@{/admin/totalresult}">
             <i class="bi bi-circle"></i><span>전체 매출 현황</span>
           </a>
         </li>
         <li>
-          <a href="charts-apexcharts.html">
+          <a th:href="@{/admin/categoryselling}">
             <i class="bi bi-circle"></i><span>카테고리별 판매량 조회</span>
           </a>
         </li>
