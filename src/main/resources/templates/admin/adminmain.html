@@ -5,6 +5,7 @@
   <th:block th:include="/include/admin_head.html"></th:block>
   <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="../admin_asset/js/main.js"></script>
 </head>
 
 <body>
@@ -251,29 +252,41 @@
                 <h5 class="card-title">최근 판매 내역 <span>| Today</span></h5>
 
                 <table class="table table-borderless text-center">
+                  <colgroup>
+                    <col width="30%"/>
+                    <col width="30%"/>
+                    <col width="10%"/>
+                    <col width="10%"/>
+                    <col width="10%"/>
+                  </colgroup>
                   <thead>
                   <tr>
                     <th scope="col">판매날짜</th>
-                    <th scope="col">카테고리</th>
                     <th scope="col">상품명</th>
                     <th scope="col">구매자</th>
-                    <th scope="col">상품가격</th>
+                    <th scope="col">구매금액</th>
                     <th scope="col">판매수량</th>
                   </tr>
                   </thead>
                   <tbody>
-<!--                  <th:block th:for="">-->
+                    <tr th:each="sellingitems : ${sellingitems}">
+                      <td class="text-center align-middle">
+                        <p>[[${sellingitems.regTime}]]</p>
+                      </td>
+                      <td class="text-center align-middle">
+                        <p>[[${sellingitems.itemNm}]]</p>
+                      </td>
+                      <td class="text-center align-middle">
+                        <p>[[${sellingitems.createdBy}]]</p>
+                      </td>
+                      <td class="text-center align-middle">
+                        <p>[[${sellingitems.orderPrice}]]</p>
+                      </td>
+                      <td class="text-center align-middle">
+                        <p>[[${sellingitems.count}]]</p>
+                      </td>
 
-                  <tr>
-                    <th scope="row">[[${orderItemList.regTime}]]</th>
-                    <td>[[${orderItemList.category}]]</td>
-                    <td>[[${orderItemList.orderPrice}]]</td>
-                    <td>[[${orderItemList.createdby}]]</td>
-                    <td>[[${orderItemList.price}]]</td>
-                    <td><span class="badge bg-success">[[${orderItemList.count}]]</span></td>
-                  </tr>
-
-<!--                  </th:block>-->
+                    </tr>
                   </tbody>
                 </table>
 

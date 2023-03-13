@@ -16,10 +16,24 @@
         .backcol {
             background: #1e1e1e;
             border: #1e1e1e;
+            width: 100px;
+            height: 30px;
+            border-radius: 10px;
+        }
+        .backcolcancle {
+            background: #ef6a6a;
+            border: #ef6a6a;
+            color:white;
+            width: 100px;
+            height: 30px;
+            border-radius: 10px;
         }
         .backcol:hover{
             background: #a367e7;
             border: #a367e7;
+            width: 100px;
+            height: 30px;
+            border-radius: 10px;
         }
         .fontcolors {
             margin-top:40px;
@@ -139,49 +153,68 @@
 
     <div class="container">
         <div class="row product-btn d-flex text-start" id="gap">
-            <!-- Section Tittle -->
             <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-2">
                 <div class="section-tittle mb-30">
-                    <h2>MY ACCOUNT</h2>
+                    <h2>ORDER HISTORY</h2>
                 </div>
-            </div>
-        </div>
-            <div th:each="order : ${orders.getContent()}">
-        <div class="row col-8 offset-2 mt-40 text-center justify-content-center ">
-                <div class="d-flex col-11 mb-3 m-3">
+
+            <div class="mt-80 mb-80" th:each="order : ${orders.getContent()}">
+                <div class="d-flex col-12 mb-3 m-3 align-middle">
                     <p th:text="'주문일시 : '+${order.orderDate}" class="fswe"> </p>
                     <div class="ml-2">
                         <th:block th:if="${order.orderStatus == T(com.yuri.shoppingsite.constant.OrderStatus).ORDER}">
-                            <button type="button" class="backcol" th:value="${order.orderId}" onclick="cancelOrder(this.value)">주문취소하기</button>
+                            <button type="button" class="backcol" th:value="${order.orderId}" onclick="cancelOrder(this.value)">주문취소</button>
                         </th:block>
                         <th:block th:unless="${order.orderStatus == T(com.yuri.shoppingsite.constant.OrderStatus).ORDER}">
-                            <h4>(취소 완료)</h4>
+                            <button class="backcolcancle">취소 완료</button>
                         </th:block>
                     </div>
                 </div>
-                <div class="card d-flex col-10 offset-1">
-                    <div th:each="orderItem : ${order.orderItemDtoList}" class="d-flex mb-3">
-                        <div class="repImgDiv">
-                            <img th:src="${orderItem.imgUrl}" class = "rounded repImg" th:alt="${orderItem.itemNm}">
-                        </div>
-                        <div class="align-self-center">
-                            <span th:text="${orderItem.itemNm}" class="fs18 font-weight-bold"></span>
-                            <div class="fs18 font-weight-light">
-                                <span th:text="${orderItem.orderPrice} +'원'"></span> *
-                                <span th:text="${orderItem.count} +'개'"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <table class="table table">
+                <colgroup>
+                    <col width="20%"/>
+                    <col width="40%"/>
+                    <col width="20%"/>
+                    <col width="20%"/>
+                </colgroup>
+                <thead>
+                <tr class="text-center">
+                    <td>상품이미지</td>
+                    <td>상품명</td>
+                    <td>상품가격</td>
+                    <td>상품수량</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="orderItem : ${order.orderItemDtoList}">
+                    <td class="text-center align-middle">
+                        <img th:src="${orderItem.imgUrl}" class = "rounded repImg" th:alt="${orderItem.itemNm}">
+                    </td>
+                    <td class="text-center align-middle">
+                        <span th:text="${orderItem.itemNm}" class="fs18 font-weight-bold"></span>
+                    </td>
+                    <td class="text-center align-middle">
+                        <span th:text="${orderItem.orderPrice} +'원'"></span>
+                    </td>
+                    <td class="text-center align-middle">
+                        <span th:text="${orderItem.count} +'개'"></span>
+                    </td>
+                </tr>
+
+                </tbody>
+
+            </table>
         </div>
-        <div class="row col-12 mt-80 text-center justify-content-center ">
+            </div>
+            </div>
+
+        <div class="col-12 mt-80 text-center justify-content-center ">
             <div th:with="start=${(orders.number/maxPage)*maxPage + 1}, end=(${(orders.totalPages == 0) ? 1 : (start + (maxPage - 1) < orders.totalPages ? start + (maxPage - 1) : orders.totalPages)})" >
                 <ul class="pagination justify-content-center">
 
                     <li class="page-item" th:classappend="${orders.number eq 0}?'disabled':''">
                         <a th:href="@{'/orders/' + ${orders.number -1}}" aria-label='Previous' class="page-link">
-                            <span aria-hidden='true'>Previous</span>
+                            <span aria-hidden='true'>이전</span>
                         </a>
                     </li>
 
@@ -191,19 +224,15 @@
 
                     <li class="page-item" th:classappend="${orders.number+1 ge orders.totalPages}?'disabled':''">
                         <a th:href="@{'/orders/' + ${orders.number +1}}" aria-label='Next' class="page-link">
-                            <span aria-hidden='true'>Next</span>
+                            <span aria-hidden='true'>다음</span>
                         </a>
                     </li>
-
                 </ul>
             </div>
         </div>
-
-
     </div>
 </section>
 <th:block th:include="include/user_footer.html"/>
-
 <th:block th:include="/include/common_js.html"></th:block>
 </body>
 </html>

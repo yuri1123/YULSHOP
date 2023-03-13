@@ -4,6 +4,7 @@ import com.yuri.shoppingsite.Repository.*;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.user.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ItemImgRepository itemImgRepository;
 
-    public Long order(OrderDto orderDto, String name){
+    public Long order(OrderDto orderDto, String name) {
         //주문할 상품을 조회한다.
         Item item = itemRepository.findById(orderDto.getItemId())
                 .orElseThrow(EntityNotFoundException::new);
@@ -43,7 +45,7 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public Page<OrderHistDto> getOrderList(String name, Pageable pageable){
+    public Page<OrderHistDto> getOrderList(String name, Pageable pageable) {
         //유저의 아이디와 페이징 조건을 이용하여 주문 목록 조회
         List<Order> orders = orderRepository.findOrders(name, pageable);
 //        유저의 주문 총 개수를 구함
@@ -51,11 +53,11 @@ public class OrderService {
 
         List<OrderHistDto> orderHistDtos = new ArrayList<>();
         //주문 리스트를 순회하면서 구매 이력 페이지에 전달할 DTO 생성
-        for(Order order : orders){
+        for (Order order : orders) {
             OrderHistDto orderHistDto = new OrderHistDto(order);
             List<OrderItem> orderItems = order.getOrderItems();
 
-            for(OrderItem orderItem : orderItems){
+            for (OrderItem orderItem : orderItems) {
                 //주문한 상품의 대표 이미지 조회
                 ItemImg itemImg = itemImgRepository.findByItemIdAndRepimgYn(orderItem.getItem().getId(), "Y");
                 OrderItemDto orderItemDto = new OrderItemDto(orderItem, itemImg.getImgUrl());
@@ -70,19 +72,19 @@ public class OrderService {
     //현재 로그인한 사용자와 주문 데이터를 생성한 사용자가 같은지 검사한다.
     //같을 때는 true를 반환하고 같지 않을 경우는 false를 반환한다.
     @Transactional(readOnly = true)
-    public boolean validateOrder(Long orderId, String name){
+    public boolean validateOrder(Long orderId, String name) {
         Member curMember = memberRepository.findByName(name);
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(EntityNotFoundException::new);
         Member savedMember = order.getMember();
 
-        if(!StringUtils.equals(curMember.getName(), savedMember.getName())){
+        if (!StringUtils.equals(curMember.getName(), savedMember.getName())) {
             return false;
         }
         return true;
     }
 
-    public void cancelOrder(Long orderId){
+    public void cancelOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(EntityNotFoundException::new);
         //주문 취소 상태로 변경하면 변경 감지 기능에 의해서 트랜젝션이 끝날때
@@ -90,11 +92,11 @@ public class OrderService {
         order.cancelOrder();
     }
 
-    public Long orders(List<OrderDto> orderDtoList, String name){
+    public Long orders(List<OrderDto> orderDtoList, String name) {
         Member member = memberRepository.findByName(name);
         List<OrderItem> orderItemList = new ArrayList<>();
         //주문할 상품 리스트 만들어 줌
-        for(OrderDto orderDto : orderDtoList){
+        for (OrderDto orderDto : orderDtoList) {
             Item item = itemRepository.findById(orderDto.getItemId())
                     .orElseThrow(EntityNotFoundException::new);
             //현재 로그인한 회원과 주문 상품 목록을 이용하여 주문 엔티티 생성
@@ -108,11 +110,14 @@ public class OrderService {
         return order.getId();
     }
 
+    @Autowired
     OrderItemRepository orderItemRepository;
-//    public List<OrderItem> getlatestSellingitems(){
-//        List<OrderItem> orderItemList = orderItemRepository.latestSellingitems();
-//        return orderItemList;
+
+    @Transactional
+    public List<OrderItem> recentselling() {
+        List<OrderItem> recentitems = orderItemRepository.findAll();
+        return recentitems;
     }
 
 
-
+}

@@ -45,11 +45,11 @@ public class AdminController {
         int memberCount = memberService.getMemberCount();
         int sellingCount = itemService.getSellingCount();
         int sellingIncome = itemService.getSellingIncome();
-//        List<OrderItem> orderItemList = orderService.getlatestSellingitems();
+        List<OrderItem> sellingitems = orderService.recentselling();
         model.addAttribute("memberCount",memberCount);
         model.addAttribute("sellingCount",sellingCount);
         model.addAttribute("sellingIncome",sellingIncome);
-//        model.addAttribute("orderItemList",orderItemList);
+        model.addAttribute("sellingitems",sellingitems);
         return "admin/adminmain";
     }
 
@@ -248,10 +248,11 @@ public class AdminController {
     @GetMapping(value = {"admin/totalresult", "admin/totalresult/{page}"})
         public String totalResult(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
-         Page<ResultSellingItemDto> items = itemService.getResultSellingItemPage(itemSearchDto, pageable);
-        model.addAttribute("items",items);
+        Page<ResultCategoryItemDto> categoryitems = itemService.getResultCategoryItemDto(itemSearchDto, pageable);
+        model.addAttribute("categoryitems",categoryitems);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 1);
+        System.out.println(categoryitems);
         return "admin/totalresult";
 }
 

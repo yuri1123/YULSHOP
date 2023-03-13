@@ -11,8 +11,8 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class OrderItem extends BaseEntity {
 
+public class OrderItem extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -25,12 +25,12 @@ public class OrderItem extends BaseEntity {
     @JoinColumn(name="item_id")
     private Item item;
 
+    private String itemNm;
 
     //한번의 주문에는 여러 개의 상품을 주문할 수 있으므로 주문 상품 엔티티와 주문 엔티티를 다대일 단방향 매핑을 먼저 설정한다.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="order_id")
     private Order order;
-
     private int orderPrice; //주문가격
     private int count; //수량
 
@@ -44,6 +44,8 @@ public class OrderItem extends BaseEntity {
         //주문할 상품과 주문 수량을 셋팅한다.
         orderItem.setItem(item);
         orderItem.setCount(count);
+        orderItem.setCategory(Category.valueOf(item.getCategory().toString()));
+        orderItem.setItemNm(item.getItemNm());
         //현재 시간 기준으로 상품 가격을 주문가격으로 셋팅한다.
         //상품 가격은 시간에 따라서 달라질 수 있다.
         //또한 쿠폰이나 할인을 적용하는 케이스들도 있지만 여기서는 고려하지 않겠다.
