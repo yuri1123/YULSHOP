@@ -572,7 +572,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     List<CategoryItemsDto> content = queryFactory
             .select(
                     new QCategoryItemsDto(
-                            item.category,
+                            item.category.stringValue(),
                             item.orderTotalIncome.sum())
             ).from(item)
             .groupBy(item.category)

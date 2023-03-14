@@ -3,11 +3,9 @@
 
 <head>
   <th:block th:include="/include/admin_head.html"></th:block>
-  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 </head>
 
 <body>
@@ -30,25 +28,9 @@
 
         <div class="card-body pb-4">
           <h5 class="card-title">카테고리별 매출액 비중 <span>| Today</span></h5>
-          <canvas id="pieChart" style="width: 600px; max-height: 150px;"></canvas>
+          <canvas id="logNameChart" style="width: 600px; max-height: 800px;"></canvas>
 
           <script th:inline="javascript">
-
-            var labelList = new Array();
-            var valueList = new Array();
-            var colorList = new Array();
-
-          let jData = [[ ${json} ]];
-          let jObject = JSON.stringify(jData);
-          let jData2 = JSON.parse(jObject);
-
-            for(var i = 0; i<jData2.length; i++) {
-              var d = jData2[i];
-              labelList.push(d.category1);
-              valueList.push(d.totalIncome);
-              colorList.push(colorize());
-            }
-
             function colorize() {
               var r = Math.floor(Math.random()*200);
               var g = Math.floor(Math.random()*200);
@@ -57,42 +39,75 @@
               return color;
             }
 
-            var config = {
-              type: 'pie',
-              data: {
-                labels: labelList,
-                datasets: [{
-                  backgroundColor: colorList,
-                  data : valueList
-                }],
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false, //true 하게 되면 캔버스 width,height에 따라 리사이징된다.
-                legend: {
-                  position: 'top',
-                  fontColor: 'black',
-                  align: 'center',
-                  display: true,
-                  fullWidth: true,
-                  labels: {
-                    fontColor: 'rgb(0, 0, 0)'
-                  }
-                },
-                plugins: {
-                  labels: {//두번째 script태그를 설정하면 각 항목에다가 원하는 데이터 라벨링을 할 수 있다.
-                    render: 'value',
-                    fontColor: 'black',
-                    fontSize: 15,
-                    precision: 2
-                  }
+            const jsonData = [[${json}]]
+            const jsonObject = JSON.stringify(jsonData);
+            const jData = JSON.parse(jsonObject);
 
+            var labelList = new Array();
+            var valueList = new Array();
+            var colorList = new Array();
+
+            for(var i = 0; i<jData.length; i++) {
+              var d = jData[i];
+              labelList.push(d.Category1);
+              valueList.push(d.Income);
+              colorList.push(colorize());
+            }
+            var data = {
+              labels: labelList,
+              datasets: [{
+                backgroundColor: colorList,
+                data : valueList
+              }],
+              options : {
+                title : {
+                  display : true,
+                  text: '유저별 접속 횟수'
                 }
               }
-            }
+            };
 
-            var canvas = document.getElementById('pieChart');
-            var pieChart = new Chart(canvas,config);
+            var ctx1 = document.getElementById('logNameChart').getContext('2d');
+            new Chart(ctx1, {
+              type: 'pie',
+              data: data
+            });
+
+
+            // var config = {
+            //   type: 'pie',
+            //   data: {
+            //     labels: labelList,
+            //     datasets: [{
+            //       backgroundColor: colorList,
+            //       data : valueList
+            //     }],
+            //   },
+            //   options: {
+            //     responsive: true,
+            //     maintainAspectRatio: false, //true 하게 되면 캔버스 width,height에 따라 리사이징된다.
+            //     legend: {
+            //       position: 'top',
+            //       fontColor: 'black',
+            //       align: 'center',
+            //       display: true,
+            //       fullWidth: true,
+            //       labels: {
+            //         fontColor: 'rgb(0, 0, 0)'
+            //       }
+            //     },
+            //     plugins: {
+            //       labels: {//두번째 script태그를 설정하면 각 항목에다가 원하는 데이터 라벨링을 할 수 있다.
+            //         render: 'value',
+            //         fontColor: 'black',
+            //         fontSize: 15,
+            //         precision: 2
+            //       }
+            //
+            //     }
+            //   }
+            // }
+
 
           </script>
         </div>

@@ -66,9 +66,9 @@ public class Item extends BaseEntity {
     }
 
     public void addStock(int stockNumber){
+
         this.stockNumber += stockNumber;
     }
-
 
     //주문 횟수를 증가시킨다.
     public void addOrderTotalCount(int orderTotalCount){

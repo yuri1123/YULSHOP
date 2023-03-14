@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     @Transactional
-    @Query("select o from OrderItem o order by o.regTime desc")
+    @Query("select o from OrderItem o order by o.regTime asc")
     public List<OrderItem> findAll(@Param("regTime") LocalDateTime regTime);
 
 

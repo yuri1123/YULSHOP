@@ -250,6 +250,8 @@ public class AdminController {
         return "admin/stockupdate";
     }
 
+    //재고변경 하기
+
 
 
     //통계보기
@@ -258,7 +260,6 @@ public class AdminController {
     @GetMapping("admin/totalresult")
         public String totalResult(Model model){
         List<CategoryItemsDto> categoryitems = itemService.getCategoryContent();
-
         Gson gson = new Gson();
         JsonArray jsonArray = new JsonArray();
 
@@ -266,19 +267,20 @@ public class AdminController {
         while(cid.hasNext()){
             CategoryItemsDto categoryItemsDto = cid.next();
             JsonObject object = new JsonObject();
-            String category = String.valueOf(categoryItemsDto.getCategory());
+            String category = categoryItemsDto.getCategory();
             int totalIncome = categoryItemsDto.getTotalIncome();
 
-            object.addProperty("category1",category);
-            object.addProperty("totalIncome",totalIncome);
-
+            object.addProperty("Category1",category);
+            object.addProperty("Income",totalIncome);
             jsonArray.add(object);
         }
+
+
         String json = gson.toJson(jsonArray);
         System.out.println(json);
-        model.addAttribute("json",json);
+        model.addAttribute("data",json);
 
-        model.addAttribute("categoryitems",categoryitems);
+//        model.addAttribute("categoryitems",categoryitems);
         return "admin/totalresult";
 }
 

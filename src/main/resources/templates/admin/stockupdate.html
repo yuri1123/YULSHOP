@@ -86,42 +86,40 @@
     }
 
 
-    // function deleteMember(obj){
-    //
-    //  if(confirm("정말로 이 유저를 삭제하시겠습니까?")){
-    //
-    //   var id = obj.dataset.id;
-    //   var token = $("meta[name='_csrf']").attr("content");
-    //   var header = $("meta[name='_csrf_header']").attr("content");
-    //
-    //   var url = "/admin/member/" + id;
-    //
-    //   $.ajax({
-    //     url      : url,
-    //     type     : "DELETE", //삭제요청이므로 delete type 사용
-    //     beforeSend : function(xhr){
-    //       /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
-    //       xhr.setRequestHeader(header, token);
-    //     },
-    //     dataType : "json",
-    //     cache   : false,
-    //     success  : function(result, status){
-    //       //삭제 요청이 정상 처리되면 유저권한 페이지 새로고침
-    //       location.href='/admin/userauth';
-    //     },
-    //     error : function(jqXHR, status, error){
-    //
-    //       if(jqXHR.status == '401' || jqXHR.status == '500'){
-    //         alert('로그인 후 이용해주세요');
-    //         location.href='/member/login';
-    //       } else{
-    //         alert(jqXHR.responseJSON.message);
-    //       }
-    //
-    //     }
-    //   });
-    // }
-    // }
+    function updateStock(ItemId, stockNumber) {
+
+        if (confirm("저장하시겠습니까?")) {
+
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/admin/stockupdate" + ItemId + "?stockNumber=" + stockNumber;
+
+            $.ajax({
+                url: url,
+                type: "PATCH", //부분업데이트이므로 PATCH TYPE으로 설정
+                beforeSend: function (xhr) {
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: "json",
+                cache: false,
+                success: function (result, status) {
+                    console.log("Item stockNumber update success");
+                },
+                error: function (jqXHR, status, error) {
+
+                    if (jqXHR.status == '401' || jqXHR.status == '405') {
+                        alert('로그인 후 이용해주세요');
+                        location.href = '/member/login';
+                    } else {
+                        alert(jqXHR.responseJSON.message);
+                    }
+
+                }
+            });
+        }
+    }
 
 </script>
 
@@ -173,8 +171,7 @@
                         <th>카테고리</th>
                         <th>상품명</th>
                         <th>현재수량</th>
-                        <th>수량추가</th>
-                        <th>수량빼기</th>
+                        <th>수량추가/뺴기</th>
                     </tr>
                     </thead>
                     <tbody class="text-center">
@@ -195,8 +192,9 @@
                         </td>
                         <td th:text="${items.itemNm}"></td>
                         <td th:text="${items.stockNumber}"></td>
-                        <td><input style="width: 50px" type="number">  개</td>
-                        <td><input style="width: 50px" type="number">  개</td>
+                        <input type="number" name="stockNumber" th:id="'stockNumber' + ${items.ItemId}"
+                               th:value="${items.stockNumber}" min="1" style="width: 70px"
+                               class="form-control mr-2" >
                     </tr>
                     </tbody>
                 </table>

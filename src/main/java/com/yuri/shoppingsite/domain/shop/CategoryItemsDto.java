@@ -10,11 +10,11 @@ import org.modelmapper.ModelMapper;
 @Setter
 public class CategoryItemsDto {
 
-    private Category category;
+    private String category;
     private int totalIncome;
 
     @QueryProjection
-    public CategoryItemsDto(Category category, int totalIncome){
+    public CategoryItemsDto(String category, int totalIncome){
         this.category = category;
         this.totalIncome = totalIncome;
     }
