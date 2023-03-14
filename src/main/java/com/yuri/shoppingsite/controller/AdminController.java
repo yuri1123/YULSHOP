@@ -1,15 +1,17 @@
 package com.yuri.shoppingsite.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.yuri.shoppingsite.Repository.MemberRepository;
+import com.yuri.shoppingsite.Repository.MonthlySalesRepository;
 import com.yuri.shoppingsite.Repository.OrderItemRepository;
+import com.yuri.shoppingsite.constant.Category;
 import com.yuri.shoppingsite.domain.community.NoticeFormDto;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.user.MemberSearchDto;
 import com.yuri.shoppingsite.domain.user.Member;
-import com.yuri.shoppingsite.service.ItemService;
-import com.yuri.shoppingsite.service.MemberService;
-import com.yuri.shoppingsite.service.NoticeService;
-import com.yuri.shoppingsite.service.OrderService;
+import com.yuri.shoppingsite.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,23 +36,30 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AdminController {
 
+    @Autowired
     private final ItemService itemService;
+    @Autowired
     private final OrderService orderService;
+    @Autowired
     private final MemberRepository memberRepository;
     @Autowired
     private final MemberService memberService;
 
+    @Autowired
+    ChartService chartService;
     //관리자 페이지로 가기
-    @GetMapping("admin/adminmain")
+    @GetMapping(value={"/admin/adminmain", "/admin/adminmain/{year}"})
     public String adminmain(Model model){
         int memberCount = memberService.getMemberCount();
         int sellingCount = itemService.getSellingCount();
         int sellingIncome = itemService.getSellingIncome();
         List<OrderItem> sellingitems = orderService.recentselling();
+//        List<MonthlySales> monthlySalesList = chartService.getMonthlySales(year);
         model.addAttribute("memberCount",memberCount);
         model.addAttribute("sellingCount",sellingCount);
         model.addAttribute("sellingIncome",sellingIncome);
         model.addAttribute("sellingitems",sellingitems);
+//        model.addAttribute("monthlySalesList",monthlySalesList);
         return "admin/adminmain";
     }
 
@@ -245,14 +255,30 @@ public class AdminController {
     //통계보기
 
     //전체 통계 페이지 가기
-    @GetMapping(value = {"admin/totalresult", "admin/totalresult/{page}"})
-        public String totalResult(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
-        Page<ResultCategoryItemDto> categoryitems = itemService.getResultCategoryItemDto(itemSearchDto, pageable);
+    @GetMapping("admin/totalresult")
+        public String totalResult(Model model){
+        List<CategoryItemsDto> categoryitems = itemService.getCategoryContent();
+
+        Gson gson = new Gson();
+        JsonArray jsonArray = new JsonArray();
+
+        Iterator<CategoryItemsDto> cid = categoryitems.iterator();
+        while(cid.hasNext()){
+            CategoryItemsDto categoryItemsDto = cid.next();
+            JsonObject object = new JsonObject();
+            String category = String.valueOf(categoryItemsDto.getCategory());
+            int totalIncome = categoryItemsDto.getTotalIncome();
+
+            object.addProperty("category1",category);
+            object.addProperty("totalIncome",totalIncome);
+
+            jsonArray.add(object);
+        }
+        String json = gson.toJson(jsonArray);
+        System.out.println(json);
+        model.addAttribute("json",json);
+
         model.addAttribute("categoryitems",categoryitems);
-        model.addAttribute("itemSearchDto", itemSearchDto);
-        model.addAttribute("maxPage", 1);
-        System.out.println(categoryitems);
         return "admin/totalresult";
 }
 

@@ -1,6 +1,8 @@
 package com.yuri.shoppingsite.Repository;
 
+import com.yuri.shoppingsite.domain.shop.CategoryItemsDto;
 import com.yuri.shoppingsite.domain.shop.Item;
+import com.yuri.shoppingsite.domain.shop.MonthlySales;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -43,5 +45,8 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
     //아이템의 주문 총합을 조회
     @Query("select sum(i.orderTotalIncome) from Item i")
     int sellingIncome();
+
+
+
 
 }

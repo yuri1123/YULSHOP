@@ -6,19 +6,21 @@ import com.yuri.shoppingsite.constant.Category;
 import com.yuri.shoppingsite.constant.ItemSellStatus;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.shop.QBestSellerItemDto;
+import com.yuri.shoppingsite.domain.shop.QCategoryItemsDto;
 import com.yuri.shoppingsite.domain.shop.QItem;
 import com.yuri.shoppingsite.domain.shop.QItemImg;
 import com.yuri.shoppingsite.domain.shop.QLatestItemDto;
 import com.yuri.shoppingsite.domain.shop.QMainItemDto;
-import com.yuri.shoppingsite.domain.shop.QResultCategoryItemDto;
 import com.yuri.shoppingsite.domain.shop.QResultSellingItemDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.thymeleaf.util.StringUtils;
+import com.yuri.shoppingsite.domain.shop.QResultCategoryItemDto;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 //ItemRepositoryCustom 상속
@@ -564,9 +566,19 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         return new PageImpl<>(content, pageable, total);
     }
 
+    public List<CategoryItemsDto> getCategoryItemIncome(){
+            QItem item = QItem.item;
 
+    List<CategoryItemsDto> content = queryFactory
+            .select(
+                    new QCategoryItemsDto(
+                            item.category,
+                            item.orderTotalIncome.sum())
+            ).from(item)
+            .groupBy(item.category)
+            .orderBy(item.orderTotalIncome.sum().desc())
+            .fetch();
 
-
-
-
+        return content;
+        }
 }

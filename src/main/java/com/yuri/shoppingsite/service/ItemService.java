@@ -156,6 +156,11 @@ public class ItemService {
         return sellingIncome;
     }
 
+    //카테고리별 매출액 차트 데이터 가져오기
+    public List<CategoryItemsDto> getCategoryContent(){
+        List<CategoryItemsDto> contents = itemRepository.getCategoryItemIncome();
+    return contents;
+    }
 
 
 }
