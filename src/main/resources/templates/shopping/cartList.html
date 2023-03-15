@@ -165,7 +165,7 @@
 
         $.ajax({
         url      : url,
-        type     : "DELETE", //삭제요청이므로 delete type 사용
+        type     : 'DELETE', //삭제요청이므로 delete type 사용
         beforeSend : function(xhr){
         /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
         xhr.setRequestHeader(header, token);

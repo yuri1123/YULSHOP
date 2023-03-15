@@ -1,9 +1,17 @@
 package com.yuri.shoppingsite.Repository;
+import com.querydsl.core.types.ConstantImpl;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yuri.shoppingsite.constant.Category;
 import com.yuri.shoppingsite.constant.ItemSellStatus;
+import com.yuri.shoppingsite.domain.Chart.CategoryItemsDto;
+import com.yuri.shoppingsite.domain.Chart.MainGraphDto;
+import com.yuri.shoppingsite.domain.Chart.QMainGraphDto;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.shop.QBestSellerItemDto;
 import com.yuri.shoppingsite.domain.shop.QCategoryItemsDto;
@@ -11,7 +19,9 @@ import com.yuri.shoppingsite.domain.shop.QItem;
 import com.yuri.shoppingsite.domain.shop.QItemImg;
 import com.yuri.shoppingsite.domain.shop.QLatestItemDto;
 import com.yuri.shoppingsite.domain.shop.QMainItemDto;
+import com.yuri.shoppingsite.domain.shop.QOrderItem;
 import com.yuri.shoppingsite.domain.shop.QResultSellingItemDto;
+import com.yuri.shoppingsite.domain.user.QMember;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +30,6 @@ import com.yuri.shoppingsite.domain.shop.QResultCategoryItemDto;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 //ItemRepositoryCustom 상속
@@ -581,4 +590,30 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
         return content;
         }
+
+
+    public List<MainGraphDto> getMainGraphData(){
+        QOrderItem orderItem = QOrderItem.orderItem;
+
+        StringTemplate formattedDate = Expressions.stringTemplate(
+                "DATE_FORMAT({0}, {1})"
+                , orderItem.regTime
+                , ConstantImpl.create("%Y-%m"));
+
+        List<MainGraphDto> content = queryFactory
+                .select(Projections.fields(MainGraphDto.class,
+                                formattedDate,
+                                orderItem.count.sum().as("sumSelling"),
+                                orderItem.orderPrice.sum().as("sumIncome"),
+                                orderItem.regTime.as("standardDate"))
+                        ).from(orderItem)
+                                .groupBy(formattedDate)
+//                .orderBy(formattedDate.desc())
+                .fetch();
+        return content;
+    }
+
+
+
+
 }

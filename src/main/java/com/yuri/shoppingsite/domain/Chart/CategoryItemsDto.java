@@ -1,4 +1,4 @@
-package com.yuri.shoppingsite.domain.shop;
+package com.yuri.shoppingsite.domain.Chart;
 
 import com.querydsl.core.annotations.QueryProjection;
 import com.yuri.shoppingsite.constant.Category;
@@ -16,7 +16,6 @@ public class CategoryItemsDto {
     @QueryProjection
     public CategoryItemsDto(String category, int totalIncome){
         this.category = category;
-        this.totalIncome = totalIncome;
     }
 }
 

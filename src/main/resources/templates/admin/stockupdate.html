@@ -28,6 +28,13 @@
             border: #a367e7;
         }
 
+        .savebtn {
+            background: #1e1e1e;
+            border: #1e1e1e;
+            color: white;
+            border-radius: 15px;
+            padding:2px;
+        }
         .page-link {
             color: #000;
             background-color: #fff;
@@ -86,18 +93,17 @@
     }
 
 
-    function updateStock(ItemId, stockNumber) {
+    function updateStock(id, stockNumber) {
 
         if (confirm("저장하시겠습니까?")) {
-
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
-            var url = "/admin/stockupdate" + ItemId + "?stockNumber=" + stockNumber;
+            var url = "/admin/stockupdate" + id + "?stockNumber=" + stockNumber;
 
             $.ajax({
                 url: url,
-                type: "PATCH", //부분업데이트이므로 PATCH TYPE으로 설정
+                type: "PUT",
                 beforeSend: function (xhr) {
                     /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
                     xhr.setRequestHeader(header, token);
@@ -192,47 +198,46 @@
                         </td>
                         <td th:text="${items.itemNm}"></td>
                         <td th:text="${items.stockNumber}"></td>
-                        <input type="number" name="stockNumber" th:id="'stockNumber' + ${items.ItemId}"
-                               th:value="${items.stockNumber}" min="1" style="width: 70px"
-                               class="form-control mr-2" >
+                        <td>
+                        <input type="number" name="stockNumber" th:id="'stockNumber' + ${items.id}"
+                               min="1" style="width: 70px"
+                               class="mr-3"><span class="savebtn" onclick="updateStock()">저장</span>
+
+                        </td>
                     </tr>
                     </tbody>
                 </table>
 
-                <div class="justify-content-center mb-5 mt-5">
+<!--                <div class="justify-content-center mb-5 mt-5">-->
 
-                    <!--                페이징 처리 시작-->
-                    <!--        <div th:with="start=${(items.number/maxPage)*maxPage +1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >-->
-                    <!--          <ul class="pagination justify-content-center">-->
+<!--&lt;!&ndash;                                    페이징 처리 시작&ndash;&gt;-->
+<!--                            <div th:with="start=${(items.number/maxPage)*maxPage +1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >-->
+<!--                              <ul class="pagination justify-content-center">-->
 
-                    <!--            <li class="page-item" th:classappend="${items.first}?'disabled'">-->
-                    <!--              <a th:onclick="'javascript:page(' + ${items.number -1} + ')'" aria-label='Previous' class="page-link">-->
-                    <!--                <span aria-hidden='true'>이전</span>-->
-                    <!--              </a>-->
-                    <!--            </li>-->
+<!--                                <li class="page-item" th:classappend="${items.first}?'disabled'">-->
+<!--                                  <a th:onclick="'javascript:page(' + ${items.number -1} + ')'" aria-label='Previous' class="page-link">-->
+<!--                                    <span aria-hidden='true'>이전</span>-->
+<!--                                  </a>-->
+<!--                                </li>-->
 
-                    <!--            <li class="page-item" th:each="page: ${#items.sequence(start, end)}" th:classappend="${items.number eq (page -1)}?'active':''">-->
-                    <!--              <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>-->
-                    <!--            </li>-->
+<!--                                <li class="page-item" th:each="page: ${#items.sequence(start, end)}" th:classappend="${items.number eq (page -1)}?'active':''">-->
+<!--                                  <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>-->
+<!--                                </li>-->
 
-                    <!--            <li class="page-item" th:classappend="${items.last}?'disabled'">-->
-                    <!--              <a th:onclick="'javascript:page(' + ${items.number +   1} + ')'" aria-label='Next' class="page-link">-->
-                    <!--                <span aria-hidden='true'>다음</span>-->
-                    <!--              </a>-->
-                    <!--            </li>-->
+<!--                                <li class="page-item" th:classappend="${items.last}?'disabled'">-->
+<!--                                  <a th:onclick="'javascript:page(' + ${items.number +   1} + ')'" aria-label='Next' class="page-link">-->
+<!--                                    <span aria-hidden='true'>다음</span>-->
+<!--                                  </a>-->
+<!--                                </li>-->
 
-                    <!--          </ul>-->
-                    <!--        </div>-->
+<!--                              </ul>-->
+<!--                            </div>-->
 
-
-
+<!--                </div>-->
+            </div>
+</form>
                 </div>
             </div>
-        </form>
-    </div>
-</div>
-
-
 
 <th:block th:include="/include/admin_footer.html"/>
 <th:block th:include="/include/admin_js.html"/>

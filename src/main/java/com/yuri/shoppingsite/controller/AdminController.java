@@ -4,9 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.yuri.shoppingsite.Repository.MemberRepository;
-import com.yuri.shoppingsite.Repository.MonthlySalesRepository;
-import com.yuri.shoppingsite.Repository.OrderItemRepository;
-import com.yuri.shoppingsite.constant.Category;
+import com.yuri.shoppingsite.domain.Chart.CategoryItemsDto;
+import com.yuri.shoppingsite.domain.Chart.MainGraphDto;
 import com.yuri.shoppingsite.domain.community.NoticeFormDto;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.user.MemberSearchDto;
@@ -28,6 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +55,31 @@ public class AdminController {
         int sellingCount = itemService.getSellingCount();
         int sellingIncome = itemService.getSellingIncome();
         List<OrderItem> sellingitems = orderService.recentselling();
-//        List<MonthlySales> monthlySalesList = chartService.getMonthlySales(year);
+
+        List<MainGraphDto> mainGraph = itemService.getMainGraphDtos();
+
+        Gson gson = new Gson();
+        JsonArray jsonArray = new JsonArray();
+        System.out.println(mainGraph);
+//        Iterator<MainGraphDto> mg = mainGraph.iterator();
+//        while(mg.hasNext()){
+//            MainGraphDto mainGraphDto = mg.next();
+//            JsonObject object = new JsonObject();
+//            int count = mainGraphDto.getSumSelling();
+//            int revenue = mainGraphDto.getSumIncome();
+//            LocalDateTime date = mainGraphDto.getStandardDate();
+//
+//            object.addProperty("mgCount",count);
+//            object.addProperty("mgRevenue",revenue);
+//            object.addProperty("mgDate", String.valueOf(date));
+//
+//            jsonArray.add(object);
+//        }
+//
+//        String json = gson.toJson(jsonArray);
+//        System.out.println(json);
+//        model.addAttribute("json",json);
+
         model.addAttribute("memberCount",memberCount);
         model.addAttribute("sellingCount",sellingCount);
         model.addAttribute("sellingIncome",sellingIncome);
@@ -240,7 +265,7 @@ public class AdminController {
 
     //재고변경 페이지 가기
     @GetMapping(value={"/admin/stockupdate","/admin/stockupdate/{page}"})
-    public String stockupdate(Model model, @PathVariable("page") Optional<Integer> page,
+    public String stockUpdatePage(Model model, @PathVariable("page") Optional<Integer> page,
                            ItemSearchDto itemSearchDto){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<MainItemDto> sellingStateChange = itemService.getAllMain(itemSearchDto, pageable);
@@ -251,8 +276,17 @@ public class AdminController {
     }
 
     //재고변경 하기
+    @PutMapping(value="/admin/stockupdate/{id}")
+    public @ResponseBody ResponseEntity updateStock(
+            @PathVariable("id") Long id, Principal principal, int stockNumber){
 
+        if(!itemService.validateItem(id,principal.getName())){
+            return new ResponseEntity<String>("수정 권한이 업습니다.", HttpStatus.FORBIDDEN);
+        }
+        itemService.updatestock(id,stockNumber);
 
+        return new ResponseEntity<Long>(id,HttpStatus.OK);
+    }
 
     //통계보기
 
@@ -275,12 +309,11 @@ public class AdminController {
             jsonArray.add(object);
         }
 
-
         String json = gson.toJson(jsonArray);
         System.out.println(json);
-        model.addAttribute("data",json);
+        model.addAttribute("json",json);
 
-//        model.addAttribute("categoryitems",categoryitems);
+        model.addAttribute("categoryitems",categoryitems);
         return "admin/totalresult";
 }
 

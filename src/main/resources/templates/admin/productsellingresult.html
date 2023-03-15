@@ -138,18 +138,18 @@
 
 
     <th:block th:each="item, status: ${items.getContent()}">
-    <tr class="text-center align-items-center">
+    <tr class="text-center align-middle">
       <td><img th:src="${item.imgUrl}" height="100" th:alt="${item.imgUrl}"/></td>
-      <td class="mt-3">[[${item.category}]]</td>
-      <td><a href="#" class="text-primary fw-bold">[[${item.itemNm}]]</a></td>
-      <td class="mt-3" id="money3" >[[${item.price}]]원</td>
+      <td class="mt-3 align-middle">[[${item.category}]]</td>
+      <td class="align-middle"><a href="#" class="text-primary fw-bold">[[${item.itemNm}]]</a></td>
+      <td class="mt-3 align-middle" id="money3" >[[${item.price}]]원</td>
         <script>
             let money3 = $('#money3').text();
             let money2 = money3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             $('#money3').text(money2);
         </script>
-      <td class="mt-3">[[${item.orderTotalCount}]]건</td>
-      <td class="mt-3" id="money">[[${item.orderTotalIncome}]]원</td>
+      <td class="mt-3 align-middle">[[${item.orderTotalCount}]]건</td>
+      <td class="mt-3 align-middle" id="money">[[${item.orderTotalIncome}]]원</td>
 
         <script>
             let money = $('#money').text();
@@ -169,7 +169,7 @@
 
             <li class="page-item" th:classappend="${items.number eq 0}?'disabled':''">
             <a th:href="@{'/shopping/shopping/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number -1}}" aria-label='Previous' class="page-link">
-            <span aria-hidden='true'>이전</span>
+            <span class="fs14" aria-hidden='true'>이전</span>
             </a>
             </li>
 

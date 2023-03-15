@@ -28,41 +28,48 @@
 
         <div class="card-body pb-4">
           <h5 class="card-title">카테고리별 매출액 비중 <span>| Today</span></h5>
-          <canvas id="logNameChart" style="width: 600px; max-height: 800px;"></canvas>
-
+          <center>
+          <canvas class="" id="logNameChart" style="max-width: 400px; max-height: 400px; "></canvas>
+          </center>
           <script th:inline="javascript">
-            function colorize() {
-              var r = Math.floor(Math.random()*200);
-              var g = Math.floor(Math.random()*200);
-              var b = Math.floor(Math.random()*200);
-              var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
-              return color;
-            }
 
-            const jsonData = [[${json}]]
-            const jsonObject = JSON.stringify(jsonData);
-            const jData = JSON.parse(jsonObject);
+            let jsonData = [[${json}]];
+            obj = JSON.parse(jsonData);
 
             var labelList = new Array();
             var valueList = new Array();
-            var colorList = new Array();
 
-            for(var i = 0; i<jData.length; i++) {
-              var d = jData[i];
-              labelList.push(d.Category1);
-              valueList.push(d.Income);
-              colorList.push(colorize());
+            for(key in obj){
+              labelList.push(obj[key].Category1);
+              valueList.push(obj[key].Income);
             }
             var data = {
               labels: labelList,
               datasets: [{
-                backgroundColor: colorList,
-                data : valueList
+                backgroundColor: ['#B9F3E4','#EA8FEA','#F6E6C2','#FFAACF', '#FDEBED','#FFB9B9'],
+                // borderColor: '#22252B',
+                data : valueList,
               }],
-              options : {
-                title : {
-                  display : true,
-                  text: '유저별 접속 횟수'
+              options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                legend: {
+                  position: 'top',
+                  fontColor: 'black',
+                  align: 'center',
+                  display: true,
+                  fullWidth: true,
+                  labels: {
+                    fontColor: 'rgb(0, 0, 0)'
+                  }
+                },
+                plugins: {
+                  labels: {//두번째 script태그를 설정하면 각 항목에다가 원하는 데이터 라벨링을 할 수 있다.
+                    render: 'value',
+                    fontColor: 'black',
+                    fontSize: 15,
+                    precision: 2
+                  }
                 }
               }
             };
@@ -72,41 +79,6 @@
               type: 'pie',
               data: data
             });
-
-
-            // var config = {
-            //   type: 'pie',
-            //   data: {
-            //     labels: labelList,
-            //     datasets: [{
-            //       backgroundColor: colorList,
-            //       data : valueList
-            //     }],
-            //   },
-            //   options: {
-            //     responsive: true,
-            //     maintainAspectRatio: false, //true 하게 되면 캔버스 width,height에 따라 리사이징된다.
-            //     legend: {
-            //       position: 'top',
-            //       fontColor: 'black',
-            //       align: 'center',
-            //       display: true,
-            //       fullWidth: true,
-            //       labels: {
-            //         fontColor: 'rgb(0, 0, 0)'
-            //       }
-            //     },
-            //     plugins: {
-            //       labels: {//두번째 script태그를 설정하면 각 항목에다가 원하는 데이터 라벨링을 할 수 있다.
-            //         render: 'value',
-            //         fontColor: 'black',
-            //         fontSize: 15,
-            //         precision: 2
-            //       }
-            //
-            //     }
-            //   }
-            // }
 
 
           </script>

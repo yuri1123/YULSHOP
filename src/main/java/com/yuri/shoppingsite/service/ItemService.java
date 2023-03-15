@@ -2,13 +2,20 @@ package com.yuri.shoppingsite.service;
 
 import com.yuri.shoppingsite.Repository.ItemImgRepository;
 import com.yuri.shoppingsite.Repository.ItemRepository;
+import com.yuri.shoppingsite.Repository.MemberRepository;
+import com.yuri.shoppingsite.constant.Role;
+import com.yuri.shoppingsite.domain.Chart.CategoryItemsDto;
+import com.yuri.shoppingsite.domain.Chart.MainGraphDto;
 import com.yuri.shoppingsite.domain.shop.*;
+import com.yuri.shoppingsite.domain.user.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -161,6 +168,38 @@ public class ItemService {
         List<CategoryItemsDto> contents = itemRepository.getCategoryItemIncome();
     return contents;
     }
+
+    //메인화면 차트 데이터 가져오기
+    public List<MainGraphDto> getMainGraphDtos(){
+        List<MainGraphDto> adminMainChart = itemRepository.getMainGraphData();
+        return adminMainChart;
+    }
+
+    //아이디 기준으로 재고 가져와서 수량 변경하기
+    public Item updatestock(Long id, int addNum){
+        Item stockItem = itemRepository.findstockById(id);
+        int nowStock = stockItem.getStockNumber();
+        stockItem.setStockNumber(nowStock += addNum);
+        return stockItem;
+    }
+
+    @Autowired
+    MemberRepository memberRepository;
+    @Transactional(readOnly = true)
+    public boolean validateItem(Long id, String name){
+        //현재 로그인한 회원 조회
+        Member curMember = memberRepository.findByName(name);
+        Item item = itemRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+
+        //현재 로그인한 회원과 ADMIN인지 체크 ADMIN이면 true 반환
+        if(!StringUtils.equals(curMember.getName(),
+                Role.ADMIN)){
+            return false;
+        }
+        return true;
+    }
+
 
 
 }
