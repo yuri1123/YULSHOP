@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -13,6 +14,7 @@ public class MainGraphDto {
         private int sumSelling;
         private int sumIncome;
         private LocalDateTime standardDate;
+
 
     @QueryProjection
     public MainGraphDto(int sumSelling, int sumIncome,

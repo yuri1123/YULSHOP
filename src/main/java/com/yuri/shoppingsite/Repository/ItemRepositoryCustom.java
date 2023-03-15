@@ -30,6 +30,6 @@ public interface ItemRepositoryCustom {
     Page<ResultCategoryItemDto> getResultCategoryItemDto(ItemSearchDto itemSearchDto, Pageable pageable);
     List<CategoryItemsDto> getCategoryItemIncome();
 
-    List<MainGraphDto> getMainGraphData();
+//    List<MainGraphDto> getMainGraphData();
 
 }

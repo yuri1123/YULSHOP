@@ -1,5 +1,6 @@
 package com.yuri.shoppingsite.Repository;
 
+import com.yuri.shoppingsite.domain.Chart.MainGraphDto;
 import com.yuri.shoppingsite.domain.shop.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -47,4 +48,9 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
     @Query("select i from Item i where i.id = :id")
     Item findstockById(@Param("id") Long id);
 
-}
+    @Query("select sum(oi.count), sum(oi.orderPrice),function('date_format', oi.regTime, '%Y-%m') as standard_date from OrderItem oi group by function('date_format', oi.regTime, '%Y-%m')")
+    List<MainGraphDto> mainchart();
+
+
+
+    }

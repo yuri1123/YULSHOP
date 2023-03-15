@@ -11,10 +11,10 @@ import com.yuri.shoppingsite.constant.Category;
 import com.yuri.shoppingsite.constant.ItemSellStatus;
 import com.yuri.shoppingsite.domain.Chart.CategoryItemsDto;
 import com.yuri.shoppingsite.domain.Chart.MainGraphDto;
+import com.yuri.shoppingsite.domain.Chart.QCategoryItemsDto;
 import com.yuri.shoppingsite.domain.Chart.QMainGraphDto;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.shop.QBestSellerItemDto;
-import com.yuri.shoppingsite.domain.shop.QCategoryItemsDto;
 import com.yuri.shoppingsite.domain.shop.QItem;
 import com.yuri.shoppingsite.domain.shop.QItemImg;
 import com.yuri.shoppingsite.domain.shop.QLatestItemDto;
@@ -592,26 +592,29 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         }
 
 
-    public List<MainGraphDto> getMainGraphData(){
-        QOrderItem orderItem = QOrderItem.orderItem;
-
-        StringTemplate formattedDate = Expressions.stringTemplate(
-                "DATE_FORMAT({0}, {1})"
-                , orderItem.regTime
-                , ConstantImpl.create("%Y-%m"));
-
-        List<MainGraphDto> content = queryFactory
-                .select(Projections.fields(MainGraphDto.class,
-                                formattedDate,
-                                orderItem.count.sum().as("sumSelling"),
-                                orderItem.orderPrice.sum().as("sumIncome"),
-                                orderItem.regTime.as("standardDate"))
-                        ).from(orderItem)
-                                .groupBy(formattedDate)
-//                .orderBy(formattedDate.desc())
-                .fetch();
-        return content;
-    }
+//    public List<MainGraphDto> getMainGraphData(){
+//        QOrderItem orderItem = QOrderItem.orderItem;
+//
+//        StringTemplate formattedDate = Expressions.stringTemplate(
+//                "DATE_FORMAT({0}, {1})"
+//                , orderItem.regTime
+//                , ConstantImpl.create("%Y-%m"));
+//        Projections.fields(MainGraphDto.class,
+//                        formattedDate,
+//
+//        List<MainGraphDto> content = queryFactory
+//                .select(
+//                        new QMainGraphDto(
+//                                orderItem.count.sum(),
+//                                orderItem.orderPrice.sum(),
+//                                orderItem.regTime.stringValue())
+//                        ).from(orderItem)
+//                                .groupBy(orderItem.regTime)
+//                .orderBy(orderItem.regTime.desc())
+//                .fetch();
+//
+//        return content;
+//    }
 
 
 

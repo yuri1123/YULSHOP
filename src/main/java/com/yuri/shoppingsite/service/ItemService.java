@@ -171,7 +171,7 @@ public class ItemService {
 
     //메인화면 차트 데이터 가져오기
     public List<MainGraphDto> getMainGraphDtos(){
-        List<MainGraphDto> adminMainChart = itemRepository.getMainGraphData();
+        List<MainGraphDto> adminMainChart = itemRepository.mainchart();
         return adminMainChart;
     }
 

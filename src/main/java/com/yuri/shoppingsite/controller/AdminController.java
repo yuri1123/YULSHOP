@@ -57,10 +57,10 @@ public class AdminController {
         List<OrderItem> sellingitems = orderService.recentselling();
 
         List<MainGraphDto> mainGraph = itemService.getMainGraphDtos();
-
-        Gson gson = new Gson();
-        JsonArray jsonArray = new JsonArray();
         System.out.println(mainGraph);
+
+//        Gson gson = new Gson();
+//        JsonArray jsonArray = new JsonArray();
 //        Iterator<MainGraphDto> mg = mainGraph.iterator();
 //        while(mg.hasNext()){
 //            MainGraphDto mainGraphDto = mg.next();
