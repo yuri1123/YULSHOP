@@ -48,9 +48,8 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
     @Query("select i from Item i where i.id = :id")
     Item findstockById(@Param("id") Long id);
 
-    @Query("select sum(oi.count), sum(oi.orderPrice),function('date_format', oi.regTime, '%Y-%m') as standard_date from OrderItem oi group by function('date_format', oi.regTime, '%Y-%m')")
+    @Query(value="select sum(oi.count), sum(oi.orderPrice),function('date_format', oi.regTime, '%Y-%m') as standard_date" +
+            " from OrderItem oi group by function('date_format', oi.regTime, '%Y-%m')")
     List<MainGraphDto> mainchart();
-
-
 
     }
