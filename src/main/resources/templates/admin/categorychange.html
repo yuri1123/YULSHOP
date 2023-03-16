@@ -107,12 +107,10 @@
     }
 
 
-  function updateCategory(){
+  function updateCategory(id,category){
 
    if(confirm("저장하시겠습니까?")){
 
-    var id = $("#id").val();
-    var category = $("#category").val();
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -202,7 +200,7 @@
         </thead>
         <tbody class="text-center">
         <tr th:each="items, status: ${items}">
-          <td th:text="${items.id}" id="id"></td>
+          <td th:text="${items.id}"></td>
         <td>
 
             <span th:if="${items.category == T(com.yuri.shoppingsite.constant.Category).DIARY}"  class="badge badge alert-danger">DIARY</span>
@@ -216,7 +214,7 @@
           <td th:text="${items.regTime}"></td>
           <td class="d-flex">
 
-            <select class="mr-3" id = "category">
+            <select class="mr-3" th:id="'category_' + ${items.id}"}>
               <th:block th:if="${items.category == T(com.yuri.shoppingsite.constant.Category).DIARY}" >
                 <option th:value="DIARY" selected>DIARY</option>
                 <option th:value="WALLDECO" >WALL DECO</option>
@@ -266,7 +264,7 @@
                     <option th:value="ACCESSORY"selected >ACCESSORY</option>
                 </th:block>
             </select>
-            <span class="backcol1 white-color" onclick="updateCategory()">저장</span>
+            <span class="backcol1 white-color" th:data-id="${items.id}" onclick="updateCategory(id,category)">저장</span>
 
           </td>
           </td>

@@ -197,14 +197,13 @@ public class AdminController {
     ItemRepository itemRepository;
     //상품 카테고리 수정 업데이트
     @PutMapping(value="/admin/categorychange/{id}")
-    public @ResponseBody ResponseEntity updateCategory(@PathVariable("id") Long id,
+    public @ResponseBody ResponseEntity updateCategory(@PathVariable Long id,
                                         String category,
                                                        Principal principal){
         if(!itemService.validateItem(id,principal.getName())){
             return new ResponseEntity<String>("수정권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
-        int result = itemRepository.updateCategory(id,category);
-        System.out.println(result);
+        itemRepository.updateCategory(id,category);
         return new ResponseEntity<Long>(id,HttpStatus.OK);
     }
 
