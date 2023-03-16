@@ -3,15 +3,18 @@ package com.yuri.shoppingsite.domain.shop;
 import com.yuri.shoppingsite.constant.Category;
 import com.yuri.shoppingsite.constant.ItemSellStatus;
 import com.yuri.shoppingsite.domain.common.BaseEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name="order_item")
 @Getter
 @Setter
-
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderItem extends BaseEntity {
 
     @Id

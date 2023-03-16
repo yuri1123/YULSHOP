@@ -3,9 +3,10 @@ package com.yuri.shoppingsite.service;
 import com.yuri.shoppingsite.Repository.ItemImgRepository;
 import com.yuri.shoppingsite.Repository.ItemRepository;
 import com.yuri.shoppingsite.Repository.MemberRepository;
+import com.yuri.shoppingsite.Repository.OrderItemRepository;
 import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.domain.Chart.CategoryItemsDto;
-import com.yuri.shoppingsite.domain.Chart.MainGraphDto;
+import com.yuri.shoppingsite.domain.Chart.MainGraphInterface;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.user.Member;
 import lombok.RequiredArgsConstructor;
@@ -170,8 +171,8 @@ public class ItemService {
     }
 
     //메인화면 차트 데이터 가져오기
-    public List<MainGraphDto> getMainGraphDtos(){
-        List<MainGraphDto> adminMainChart = itemRepository.mainchart();
+    public List<MainGraphInterface> getMainGraphDtos(){
+        List<MainGraphInterface> adminMainChart = orderItemRepository.mainchart();
         return adminMainChart;
     }
 
@@ -185,6 +186,8 @@ public class ItemService {
 
     @Autowired
     MemberRepository memberRepository;
+    private final OrderItemRepository orderItemRepository;
+
     @Transactional(readOnly = true)
     public boolean validateItem(Long id, String name){
         //현재 로그인한 회원 조회

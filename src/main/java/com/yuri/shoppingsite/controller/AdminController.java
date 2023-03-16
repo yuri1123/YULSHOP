@@ -5,7 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.domain.Chart.CategoryItemsDto;
-import com.yuri.shoppingsite.domain.Chart.MainGraphDto;
+import com.yuri.shoppingsite.domain.Chart.MainGraphInterface;
 import com.yuri.shoppingsite.domain.community.NoticeFormDto;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.user.MemberSearchDto;
@@ -56,29 +56,32 @@ public class AdminController {
         int sellingIncome = itemService.getSellingIncome();
         List<OrderItem> sellingitems = orderService.recentselling();
 
-        List<MainGraphDto> mainGraph = itemService.getMainGraphDtos();
+        List<MainGraphInterface> mainGraph = itemService.getMainGraphDtos();
         System.out.println(mainGraph);
 
-//        Gson gson = new Gson();
-//        JsonArray jsonArray = new JsonArray();
-//        Iterator<MainGraphDto> mg = mainGraph.iterator();
-//        while(mg.hasNext()){
-//            MainGraphDto mainGraphDto = mg.next();
-//            JsonObject object = new JsonObject();
-//            int count = mainGraphDto.getSumSelling();
-//            int revenue = mainGraphDto.getSumIncome();
-//            LocalDateTime date = mainGraphDto.getStandardDate();
-//
-//            object.addProperty("mgCount",count);
-//            object.addProperty("mgRevenue",revenue);
-//            object.addProperty("mgDate", String.valueOf(date));
-//
-//            jsonArray.add(object);
-//        }
-//
-//        String json = gson.toJson(jsonArray);
-//        System.out.println(json);
-//        model.addAttribute("json",json);
+        Gson gson = new Gson();
+        JsonArray jsonArray = new JsonArray();
+        Iterator<MainGraphInterface> mg = mainGraph.iterator();
+        while(mg.hasNext()){
+            MainGraphInterface mainGraphDto = mg.next();
+            JsonObject object = new JsonObject();
+            int count = mainGraphDto.getCount();
+            int revenue = mainGraphDto.getOrder_price();
+            String date = mainGraphDto.getReg_time();
+
+            System.out.println(count);
+            System.out.println(revenue);
+
+            object.addProperty("mgCount",count);
+            object.addProperty("mgRevenue",revenue);
+            object.addProperty("mgDate", String.valueOf(date));
+
+            jsonArray.add(object);
+        }
+
+        String json = gson.toJson(jsonArray);
+        System.out.println(json);
+        model.addAttribute("json",json);
 
         model.addAttribute("memberCount",memberCount);
         model.addAttribute("sellingCount",sellingCount);

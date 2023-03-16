@@ -1,7 +1,6 @@
 package com.yuri.shoppingsite.Repository;
 
 import com.yuri.shoppingsite.domain.Chart.CategoryItemsDto;
-import com.yuri.shoppingsite.domain.Chart.MainGraphDto;
 import com.yuri.shoppingsite.domain.shop.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
