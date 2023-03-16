@@ -32,18 +32,18 @@
           <canvas class="" id="logNameChart" style="max-width: 400px; max-height: 400px; "></canvas>
           </center>
           <script th:inline="javascript">
+            let labelList = new Array();
+            let valueList = new Array();
 
             let jsonData = [[${json}]];
             obj = JSON.parse(jsonData);
 
-            var labelList = new Array();
-            var valueList = new Array();
-
             for(key in obj){
-              labelList.push(obj[key].Category1);
+              labelList.push(obj[key].Category);
               valueList.push(obj[key].Income);
+              console.log(obj[key].Category);
             }
-            var data = {
+            let data = {
               labels: labelList,
               datasets: [{
                 backgroundColor: ['#B9F3E4','#EA8FEA','#F6E6C2','#FFAACF', '#FDEBED','#FFB9B9'],

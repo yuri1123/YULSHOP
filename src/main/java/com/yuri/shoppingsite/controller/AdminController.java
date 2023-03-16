@@ -3,8 +3,10 @@ package com.yuri.shoppingsite.controller;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.yuri.shoppingsite.Repository.ItemRepository;
 import com.yuri.shoppingsite.Repository.MemberRepository;
-import com.yuri.shoppingsite.domain.Chart.CategoryItemsDto;
+import com.yuri.shoppingsite.constant.Category;
+import com.yuri.shoppingsite.domain.Chart.CategoryItemsInterface;
 import com.yuri.shoppingsite.domain.Chart.MainGraphInterface;
 import com.yuri.shoppingsite.domain.community.NoticeFormDto;
 import com.yuri.shoppingsite.domain.shop.*;
@@ -13,6 +15,7 @@ import com.yuri.shoppingsite.domain.user.Member;
 import com.yuri.shoppingsite.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,13 +30,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
+//@RestController
 @RequiredArgsConstructor
 public class AdminController {
 
@@ -182,9 +184,8 @@ public class AdminController {
     }
 
     //상품 카테고리 관리페이지로 이동
-    @GetMapping(value={"/admin/categorychange","/admin/catecorychange/{page}"})
-    public String categoryChange(Model model, @PathVariable("page") Optional<Integer> page,
-                                 ItemSearchDto itemSearchDto){
+    @GetMapping(value={"/admin/categorychange","/admin/categorychange/{page}"})
+    public String categoryChange(ItemSearchDto itemSearchDto,Model model, @PathVariable("page") Optional<Integer> page){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<MainItemDto> categoryItem = itemService.getAllMain(itemSearchDto, pageable);
         model.addAttribute("items",categoryItem);
@@ -192,11 +193,25 @@ public class AdminController {
         model.addAttribute("maxPage", 10);
         return "admin/categorychange";
     }
+    @Autowired
+    ItemRepository itemRepository;
+    //상품 카테고리 수정 업데이트
+    @PutMapping(value="/admin/categorychange/{id}")
+    public @ResponseBody ResponseEntity updateCategory(@PathVariable("id") Long id,
+                                        String category,
+                                                       Principal principal){
+        if(!itemService.validateItem(id,principal.getName())){
+            return new ResponseEntity<String>("수정권한이 없습니다.", HttpStatus.FORBIDDEN);
+        }
+        int result = itemRepository.updateCategory(id,category);
+        System.out.println(result);
+        return new ResponseEntity<Long>(id,HttpStatus.OK);
+    }
+
 
     //상품 판매상태 관리 페이지로 이동
     @GetMapping(value={"/admin/sellingstatechange","/admin/sellingstatechange/{page}"})
-    public String sellingStateChange(Model model, @PathVariable("page") Optional<Integer> page,
-                                     ItemSearchDto itemSearchDto){
+    public String sellingStateChange(ItemSearchDto itemSearchDto,@PathVariable("page") Optional<Integer> page, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<MainItemDto> sellingStateChange = itemService.getAllMain(itemSearchDto, pageable);
         model.addAttribute("items",sellingStateChange);
@@ -296,18 +311,19 @@ public class AdminController {
     //전체 통계 페이지 가기
     @GetMapping("admin/totalresult")
         public String totalResult(Model model){
-        List<CategoryItemsDto> categoryitems = itemService.getCategoryContent();
+        List<CategoryItemsInterface> categoryitems = itemService.getCategoryContent();
+        System.out.println(categoryitems);
         Gson gson = new Gson();
         JsonArray jsonArray = new JsonArray();
 
-        Iterator<CategoryItemsDto> cid = categoryitems.iterator();
+        Iterator<CategoryItemsInterface> cid = categoryitems.iterator();
         while(cid.hasNext()){
-            CategoryItemsDto categoryItemsDto = cid.next();
+            CategoryItemsInterface categoryItemsInterface = cid.next();
             JsonObject object = new JsonObject();
-            String category = categoryItemsDto.getCategory();
-            int totalIncome = categoryItemsDto.getTotalIncome();
+            Category category = categoryItemsInterface.getCategory();
+            int totalIncome = categoryItemsInterface.getTotalIncome();
 
-            object.addProperty("Category1",category);
+            object.addProperty("Category", String.valueOf(category));
             object.addProperty("Income",totalIncome);
             jsonArray.add(object);
         }

@@ -4,8 +4,9 @@ import com.yuri.shoppingsite.Repository.ItemImgRepository;
 import com.yuri.shoppingsite.Repository.ItemRepository;
 import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.Repository.OrderItemRepository;
+import com.yuri.shoppingsite.constant.Category;
 import com.yuri.shoppingsite.constant.Role;
-import com.yuri.shoppingsite.domain.Chart.CategoryItemsDto;
+import com.yuri.shoppingsite.domain.Chart.CategoryItemsInterface;
 import com.yuri.shoppingsite.domain.Chart.MainGraphInterface;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.user.Member;
@@ -15,10 +16,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,8 +168,8 @@ public class ItemService {
     }
 
     //카테고리별 매출액 차트 데이터 가져오기
-    public List<CategoryItemsDto> getCategoryContent(){
-        List<CategoryItemsDto> contents = itemRepository.getCategoryItemIncome();
+    public List<CategoryItemsInterface> getCategoryContent(){
+        List<CategoryItemsInterface> contents = itemRepository.getCategoryItemIncome();
     return contents;
     }
 
@@ -201,6 +204,12 @@ public class ItemService {
             return false;
         }
         return true;
+    }
+
+    //카테고리 업데이트
+    public int updateCategory(Model model, String category, Long id, String name){
+        int result = itemRepository.updateCategory(id,category);
+        return result;
     }
 
 

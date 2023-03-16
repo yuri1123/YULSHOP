@@ -1,7 +1,10 @@
 package com.yuri.shoppingsite.Repository;
 
+import com.yuri.shoppingsite.constant.Category;
+import com.yuri.shoppingsite.domain.Chart.CategoryItemsInterface;
 import com.yuri.shoppingsite.domain.shop.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
@@ -21,10 +24,13 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
 
     //상품명으로 조회하기
     List<Item> findByItemNm(String itemNm);
+
     //상품명 OR 상품내용으로 조회하기
     List<Item> findByItemNmOrItemDetail(String itemNm, String itemDetail);
+
     //가격이하인 상품 찾기
     List<Item> findByPriceLessThan(Integer price);
+
     //가격이하인 상품을 찾고 가격 역순으로 정렬하기
     List<Item> findByPriceLessThanOrderByPriceDesc(Integer price);
 
@@ -33,7 +39,8 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
     List<Item> findByItemDetail(@Param("itemDetail") String itemDetail);
 
     //navtivequery를 그대로 사용하여 상세내용 검색하기
-    @Query(value="select * from item i where i.item_detail like %:itemDetail% order by i.price desc",nativeQuery = true)
+    @Query(value = "select * from item i where i.item_detail" +
+            " like %:itemDetail% order by i.price desc", nativeQuery = true)
     List<Item> findByItemDetailByNativ(@Param("itemDetail") String itemDetail);
 
     //아이템 주문 횟수의 합을 조회
@@ -47,6 +54,13 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
     @Query("select i from Item i where i.id = :id")
     Item findstockById(@Param("id") Long id);
 
+    @Query("select i.category as category, sum(i.orderTotalIncome) " +
+            "as totalIncome from Item i group by i.category")
+    List<CategoryItemsInterface> getCategoryItemIncome();
+
+    @Modifying(clearAutomatically = true)
+    @Query("update Item i set i.category=:category where i.id=:id")
+    int updateCategory(@Param(value="id") Long id, @Param(value="category")String category);
 
 
-    }
+}

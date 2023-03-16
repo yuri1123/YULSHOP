@@ -8,8 +8,8 @@
 
   <style>
     .gap {
-      margin-top: 80px;
-      margin-bottom: 50px;
+      margin-top: 150px;
+      margin-bottom: 80px;
     }
 
     .gap2 {
@@ -19,13 +19,34 @@
       color: #a367e7;
     }
 
-    .backcol {
+    .backcol1 {
       background: #1e1e1e;
       border: #1e1e1e;
+        height: 30px;
+        width: 50px;
+        border-radius: 10px;
     }
-    .backcol:hover{
+    .backcol1:hover{
       background: #a367e7;
       border: #a367e7;
+        height: 30px;
+        width: 50px;
+        border-radius: 10px;
+    }
+
+    .backcol {
+        background: #1e1e1e;
+        border: #1e1e1e;
+        height: 40px;
+        width: 70px;
+        border-radius: 10px;
+    }
+    .backcol:hover{
+        background: #a367e7;
+        border: #a367e7;
+        height: 40px;
+        width: 70px;
+        border-radius: 10px;
     }
 
     .page-link {
@@ -65,63 +86,62 @@
 <body>
 <script th:inline="javascript">
 
-  $(document).ready(function(){
-    $("#searchBtn").on("click",function(e) {
-      e.preventDefault();
-      page(0);
+    $(document).ready(function(){
+        $("#searchBtn").on("click",function(e) {
+            e.preventDefault();
+            page(0);
+        });
     });
-  });
 
-  function page(page){
-      let searchDateType = $("#searchDateType").val();
-      let searchSellStatus = $("#searchSellStatus").val();
-      let searchBy = $("#searchBy").val();
-      let searchQuery = $("#searchQuery").val();
+    function page(page){
+        let searchDateType = $("#searchDateType").val();
+        let searchSellStatus = $("#searchSellStatus").val();
+        let searchBy = $("#searchBy").val();
+        let searchQuery = $("#searchQuery").val();
 
-      location.href="/admin/categorychange/" + page
-          + "?searchDateType=" + searchDateType
-          + "&searchSellStatus=" + searchSellStatus
-          + "&searchBy=" + searchBy
-          + "&searchQuery=" + searchQuery;
+        location.href="/admin/categorychange/" + page
+            + "?searchDateType=" + searchDateType
+            + "&searchSellStatus=" + searchSellStatus
+            + "&searchBy=" + searchBy
+            + "&searchQuery=" + searchQuery;
+    }
+
+
+  function updateCategory(){
+
+   if(confirm("저장하시겠습니까?")){
+
+    var id = $("#id").val();
+    var category = $("#category").val();
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    var url = "/admin/categorychange/" + id +"?category" + category;
+
+    $.ajax({
+      url      : url,
+      type     : "PUT",
+      beforeSend : function(xhr){
+        /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+        xhr.setRequestHeader(header, token);
+      },
+      dataType : "json",
+      cache   : false,
+      success  : function(result, status){
+        location.href='/admin/categorychange';
+      },
+      error : function(jqXHR, status, error){
+
+        if(jqXHR.status == '401'){
+          alert('로그인 후 이용해주세요');
+          location.href='/member/login';
+        } else{
+          alert(jqXHR.responseJSON.message);
+        }
+      }
+    });
   }
-
-
-  // function deleteMember(obj){
-  //
-  //  if(confirm("정말로 이 유저를 삭제하시겠습니까?")){
-  //
-  //   var id = obj.dataset.id;
-  //   var token = $("meta[name='_csrf']").attr("content");
-  //   var header = $("meta[name='_csrf_header']").attr("content");
-  //
-  //   var url = "/admin/member/" + id;
-  //
-  //   $.ajax({
-  //     url      : url,
-  //     type     : "DELETE", //삭제요청이므로 delete type 사용
-  //     beforeSend : function(xhr){
-  //       /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
-  //       xhr.setRequestHeader(header, token);
-  //     },
-  //     dataType : "json",
-  //     cache   : false,
-  //     success  : function(result, status){
-  //       //삭제 요청이 정상 처리되면 유저권한 페이지 새로고침
-  //       location.href='/admin/userauth';
-  //     },
-  //     error : function(jqXHR, status, error){
-  //
-  //       if(jqXHR.status == '401' || jqXHR.status == '500'){
-  //         alert('로그인 후 이용해주세요');
-  //         location.href='/member/login';
-  //       } else{
-  //         alert(jqXHR.responseJSON.message);
-  //       }
-  //
-  //     }
-  //   });
-  // }
-  // }
+  }
 
 </script>
 
@@ -164,7 +184,7 @@
                   <option value="createdBy">등록자</option>
               </select>
               <input th:field="*{searchQuery}" type="text" class="form-control m-1" placeholder="검색어를 입력해주세요">
-              <button id="searchBtn" type="submit" class="btn-primary backcol rad">검색</button>
+              <button id="searchBtn" type="submit" class="btn-primary backcol">검색</button>
           </div>
       </div>
 
@@ -182,7 +202,7 @@
         </thead>
         <tbody class="text-center">
         <tr th:each="items, status: ${items}">
-          <td th:text="${items.id}"></td>
+          <td th:text="${items.id}" id="id"></td>
         <td>
 
             <span th:if="${items.category == T(com.yuri.shoppingsite.constant.Category).DIARY}"  class="badge badge alert-danger">DIARY</span>
@@ -194,9 +214,9 @@
         </td>
           <td th:text="${items.itemNm}"></td>
           <td th:text="${items.regTime}"></td>
-          <td>
+          <td class="d-flex">
 
-            <select>
+            <select class="mr-3" id = "category">
               <th:block th:if="${items.category == T(com.yuri.shoppingsite.constant.Category).DIARY}" >
                 <option th:value="DIARY" selected>DIARY</option>
                 <option th:value="WALLDECO" >WALL DECO</option>
@@ -246,6 +266,9 @@
                     <option th:value="ACCESSORY"selected >ACCESSORY</option>
                 </th:block>
             </select>
+            <span class="backcol1 white-color" onclick="updateCategory()">저장</span>
+
+          </td>
           </td>
           </td>
 <!--          <td class="text-center justify-content-center">-->
@@ -264,33 +287,34 @@
 
       <div class="justify-content-center mb-5 mt-5">
 
-<!--                페이징 처리 시작-->
-<!--        <div th:with="start=${(items.number/maxPage)*maxPage +1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >-->
-<!--          <ul class="pagination justify-content-center">-->
+          <!--        페이징 처리 시작-->
+          <div th:with="start=${(items.number/maxPage)*maxPage +1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
+              <ul class="pagination justify-content-center">
 
-<!--            <li class="page-item" th:classappend="${items.first}?'disabled'">-->
-<!--              <a th:onclick="'javascript:page(' + ${items.number -1} + ')'" aria-label='Previous' class="page-link">-->
-<!--                <span aria-hidden='true'>이전</span>-->
-<!--              </a>-->
-<!--            </li>-->
+                  <li class="page-item" th:classappend="${items.first}?'disabled'">
+                      <a style="font-size: 13px" th:onclick="'javascript:page(' + ${items.number -1} + ')'" aria-label='Previous' class="page-link">
+                          <span aria-hidden='true' >이전</span>
+                      </a>
+                  </li>
 
-<!--            <li class="page-item" th:each="page: ${#items.sequence(start, end)}" th:classappend="${items.number eq (page -1)}?'active':''">-->
-<!--              <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>-->
-<!--            </li>-->
+                  <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq (page -1)}?'active':''">
+                      <a style="font-size: 13px" th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+                  </li>
 
-<!--            <li class="page-item" th:classappend="${items.last}?'disabled'">-->
-<!--              <a th:onclick="'javascript:page(' + ${items.number +   1} + ')'" aria-label='Next' class="page-link">-->
-<!--                <span aria-hidden='true'>다음</span>-->
-<!--              </a>-->
-<!--            </li>-->
+                  <li class="page-item" th:classappend="${items.last}?'disabled'">
+                      <a style="font-size: 13px" th:onclick="'javascript:page(' + ${items.number +   1} + ')'" aria-label='Next' class="page-link">
+                          <span aria-hidden='true'>다음</span>
+                      </a>
+                  </li>
 
-<!--          </ul>-->
-<!--        </div>-->
+              </ul>
+          </div>
+
+      </div>
 
 
 
       </div>
-    </div>
     </form>
   </div>
 </div>
