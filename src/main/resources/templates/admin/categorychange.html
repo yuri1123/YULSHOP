@@ -12,13 +12,6 @@
       margin-bottom: 80px;
     }
 
-    .gap2 {
-      margin:10px;
-    }
-    .hover:hover {
-      color: #a367e7;
-    }
-
     .backcol1 {
       background: #1e1e1e;
       border: #1e1e1e;
@@ -68,11 +61,6 @@
       border-color: #ccc;
     }
 
-    .rad{
-      border-radius: 10px;
-      padding: 10px 30px;
-    }
-
     .h1tag {
         color: black;
         font-size: 45px;
@@ -116,10 +104,11 @@
     var id = $("#itemId").val();
     var category = $("#category").val();
 
-    var url = "/admin/categorychange/" + id +"?category=" + category;
 
-       alert(category);
-       alert(id);
+    var url = "/admin/categorychange/modify/" + id +"?category=" + category;
+
+       // alert(category);
+       // alert(id);
     $.ajax({
       url      : url,
       type     : "PUT",
@@ -148,14 +137,11 @@
 
 </script>
 
-
 <th:block th:include="/include/admin_header.html"/>
 <th:block th:include="/include/admin_sidebar.html"/>
 
-
 <div class="container-fluid">
   <div class="row">
-
 
     <div class="col-lg-12 col-md-12 col-sm-12 gap">
         <h1 class="h1tag text-center">상품 카테고리 조회/변경</h1>
@@ -208,7 +194,7 @@
         <tbody class="text-center">
         <tr th:each="items, status: ${items}">
           <td th:text="${items.id}"></td>
-            <td type="hidden"><input type="hidden" id="itemId" name="itemId" th:value="${items.id}">;</td>
+            <td type="hidden"><input type="hidden" id="itemId" name="itemId" th:value="${items.id}"></td>
         <td>
 
             <span th:if="${items.category == T(com.yuri.shoppingsite.constant.Category).DIARY}"  class="badge badge alert-danger">DIARY</span>

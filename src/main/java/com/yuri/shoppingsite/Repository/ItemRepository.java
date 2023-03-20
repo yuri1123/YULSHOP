@@ -1,6 +1,7 @@
 package com.yuri.shoppingsite.Repository;
 
 import com.yuri.shoppingsite.constant.Category;
+import com.yuri.shoppingsite.constant.ItemSellStatus;
 import com.yuri.shoppingsite.domain.Chart.CategoryItemsInterface;
 import com.yuri.shoppingsite.domain.shop.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -60,7 +61,9 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
 
     @Modifying(clearAutomatically = true)
     @Query("update Item i set i.category=:category where i.id=:id")
-    int updateCategory(@Param(value="id") Long id, @Param(value="category")String category);
+    int updateCategory(@Param(value="id") Long id, @Param(value="category")Category category);
 
-
+    @Modifying(clearAutomatically = true)
+    @Query("update Item i set i.itemSellStatus=:itemSellStatus where i.id=:id")
+    int updateItemSellStatus(@Param(value="id") Long id, @Param(value="itemSellStatus") ItemSellStatus itemSellStatus);
 }

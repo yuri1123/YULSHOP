@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.yuri.shoppingsite.Repository.ItemRepository;
 import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.constant.Category;
+import com.yuri.shoppingsite.constant.ItemSellStatus;
 import com.yuri.shoppingsite.domain.Chart.CategoryItemsInterface;
 import com.yuri.shoppingsite.domain.Chart.MainGraphInterface;
 import com.yuri.shoppingsite.domain.community.NoticeFormDto;
@@ -193,19 +194,18 @@ public class AdminController {
         model.addAttribute("maxPage", 10);
         return "admin/categorychange";
     }
-    @Autowired
-    ItemRepository itemRepository;
+
     //상품 카테고리 수정 업데이트
-    @PutMapping(value="/admin/categorychange")
+    @PutMapping(value="/admin/categorychange/modify/{id}")
     public @ResponseBody ResponseEntity updateCategory(@PathVariable Long id,
-                                                       @PathVariable Category category,
+                                                       String category,
                                                        Principal principal){
-//        if(!itemService.validateItem(id,principal.getName())){
-//            return new ResponseEntity<String>("수정권한이 없습니다.", HttpStatus.FORBIDDEN);
-//        }
+        if(!itemService.validateItem(id,principal.getName())){
+            return new ResponseEntity<String>("수정권한이 없습니다.", HttpStatus.FORBIDDEN);
+        }
         System.out.println(id);
-        System.out.println(String.valueOf(category));
-        itemRepository.updateCategory(id, String.valueOf(category));
+        System.out.println(category);
+        itemService.updateCategory(id, Category.valueOf(category));
         return new ResponseEntity<Long>(id,HttpStatus.OK);
     }
 
@@ -213,12 +213,26 @@ public class AdminController {
     //상품 판매상태 관리 페이지로 이동
     @GetMapping(value={"/admin/sellingstatechange","/admin/sellingstatechange/{page}"})
     public String sellingStateChange(ItemSearchDto itemSearchDto,@PathVariable("page") Optional<Integer> page, Model model){
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+       Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<MainItemDto> sellingStateChange = itemService.getAllMain(itemSearchDto, pageable);
         model.addAttribute("items",sellingStateChange);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 10);
         return "admin/sellingstatechange";
+    }
+
+    //상품 판매상태 변경
+    @PutMapping(value="/admin/sellingstatechange/modify/{id}")
+    public @ResponseBody ResponseEntity updateItemSellStatus(@PathVariable Long id,
+                                                       String itemSellStatus,
+                                                       Principal principal){
+//        if(!itemService.validateItem(id,principal.getName())){
+//            return new ResponseEntity<String>("수정권한이 없습니다.", HttpStatus.FORBIDDEN);
+//        }
+        System.out.println(id);
+        System.out.println(itemSellStatus);
+        itemService.updateItemSellStatus(id, ItemSellStatus.valueOf(itemSellStatus));
+        return new ResponseEntity<Long>(id,HttpStatus.OK);
     }
 
     //기본 정보 관리

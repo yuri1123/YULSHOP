@@ -5,24 +5,22 @@ import com.yuri.shoppingsite.Repository.ItemRepository;
 import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.Repository.OrderItemRepository;
 import com.yuri.shoppingsite.constant.Category;
+import com.yuri.shoppingsite.constant.ItemSellStatus;
 import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.domain.Chart.CategoryItemsInterface;
 import com.yuri.shoppingsite.domain.Chart.MainGraphInterface;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.user.Member;
 import lombok.RequiredArgsConstructor;
-import org.jboss.jandex.Main;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -211,11 +209,15 @@ public class ItemService {
     }
 
     //카테고리 업데이트
-    public int updateCategory(Model model, String category, Long id, String name){
-        int result = itemRepository.updateCategory(id,category);
+    public int updateCategory(Long id, Category category){
+        int result = itemRepository.updateCategory(id, category);
         return result;
     }
 
-
+    //상품 상태 업데이트
+    public int updateItemSellStatus(Long id, ItemSellStatus itemSellStatus){
+        int result = itemRepository.updateItemSellStatus(id,itemSellStatus);
+        return result;
+    }
 
 }
