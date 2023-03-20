@@ -129,7 +129,11 @@ public class MemberService implements UserDetailsService {
         return memberCount;
     }
 
-
+    //멤버 권한 업데이트
+    public int updateUserRole(Long id, Role role){
+        int result = memberRepository.updateUserRole(id,role);
+        return result;
+    }
 
 }
 

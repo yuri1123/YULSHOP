@@ -8,33 +8,40 @@
 
     <style>
         .gap {
-            margin-top: 80px;
-            margin-bottom: 50px;
+            margin-top: 150px;
+            margin-bottom: 80px;
         }
 
-        .gap2 {
-            margin:10px;
+        .backcol1 {
+            background: #1e1e1e;
+            border: #1e1e1e;
+            height: 30px;
+            width: 50px;
+            border-radius: 10px;
         }
-        .hover:hover {
-            color: #a367e7;
+        .backcol1:hover{
+            background: #a367e7;
+            border: #a367e7;
+            height: 30px;
+            width: 50px;
+            border-radius: 10px;
         }
 
         .backcol {
             background: #1e1e1e;
             border: #1e1e1e;
+            height: 40px;
+            width: 70px;
+            border-radius: 10px;
         }
         .backcol:hover{
             background: #a367e7;
             border: #a367e7;
+            height: 40px;
+            width: 70px;
+            border-radius: 10px;
         }
 
-        .savebtn {
-            background: #1e1e1e;
-            border: #1e1e1e;
-            color: white;
-            border-radius: 15px;
-            padding:2px;
-        }
         .page-link {
             color: #000;
             background-color: #fff;
@@ -54,14 +61,16 @@
             border-color: #ccc;
         }
 
-        .rad{
-            border-radius: 10px;
-            padding: 10px 30px;
-        }
-
         .h1tag {
             color: black;
             font-size: 45px;
+        }
+        .redline {
+            color: red;
+            text-decoration: line-through;
+        }
+        .outofStock {
+            color: #2e7d32;
         }
     </style>
 
@@ -85,7 +94,7 @@
         let searchBy = $("#searchBy").val();
         let searchQuery = $("#searchQuery").val();
 
-        location.href="/admin/sellingstatechange/" + page
+        location.href="/admin/stockupdate/" + page
             + "?searchDateType=" + searchDateType
             + "&searchSellStatus=" + searchSellStatus
             + "&searchBy=" + searchBy
@@ -93,35 +102,40 @@
     }
 
 
-    function updateStock(id, stockNumber) {
+    function updateStock(){
 
-        if (confirm("저장하시겠습니까?")) {
+        if(confirm("저장하시겠습니까?")){
+
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
+            var id = $("#itemId").val();
+            var addstock = $("#addstock").val();
+            var url = "/admin/stockupdate/modify/" + id +"?addstock=" + addstock;
 
-            var url = "/admin/stockupdate" + id + "?stockNumber=" + stockNumber;
+            alert(id);
+            alert(addstock);
 
             $.ajax({
-                url: url,
-                type: "PUT",
-                beforeSend: function (xhr) {
+                url      : url,
+                type     : "PUT",
+                beforeSend : function(xhr){
                     /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
                     xhr.setRequestHeader(header, token);
                 },
-                dataType: "json",
-                cache: false,
-                success: function (result, status) {
-                    console.log("Item stockNumber update success");
-                },
-                error: function (jqXHR, status, error) {
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    location.href='/admin/stockupdate';
 
-                    if (jqXHR.status == '401' || jqXHR.status == '405') {
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
                         alert('로그인 후 이용해주세요');
-                        location.href = '/member/login';
-                    } else {
+                        location.href='/member/login';
+                    } else{
                         alert(jqXHR.responseJSON.message);
                     }
-
                 }
             });
         }
@@ -142,7 +156,7 @@
 
         </div>
 
-        <form th:action="@{'/admin/sellingstatechange/' + ${items.number}}" role="form" method="get" th:object="${items}">
+        <form th:action="@{'/admin/stockupdate/' + ${items.number}}" role="form" method="get" th:object="${items}">
             <div class="col-8 offset-4 pb-2">
                 <!--        검색하기-->
                 <div  class="form-inline justify-content-center" th:object="${itemSearchDto}">
@@ -155,8 +169,9 @@
                     </select>
                     <select th:field="*{searchSellStatus}" class="form-control m-1" style="width:auto;">
                         <option value="">판매상태(전체)</option>
-                        <option value="SELL">판매</option>
-                        <option value="SOLD_OUT">품절</option>
+                        <option value="SELL">판매중</option>
+                        <option value="SOLD_OUT" >품절</option>
+                        <option value="NOT_SELL">판매중단</option>
                     </select>
                     <select th:field="*{searchBy}" class="form-control m-1" style="width:auto;">
                         <option value="itemNm">상품명</option>
@@ -173,6 +188,7 @@
                     <thead class="text-center">
                     <tr>
                         <th>순번</th>
+                        <th type="hidden"></th>
                         <th>판매상태</th>
                         <th>카테고리</th>
                         <th>상품명</th>
@@ -183,10 +199,11 @@
                     <tbody class="text-center">
                     <tr th:each="items, status: ${items}">
                         <td th:text="${items.id}"></td>
+                        <td type="hidden"><input type="hidden" id="itemId" name="itemId" th:value="${items.id}"></td>
                         <td>
                             <span th:if="|${items.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}|"  class="badge alert-heading">판매중</span>
-                            <span th:if="|${items.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SOLD_OUT}|" class="badge alert-light">품절</span>
-                            <span th:if="|${items.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).NOT_SELL}|" class="badge alert-light ">판매중단</span>
+                            <span th:if="|${items.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SOLD_OUT}|" class="badge alert-light outofStock">품절</span>
+                            <span th:if="|${items.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).NOT_SELL}|" class="badge alert-light redline">판매중단</span>
                         </td>
                         <td>
                             <span th:if="|${items.category == T(com.yuri.shoppingsite.constant.Category).DIARY}|"  class="badge badge alert-danger">DIARY</span>
@@ -197,45 +214,43 @@
                             <span th:if="|${items.category == T(com.yuri.shoppingsite.constant.Category).ACCESSORY}|" class="badge badge badge alert-primary">ACCESSORY</span>
                         </td>
                         <td th:text="${items.itemNm}"></td>
-                        <td th:text="${items.stockNumber}"></td>
-                        <td>
-                        <input type="number" name="stockNumber" th:id="'stockNumber' + ${items.id}"
-                               min="1" style="width: 70px"
-                               class="mr-3"><span class="savebtn" onclick="updateStock()">저장</span>
 
+                        <td  th:text="${items.stockNumber}"></td>
+                        <td class="d-flex">
+                        <input type="number" name="addstock" id="addstock" min="1" style="width: 70px" class="mr-3">
+                            <span class="backcol1 white-color" onclick="updateStock()">저장</span>
                         </td>
                     </tr>
                     </tbody>
                 </table>
 
-<!--                <div class="justify-content-center mb-5 mt-5">-->
+                <div class="justify-content-center mb-5 mt-5">
 
-<!--&lt;!&ndash;                                    페이징 처리 시작&ndash;&gt;-->
-<!--                            <div th:with="start=${(items.number/maxPage)*maxPage +1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >-->
-<!--                              <ul class="pagination justify-content-center">-->
+                    <!--        페이징 처리 시작-->
+                    <div th:with="start=${(items.number/maxPage)*maxPage +1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
+                        <ul class="pagination justify-content-center">
 
-<!--                                <li class="page-item" th:classappend="${items.first}?'disabled'">-->
-<!--                                  <a th:onclick="'javascript:page(' + ${items.number -1} + ')'" aria-label='Previous' class="page-link">-->
-<!--                                    <span aria-hidden='true'>이전</span>-->
-<!--                                  </a>-->
-<!--                                </li>-->
+                            <li class="page-item" th:classappend="${items.first}?'disabled'">
+                                <a style="font-size: 13px" th:onclick="'javascript:page(' + ${items.number -1} + ')'" aria-label='Previous' class="page-link">
+                                    <span aria-hidden='true' >이전</span>
+                                </a>
+                            </li>
 
-<!--                                <li class="page-item" th:each="page: ${#items.sequence(start, end)}" th:classappend="${items.number eq (page -1)}?'active':''">-->
-<!--                                  <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>-->
-<!--                                </li>-->
+                            <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq (page -1)}?'active':''">
+                                <a style="font-size: 13px" th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+                            </li>
 
-<!--                                <li class="page-item" th:classappend="${items.last}?'disabled'">-->
-<!--                                  <a th:onclick="'javascript:page(' + ${items.number +   1} + ')'" aria-label='Next' class="page-link">-->
-<!--                                    <span aria-hidden='true'>다음</span>-->
-<!--                                  </a>-->
-<!--                                </li>-->
+                            <li class="page-item" th:classappend="${items.last}?'disabled'">
+                                <a style="font-size: 13px" th:onclick="'javascript:page(' + ${items.number +   1} + ')'" aria-label='Next' class="page-link">
+                                    <span aria-hidden='true'>다음</span>
+                                </a>
+                            </li>
 
-<!--                              </ul>-->
-<!--                            </div>-->
-
-<!--                </div>-->
+                        </ul>
+                    </div>
+                </div>
             </div>
-</form>
+        </form>
                 </div>
             </div>
 

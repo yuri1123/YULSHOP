@@ -7,29 +7,38 @@
   <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
   <style>
     .gap {
-      margin-top: 80px;
-      margin-bottom: 50px;
+      margin-top: 150px;
+      margin-bottom: 80px;
     }
 
-    .gap2 {
-      margin:10px;
+    .backcol1 {
+      background: #1e1e1e;
+      border: #1e1e1e;
+      height: 30px;
+      width: 50px;
+      border-radius: 10px;
     }
-    .hover:hover {
-      color: #a367e7;
+    .backcol1:hover{
+      background: #a367e7;
+      border: #a367e7;
+      height: 30px;
+      width: 50px;
+      border-radius: 10px;
     }
 
     .backcol {
       background: #1e1e1e;
       border: #1e1e1e;
+      height: 40px;
+      width: 70px;
+      border-radius: 10px;
     }
     .backcol:hover{
       background: #a367e7;
       border: #a367e7;
-    }
-    .fontcolors {
-      margin-top:40px;
-      margin-bottom: 40px;
-      font-size: 15px;
+      height: 40px;
+      width: 70px;
+      border-radius: 10px;
     }
 
     .page-link {
@@ -51,16 +60,9 @@
       border-color: #ccc;
     }
 
-    .rad{
-      border-radius: 10px;
-      padding: 10px 30px;
-    }
-
-    .img-div {
-      margin-bottom: 10px;
-    }
-    .fieldError {
-      color: #bd2130;
+    .h1tag {
+      color: black;
+      font-size: 45px;
     }
   </style>
 
@@ -91,37 +93,44 @@
             + "&searchQuery=" + searchQuery;
   }
 
-  // function updateUserAuth(cartItemId, count){
-  //   var token = $("meta[name='_csrf']").attr("content");
-  //   var header = $("meta[name='_csrf_header']").attr("content");
-  //
-  //   var url = "/cartItem/" + cartItemId+"?count=" + count;
-  //
-  //   $.ajax({
-  //     url      : url,
-  //     type     : "PATCH", //부분업데이트이므로 PATCH TYPE으로 설정
-  //     beforeSend : function(xhr){
-  //       /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
-  //       xhr.setRequestHeader(header, token);
-  //     },
-  //     dataType : "json",
-  //     cache   : false,
-  //     success  : function(result, status){
-  //       console.log("cartItem count update success");
-  //     },
-  //     error : function(jqXHR, status, error){
-  //
-  //       if(jqXHR.status == '401'){
-  //         alert('로그인 후 이용해주세요');
-  //         location.href='/member/login';
-  //       } else{
-  //         alert(jqXHR.responseJSON.message);
-  //       }
-  //
-  //     }
-  //   });
-  // }
+  function updateAuth(){
 
+    if(confirm("저장하시겠습니까?")){
+
+      var token = $("meta[name='_csrf']").attr("content");
+      var header = $("meta[name='_csrf_header']").attr("content");
+      var id = $("#userId").val();
+      var role = $("#userRole").val();
+
+      var url = "/admin/userauth/modify/" + id +"?role=" + role;
+
+      alert(role);
+      alert(id);
+      $.ajax({
+        url      : url,
+        type     : "PUT",
+        beforeSend : function(xhr){
+          /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+          xhr.setRequestHeader(header, token);
+        },
+        dataType : "json",
+        cache   : false,
+        success  : function(result, status){
+          location.href='/admin/userauth';
+
+        },
+        error : function(jqXHR, status, error){
+
+          if(jqXHR.status == '401'){
+            alert('로그인 후 이용해주세요');
+            location.href='/member/login';
+          } else{
+            alert(jqXHR.responseJSON.message);
+          }
+        }
+      });
+    }
+  }
 
   function deleteMember(obj){
 
@@ -169,16 +178,15 @@
 <div class="container-fluid">
   <div class="row">
 
-
     <div class="col-lg-12 col-md-12 col-sm-12 gap">
-        <h1 class="text-center">유저 권한 관리</h1>
+        <h1 class="h1tag text-center">사용자 권한 관리</h1>
 
     </div>
 
     <form th:action="@{'/admin/userauth/' + ${members.number}}" role="form" method="get" th:object="${members}">
       <div class="col-8 offset-4 pb-2">
         <!--        검색하기-->
-        <div  class="form-inline justify-content-center" th:object="${memberSearchDto}">
+        <div class="form-inline justify-content-center" th:object="${memberSearchDto}">
           <select th:field="*{searchDateType}" class="form-control m-1" style="width:auto;">
             <option value="all">전체기간</option>
             <option value="1d">1일</option>
@@ -188,8 +196,12 @@
           </select>
           <select th:field="*{searchRoleStatus}" class="form-control m-1" style="width:auto;">
             <option value="">권한상태</option>
-            <option value="ADMIN">운영자</option>
-            <option value="USER">회원</option>
+            <option value="ADMIN">관리자</option>
+            <option value="USER">일반회원</option>
+            <option value="SILVE">실버회원</option>
+            <option value="GOLD">골드회원</option>
+            <option value="PLATINUM">플래티넘회원</option>
+
           </select>
           <select th:field="*{searchBy}" class="form-control m-1" style="width:auto;">
             <option value="name">아이디</option>
@@ -207,6 +219,7 @@
         <tr>
           <th>순번</th>
           <th>아이디</th>
+          <th type="hidden"></th>
           <th>닉네임</th>
           <th>사용자 권한</th>
           <th>가입일자</th>
@@ -218,6 +231,7 @@
         <tr th:each="member, status: ${members}">
           <td th:text="${member.id}"></td>
           <td th:text="${member.name}"></td>
+          <td type="hidden"><input type="hidden" id="memberId" name="memberId" th:value="${member.id}"></td>
           <td th:text="${member.nickname}"></td>
           <td>
                 <span th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).ADMIN}" class="badge alert-danger">관리자</span>
@@ -228,9 +242,8 @@
           </td>
 
           <td th:text="${member.regTime}"></td>
-          <td>
-
-            <select>
+          <td class="justify-content-center text-center d-flex">
+            <select class="mr-3" id="userRole">
               <th:block th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).ADMIN}" >
                 <option th:value="ADMIN" selected>관리자</option>
                 <option th:value="USER">일반회원</option>
@@ -267,19 +280,16 @@
                 <option th:value="PLATINUM" selected>플래티넘회원</option>
               </th:block>
             </select>
+            <span class="backcol1 white-color" onclick="updateAuth()">저장</span>
           </td>
 
           </td>
-          <td class="text-center justify-content-center">
-            <button type="button" class="close" aria-label="Close">
-              <span aria-hidden="true" th:data-id="${member.id}" class="text-center justify-content-center" onclick="deleteMember(this)">&times;</span>
-<!--                  <span aria-hidden="true" th:data-id="${member.id}" id="deleteMemberbtn"></span>-->
+          <td class="text-center align-middle justify-content-center">
+            <button type="button" class="close text-center" aria-label="Close">
+              <span aria-hidden="true" th:data-id="${member.id}" class="text-center mr-50 justify-content-center" onclick="deleteMember(this)">&times;</span>
             </button>
 
           </td>
-<!--          <td>-->
-<!--            <a th:href="'/admin/item/'+${item.id}" th:text="${item.itemNm}" class="black-color hover"></a>-->
-<!--          </td>-->
         </tr>
         </tbody>
       </table>
@@ -287,21 +297,22 @@
       <div class="justify-content-center mb-5 mt-5">
 
         <!--        페이징 처리 시작-->
-        <div th:with="start=${(members.number/maxPage)*maxPage +1}, end=(${(members.totalPages == 0) ? 1 : (start + (maxPage - 1) < members.totalPages ? start + (maxPage - 1) : members.totalPages)})" >
+        <div th:with="start=${(members.number/maxPage)*maxPage +1}, end=(${(members.totalPages == 0) ? 1 :
+        (start + (maxPage - 1) < members.totalPages ? start + (maxPage - 1) : members.totalPages)})" >
           <ul class="pagination justify-content-center">
 
             <li class="page-item" th:classappend="${members.first}?'disabled'">
-              <a th:onclick="'javascript:page(' + ${members.number -1} + ')'" aria-label='Previous' class="page-link">
-                <span aria-hidden='true'>이전</span>
+              <a style="font-size: 13px" th:onclick="'javascript:page(' + ${members.number -1} + ')'" aria-label='Previous' class="page-link">
+                <span aria-hidden='true' >이전</span>
               </a>
             </li>
 
             <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${members.number eq (page -1)}?'active':''">
-              <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+              <a style="font-size: 13px" th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
             </li>
 
             <li class="page-item" th:classappend="${members.last}?'disabled'">
-              <a th:onclick="'javascript:page(' + ${members.number +   1} + ')'" aria-label='Next' class="page-link">
+              <a style="font-size: 13px" th:onclick="'javascript:page(' + ${members.number +   1} + ')'" aria-label='Next' class="page-link">
                 <span aria-hidden='true'>다음</span>
               </a>
             </li>
@@ -309,14 +320,11 @@
           </ul>
         </div>
 
-
-
       </div>
     </div>
     </form>
   </div>
 </div>
-
 
 
 <th:block th:include="/include/admin_footer.html"/>

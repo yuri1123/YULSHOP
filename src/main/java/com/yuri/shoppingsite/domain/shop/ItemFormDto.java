@@ -24,6 +24,7 @@ public class ItemFormDto {
     private String itemDetail;
     @NotNull(message = "재고는 필수 입력값입니다.")
     private Integer stockNumber;
+    private Integer addCount;
     private int orderTotalCount; //주문총횟수
     private Category category;
     private ItemSellStatus itemSellStatus;

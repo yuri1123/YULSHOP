@@ -1,6 +1,9 @@
 package com.yuri.shoppingsite.service;
 
+import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.Repository.NoticeRepository;
+import com.yuri.shoppingsite.constant.ItemSellStatus;
+import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.domain.community.Notice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

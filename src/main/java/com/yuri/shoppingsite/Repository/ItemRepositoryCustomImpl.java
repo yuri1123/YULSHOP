@@ -136,7 +136,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime)
+                                item.regTime, item.addCount, item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
@@ -184,7 +184,9 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime)
+                                item.regTime,
+                                item.addCount,
+                                item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
@@ -229,7 +231,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime)
+                                item.regTime, item.addCount, item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
@@ -276,7 +278,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime)
+                                item.regTime, item.addCount, item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
@@ -323,7 +325,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime)
+                                item.regTime, item.addCount, item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
@@ -372,7 +374,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime)
+                                item.regTime, item.addCount, item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
@@ -421,7 +423,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime)
+                                item.regTime, item.addCount, item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
@@ -470,7 +472,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime)
+                                item.regTime, item.addCount, item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
@@ -520,7 +522,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime)
+                                item.regTime, item.addCount, item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)

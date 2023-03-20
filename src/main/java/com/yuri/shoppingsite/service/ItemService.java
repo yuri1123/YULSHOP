@@ -182,12 +182,12 @@ public class ItemService {
     }
 
     //아이디 기준으로 재고 가져와서 수량 변경하기
-    public Item updatestock(Long id, int addNum){
-        Item stockItem = itemRepository.findstockById(id);
-        int nowStock = stockItem.getStockNumber();
-        stockItem.setStockNumber(nowStock += addNum);
-        return stockItem;
-    }
+//    public void updatestock(Long id, int addCount, int stockNumber){
+//        stockNumber = itemRepository.findStockById(id);
+//        addCount = itemRepository.findAddCountById(id);
+//        itemRepository.updateStockNumber(id,stockNumber);
+//        itemRepository.updateAddCount(id,addCount);
+//    }
 
     @Autowired
     MemberRepository memberRepository;
@@ -219,5 +219,7 @@ public class ItemService {
         int result = itemRepository.updateItemSellStatus(id,itemSellStatus);
         return result;
     }
+
+
 
 }

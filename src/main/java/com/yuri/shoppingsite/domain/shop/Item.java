@@ -43,6 +43,8 @@ public class Item extends BaseEntity {
 
     private int orderTotalIncome; //상품총수익
 
+    private int addCount; //입고수량
+
     public void updateItem(ItemFormDto itemFormDto){
         this.itemNm = itemFormDto.getItemNm();
         this.price = itemFormDto.getPrice();
@@ -50,6 +52,7 @@ public class Item extends BaseEntity {
         this.stockNumber = itemFormDto.getStockNumber();
         this.itemDetail = itemFormDto.getItemDetail();
         this.itemSellStatus = itemFormDto.getItemSellStatus();
+        this.addCount = itemFormDto.getStockNumber();
 //        this.orderTotalCount = itemFormDto.getOrderTotalCount();
     }
 
@@ -66,8 +69,8 @@ public class Item extends BaseEntity {
     }
 
     public void addStock(int stockNumber){
-
         this.stockNumber += stockNumber;
+        this.addCount += stockNumber;
     }
 
     //주문 횟수를 증가시킨다.

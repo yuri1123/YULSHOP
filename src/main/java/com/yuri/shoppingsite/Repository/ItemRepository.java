@@ -52,8 +52,6 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
     @Query("select sum(i.orderTotalIncome) from Item i")
     int sellingIncome();
 
-    @Query("select i from Item i where i.id = :id")
-    Item findstockById(@Param("id") Long id);
 
     @Query("select i.category as category, sum(i.orderTotalIncome) " +
             "as totalIncome from Item i group by i.category")
@@ -61,9 +59,9 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
 
     @Modifying(clearAutomatically = true)
     @Query("update Item i set i.category=:category where i.id=:id")
-    int updateCategory(@Param(value="id") Long id, @Param(value="category")Category category);
+    int updateCategory(@Param(value = "id") Long id, @Param(value = "category") Category category);
 
     @Modifying(clearAutomatically = true)
     @Query("update Item i set i.itemSellStatus=:itemSellStatus where i.id=:id")
-    int updateItemSellStatus(@Param(value="id") Long id, @Param(value="itemSellStatus") ItemSellStatus itemSellStatus);
+    int updateItemSellStatus(@Param(value = "id") Long id, @Param(value = "itemSellStatus") ItemSellStatus itemSellStatus);
 }

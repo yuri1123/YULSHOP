@@ -215,8 +215,7 @@
             </td>
             <td th:text="${items.itemNm}"></td>
             <td th:text="${items.stockNumber}"></td>
-            <td>
-
+            <td class="d-flex">
               <select class="mr-3" id="itemSellStatus" name="itemSellStatus">
                 <th:block th:if="|${items.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}|" >
                   <option th:value="SELL" selected>판매중</option>

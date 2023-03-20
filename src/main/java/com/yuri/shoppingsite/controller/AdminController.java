@@ -7,6 +7,7 @@ import com.yuri.shoppingsite.Repository.ItemRepository;
 import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.constant.Category;
 import com.yuri.shoppingsite.constant.ItemSellStatus;
+import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.domain.Chart.CategoryItemsInterface;
 import com.yuri.shoppingsite.domain.Chart.MainGraphInterface;
 import com.yuri.shoppingsite.domain.community.NoticeFormDto;
@@ -255,19 +256,15 @@ public class AdminController {
     }
 
 //    //유저 권한 변경
-//    @PatchMapping(value="/admin/member/{id}")
-//    public @ResponseBody ResponseEntity updateMemberAuth(@PathVariable("id") Long id,
-//                                                       Principal principal){
-        //현재 로그인한 회원의 role 가져와서 ADMIN인지 체크
-//        if(!memberService.validateMember(principal.getName())){
-//            return new ResponseEntity<String>("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
-//        }
-
-//        //장바구니 상품의 개수 업데이트
-//        memberService.updateMemberRole(cartItemId, count);
-//        return new ResponseEntity<Long>(cartItemId,HttpStatus.OK);
-//    }
-//
+    @PutMapping(value="/admin/userauth/modify/{id}")
+    public @ResponseBody ResponseEntity updateUserRole(@PathVariable Long id,
+                                                             String role,
+                                                             Principal principal){
+        System.out.println(id);
+        System.out.println(role);
+        memberService.updateUserRole(id, Role.valueOf(role));
+        return new ResponseEntity<Long>(id,HttpStatus.OK);
+    }
 
     //유저 삭제
     @DeleteMapping(value = "/admin/member/{id}")
@@ -308,16 +305,19 @@ public class AdminController {
         return "admin/stockupdate";
     }
 
+    Item item;
+    ItemRepository itemRepository;
     //재고변경 하기
-    @PutMapping(value="/admin/stockupdate/{id}")
-    public @ResponseBody ResponseEntity updateStock(
-            @PathVariable("id") Long id, Principal principal, int stockNumber){
+    @PutMapping(value="/admin/stockupdate/modify/{id}")
+    public @ResponseBody ResponseEntity updateStock(@PathVariable Long id,
+                                                    Integer addStock, Integer stockNumber,
+                                                             Principal principal){
+        System.out.println(id);
+        System.out.println(addStock);
 
-        if(!itemService.validateItem(id,principal.getName())){
-            return new ResponseEntity<String>("수정 권한이 업습니다.", HttpStatus.FORBIDDEN);
-        }
-        itemService.updatestock(id,stockNumber);
-
+//        stockNumber = itemRepository.findStockById(id);
+//        itemService.updatestock(id,addStock, stockNumber);
+//
         return new ResponseEntity<Long>(id,HttpStatus.OK);
     }
 
