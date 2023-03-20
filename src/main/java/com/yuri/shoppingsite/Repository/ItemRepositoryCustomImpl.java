@@ -38,6 +38,27 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         return searchSellStatus == null? null : QItem.item.itemSellStatus.eq(searchSellStatus);
     }
 
+    private BooleanExpression searchCategoryEq(Category searchCategoryType) {
+//        LocalDateTime dateTime = LocalDateTime.now();
+
+        if (StringUtils.equals("ALL", searchCategoryType) || searchCategoryType == null) {
+            return null;
+        } else if (StringUtils.equals("DIARY", searchCategoryType)) {
+            return QItem.item.category.eq(searchCategoryType);
+        } else if (StringUtils.equals("WALLDECO", searchCategoryType)) {
+            return QItem.item.category.eq(searchCategoryType);
+        } else if (StringUtils.equals("PEN", searchCategoryType)) {
+            return QItem.item.category.eq(searchCategoryType);
+        } else if (StringUtils.equals("LIVING", searchCategoryType)) {
+            return QItem.item.category.eq(searchCategoryType);
+        } else if (StringUtils.equals("CARD", searchCategoryType)) {
+            return QItem.item.category.eq(searchCategoryType);
+        } else if (StringUtils.equals("ACCESSORY", searchCategoryType)) {
+            return QItem.item.category.eq(searchCategoryType);
+        }
+        return null;
+    }
+
     //searchDate TYpe의 값에 따라서 dateTime의 값을 이전 시간의 값으로 셋팅 후 해당시간 이후로 등록된 상품을 조회
     //ex) searchDate Type값이 1m인 경우 dateTime의 시간을 한달 전으로 셋팅후 최근한달동안 등록된 상품만 조회
     //하도록 조건값을 반환한다.
@@ -57,6 +78,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         }
         return QItem.item.regTime.after(dateTime);
     }
+
 
     //searchBy의 값에 따라서 상품명에 검색어를 포함하고 있는 상품 또는
     // 상품 생성자의 아이디에 검색어를 포함하고 있는 상품을 조회하도록 조건값을 반환한다.
@@ -176,6 +198,53 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
         return new PageImpl<>(content, pageable, total);
     }
+
+    @Override
+    public Page<MainItemDto> getALLCategoryItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+
+        List<MainItemDto> content = queryFactory
+                .select(
+                        new QMainItemDto(
+                                item.id,
+                                item.category,
+                                item.itemNm,
+                                item.itemDetail,
+                                itemImg.imgUrl,
+                                item.price,
+                                item.stockNumber,
+                                item.itemSellStatus,
+                                item.regTime)
+                )
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+                        searchCategoryEq(itemSearchDto.getSearchCategory()),
+                        searchByLike(itemSearchDto.getSearchBy(),
+                                itemSearchDto.getSearchQuery()))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .orderBy(item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = queryFactory
+                .select(Wildcard.count)
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+                        searchCategoryEq(itemSearchDto.getSearchCategory()),
+                        searchByLike(itemSearchDto.getSearchBy(),
+                                itemSearchDto.getSearchQuery()))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
 
     @Override
     public Page<MainItemDto> getWallDecoItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {

@@ -11,6 +11,7 @@ import com.yuri.shoppingsite.domain.Chart.MainGraphInterface;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.user.Member;
 import lombok.RequiredArgsConstructor;
+import org.jboss.jandex.Main;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -105,6 +106,9 @@ public class ItemService {
         return itemRepository.getALLMainItemPage(itemSearchDto, pageable);
     }
 
+    public Page<MainItemDto> getAdminCategoryPage(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getALLCategoryItemPage(itemSearchDto,pageable);
+    }
     @Transactional(readOnly = true)
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return itemRepository.getMainItemPage(itemSearchDto, pageable);

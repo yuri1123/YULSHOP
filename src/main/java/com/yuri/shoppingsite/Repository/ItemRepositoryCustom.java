@@ -25,6 +25,9 @@ public interface ItemRepositoryCustom {
 
     Page<ResultCategoryItemDto> getResultCategoryItemDto(ItemSearchDto itemSearchDto, Pageable pageable);
 
+    Page<MainItemDto> getALLCategoryItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
+
+
 //    List<MainGraphDto> getMainGraphData();
 
 }

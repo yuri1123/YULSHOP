@@ -187,7 +187,7 @@ public class AdminController {
     @GetMapping(value={"/admin/categorychange","/admin/categorychange/{page}"})
     public String categoryChange(ItemSearchDto itemSearchDto,Model model, @PathVariable("page") Optional<Integer> page){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
-        Page<MainItemDto> categoryItem = itemService.getAllMain(itemSearchDto, pageable);
+        Page<MainItemDto> categoryItem = itemService.getAdminCategoryPage(itemSearchDto, pageable);
         model.addAttribute("items",categoryItem);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 10);
@@ -196,14 +196,16 @@ public class AdminController {
     @Autowired
     ItemRepository itemRepository;
     //상품 카테고리 수정 업데이트
-    @PutMapping(value="/admin/categorychange/{id}")
+    @PutMapping(value="/admin/categorychange")
     public @ResponseBody ResponseEntity updateCategory(@PathVariable Long id,
-                                        String category,
+                                                       @PathVariable Category category,
                                                        Principal principal){
-        if(!itemService.validateItem(id,principal.getName())){
-            return new ResponseEntity<String>("수정권한이 없습니다.", HttpStatus.FORBIDDEN);
-        }
-        itemRepository.updateCategory(id,category);
+//        if(!itemService.validateItem(id,principal.getName())){
+//            return new ResponseEntity<String>("수정권한이 없습니다.", HttpStatus.FORBIDDEN);
+//        }
+        System.out.println(id);
+        System.out.println(String.valueOf(category));
+        itemRepository.updateCategory(id, String.valueOf(category));
         return new ResponseEntity<Long>(id,HttpStatus.OK);
     }
 

@@ -95,27 +95,31 @@
 
     function page(page){
         let searchDateType = $("#searchDateType").val();
-        let searchSellStatus = $("#searchSellStatus").val();
+        let searchCategory = $("#searchCategory").val();
         let searchBy = $("#searchBy").val();
         let searchQuery = $("#searchQuery").val();
 
         location.href="/admin/categorychange/" + page
             + "?searchDateType=" + searchDateType
-            + "&searchSellStatus=" + searchSellStatus
+            + "&searchCategory=" + searchCategory
             + "&searchBy=" + searchBy
             + "&searchQuery=" + searchQuery;
     }
 
 
-  function updateCategory(id,category){
+  function updateCategory(){
 
    if(confirm("저장하시겠습니까?")){
 
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
+    var id = $("#itemId").val();
+    var category = $("#category").val();
 
-    var url = "/admin/categorychange/" + id +"?category" + category;
+    var url = "/admin/categorychange/" + id +"?category=" + category;
 
+       alert(category);
+       alert(id);
     $.ajax({
       url      : url,
       type     : "PUT",
@@ -127,6 +131,7 @@
       cache   : false,
       success  : function(result, status){
         location.href='/admin/categorychange';
+
       },
       error : function(jqXHR, status, error){
 
@@ -147,10 +152,6 @@
 <th:block th:include="/include/admin_header.html"/>
 <th:block th:include="/include/admin_sidebar.html"/>
 
-<!--<script src="https://cdn.tailwindcss.com"></script>-->
-<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">-->
-<!--<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>-->
-
 
 <div class="container-fluid">
   <div class="row">
@@ -161,10 +162,12 @@
 
     </div>
 
-    <form th:action="@{'/admin/category/' + ${items.number}}" role="form" method="get" th:object="${items}">
+    <form th:action="@{'/admin/categorychange/' + ${items.number}}" role="form" method="get" th:object="${items}">
+
+
       <div class="col-8 offset-4 pb-2">
-        <!--        검색하기-->
-          <div  class="form-inline justify-content-center" th:object="${itemSearchDto}">
+
+          <div class="form-inline justify-content-center" th:object="${itemSearchDto}">
               <select th:field="*{searchDateType}" class="form-control m-1" style="width:auto;">
                   <option value="all">전체기간</option>
                   <option value="1d">1일</option>
@@ -172,10 +175,14 @@
                   <option value="1m">1개월</option>
                   <option value="6m">6개월</option>
               </select>
-              <select th:field="*{searchSellStatus}" class="form-control m-1" style="width:auto;">
-                  <option value="">판매상태(전체)</option>
-                  <option value="SELL">판매</option>
-                  <option value="SOLD_OUT">품절</option>
+              <select th:field="*{searchCategory}" class="form-control m-1" style="width:auto;">
+                  <option value="">카테고리(전체)</option>
+                  <option value="DIARY">Diary</option>
+                  <option value="WALLDECO">WallDeco</option>
+                  <option value="PEN">Pen & PenCase</option>
+                  <option value="LIVING">Living</option>
+                  <option value="CARD">Card & PostCard</option>
+                  <option value="ACCESSORY">Accessory</option>
               </select>
               <select th:field="*{searchBy}" class="form-control m-1" style="width:auto;">
                   <option value="itemNm">상품명</option>
@@ -187,11 +194,11 @@
       </div>
 
     <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-2">
-
-      <table class="table table">
+        <table class="table table">
         <thead class="text-center">
         <tr>
-          <th>순번</th>
+          <th>상품아이디</th>
+            <th type="hidden"></th>
           <th>카테고리</th>
           <th>상품명</th>
           <th>상품등록일</th>
@@ -201,6 +208,7 @@
         <tbody class="text-center">
         <tr th:each="items, status: ${items}">
           <td th:text="${items.id}"></td>
+            <td type="hidden"><input type="hidden" id="itemId" name="itemId" th:value="${items.id}">;</td>
         <td>
 
             <span th:if="${items.category == T(com.yuri.shoppingsite.constant.Category).DIARY}"  class="badge badge alert-danger">DIARY</span>
@@ -214,7 +222,7 @@
           <td th:text="${items.regTime}"></td>
           <td class="d-flex">
 
-            <select class="mr-3" th:id="'category_' + ${items.id}"}>
+            <select class="mr-3" id="category">
               <th:block th:if="${items.category == T(com.yuri.shoppingsite.constant.Category).DIARY}" >
                 <option th:value="DIARY" selected>DIARY</option>
                 <option th:value="WALLDECO" >WALL DECO</option>
@@ -264,53 +272,39 @@
                     <option th:value="ACCESSORY"selected >ACCESSORY</option>
                 </th:block>
             </select>
-            <span class="backcol1 white-color" th:data-id="${items.id}" onclick="updateCategory(id,category)">저장</span>
+            <span class="backcol1 white-color" onclick="updateCategory()">저장</span>
 
           </td>
-          </td>
-          </td>
-<!--          <td class="text-center justify-content-center">-->
-<!--            <button type="button" class="close" aria-label="Close">-->
-<!--              <span aria-hidden="true" th:data-id="${items.id}" class="text-center justify-content-center" onclick="deleteMember(this)">&times;</span>-->
-<!--&lt;!&ndash;                  <span aria-hidden="true" th:data-id="${member.id}" id="deleteMemberbtn"></span>&ndash;&gt;-->
-<!--            </button>-->
-
-<!--          </td>-->
-<!--          <td>-->
-<!--            <a th:href="'/admin/item/'+${item.id}" th:text="${item.itemNm}" class="black-color hover"></a>-->
-<!--          </td>-->
         </tr>
         </tbody>
       </table>
 
-      <div class="justify-content-center mb-5 mt-5">
+        <div class="justify-content-center mb-5 mt-5">
 
-          <!--        페이징 처리 시작-->
-          <div th:with="start=${(items.number/maxPage)*maxPage +1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
-              <ul class="pagination justify-content-center">
+            <!--        페이징 처리 시작-->
+            <div th:with="start=${(items.number/maxPage)*maxPage +1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
+                <ul class="pagination justify-content-center">
 
-                  <li class="page-item" th:classappend="${items.first}?'disabled'">
-                      <a style="font-size: 13px" th:onclick="'javascript:page(' + ${items.number -1} + ')'" aria-label='Previous' class="page-link">
-                          <span aria-hidden='true' >이전</span>
-                      </a>
-                  </li>
+                    <li class="page-item" th:classappend="${items.first}?'disabled'">
+                        <a style="font-size: 13px" th:onclick="'javascript:page(' + ${items.number -1} + ')'" aria-label='Previous' class="page-link">
+                            <span aria-hidden='true' >이전</span>
+                        </a>
+                    </li>
 
-                  <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq (page -1)}?'active':''">
-                      <a style="font-size: 13px" th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
-                  </li>
+                    <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq (page -1)}?'active':''">
+                        <a style="font-size: 13px" th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+                    </li>
 
-                  <li class="page-item" th:classappend="${items.last}?'disabled'">
-                      <a style="font-size: 13px" th:onclick="'javascript:page(' + ${items.number +   1} + ')'" aria-label='Next' class="page-link">
-                          <span aria-hidden='true'>다음</span>
-                      </a>
-                  </li>
+                    <li class="page-item" th:classappend="${items.last}?'disabled'">
+                        <a style="font-size: 13px" th:onclick="'javascript:page(' + ${items.number +   1} + ')'" aria-label='Next' class="page-link">
+                            <span aria-hidden='true'>다음</span>
+                        </a>
+                    </li>
 
-              </ul>
-          </div>
+                </ul>
+            </div>
 
-      </div>
-
-
+        </div>
 
       </div>
     </form>
