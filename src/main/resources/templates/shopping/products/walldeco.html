@@ -50,7 +50,7 @@
     let searchBy = $("#searchBy").val();
     let searchQuery = $("#searchQuery").val();
 
-    location.href="/shopping/shopping/" + page
+    location.href="/shopping/walldeco/" + page
             + "?searchDateType=" + searchDateType
             + "&searchSellStatus=" + searchSellStatus
             + "&searchBy=" + searchBy
@@ -65,7 +65,7 @@
       <!-- Section Tittle -->
       <div class="col-xl-4 col-lg-5 col-md-5">
         <div class="section-tittle" id="gap">
-          <h2>ALL PRODUCTS</h2>
+          <h2>WALL DECO</h2>
         </div>
       </div>
       <div class="col-xl-8 col-lg-7 col-md-7 ">
@@ -73,9 +73,9 @@
           <!--Nav Button  -->
           <nav>
             <div class="nav nav-tabs">
-              <a class="nav-item nav-link active" th:href="@{/shopping/shopping}">All</a>
+              <a class="nav-item nav-link " th:href="@{/shopping/shopping}">All</a>
               <a class="nav-item nav-link " th:href="@{/shopping/diary}">DIARY</a>
-              <a class="nav-item nav-link " th:href="@{/shopping/walldeco}">WALLDECO</a>
+              <a class="nav-item nav-link active " th:href="@{/shopping/walldeco}">WALLDECO</a>
               <a class="nav-item nav-link " th:href="@{/shopping/living}">LIVING</a>
               <a class="nav-item nav-link " th:href="@{/shopping/pen}">PEN</a>
               <a class="nav-item nav-link " th:href="@{/shopping/card}">CARD</a>
@@ -87,37 +87,37 @@
       </div>
     </div>
     <hr>
-    <form th:action="@{'/shopping/shopping/' + ${items.number}}" role="form" method="get" th:object="${items}">
-        <!--        검색하기-->
-        <div class="form-inline justify-content-end mt-30 mb-30" th:object="${itemSearchDto}">
-          <select th:field="*{searchDateType}" class="form-control m-1 align-middle border br" style="width:auto;">
-            <option value="all">전체기간</option>
-            <option value="1d">1일</option>
-            <option value="1w">1주</option>
-            <option value="1m">1개월</option>
-            <option value="6m">6개월</option>
-          </select>
-          <select th:field="*{searchSellStatus}" class="form-control m-1 align-middle border br" style="width:auto;">
-            <option value="">판매상태(전체)</option>
-            <option value="SELL">판매</option>
-            <option value="SOLD_OUT">품절</option>
-            <option value="NOT_SELL">판매중단</option>
-          </select>
-          <select th:field="*{searchBy}" class="form-control m-1 align-middle border br" style="width:auto;">
-            <option value="itemNm">상품명</option>
-            <option value="createdBy">등록자</option>
-          </select>
-          <input th:field="*{searchQuery}" type="text" class="form-control m-1" placeholder="검색어를 입력해주세요">
-          <button id="searchBtn" type="submit" class="btn-primary backcol rad">검색</button>
-        </div>
+    <form th:action="@{'/shopping/walldeco/' + ${wallItems.number}}" role="form" method="get" th:object="${wallItems}">
+      <!--        검색하기-->
+      <div class="form-inline justify-content-end mt-30 mb-30" th:object="${itemSearchDto}">
+        <select th:field="*{searchDateType}" class="form-control m-1 align-middle border br" style="width:auto;">
+          <option value="all">전체기간</option>
+          <option value="1d">1일</option>
+          <option value="1w">1주</option>
+          <option value="1m">1개월</option>
+          <option value="6m">6개월</option>
+        </select>
+        <select th:field="*{searchSellStatus}" class="form-control m-1 align-middle border br" style="width:auto;">
+          <option value="">판매상태(전체)</option>
+          <option value="SELL">판매</option>
+          <option value="SOLD_OUT">품절</option>
+          <option value="NOT_SELL">판매중단</option>
+        </select>
+        <select th:field="*{searchBy}" class="form-control m-1 align-middle border br" style="width:auto;">
+          <option value="itemNm">상품명</option>
+          <option value="createdBy">등록자</option>
+        </select>
+        <input th:field="*{searchQuery}" type="text" class="form-control m-1" placeholder="검색어를 입력해주세요">
+        <button id="searchBtn" type="submit" class="btn-primary backcol rad">검색</button>
+      </div>
 
-    <!-- Nav Card one -->
+      <!-- Nav Card one -->
     <div class="tab-content" id="nav-tabContent">
       <!-- card one -->
       <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
         <div class="row">
 
-          <th:block th:each="item, status: ${items.getContent()}">
+          <th:block th:each="item, status: ${wallItems.getContent()}">
             <div class="col-xl-4 col-lg-4 col-md-6">
 
               <div class="single-product mb-60">
@@ -126,7 +126,7 @@
                     <img th:src="${item.imgUrl}" height="300" th:alt="${item.imgUrl}"/>
                   </div>
                   <div class="product-caption">
-                    <h5 style="font-weight:bold;font-size: 15px;" th:text="|[${item.category}] ${item.itemNm}|"></h5>
+                    <h5 style="font-weight:bold;font-size: 15px;" th:text="|[${item.category}]${item.itemNm}|"></h5>
                     <div class="price">
                       <p th:text="|${#numbers.formatInteger(item.price,3,'COMMA')}원|"></p>
                     </div>
@@ -137,24 +137,25 @@
             </div>
           </th:block>
           <div class="col-xl-10 col-lg-10 col-md-10 offset-1">
-            <div th:with="start=${(items.number/maxPage)*maxPage +1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
+            <div class="justify-content-center" th:with="start=${(wallItems.number/maxPage)*maxPage + 1}, end=(${(wallItems.totalPages == 0) ? 1 : (start + (maxPage - 1) < wallItems.totalPages ? start + (maxPage - 1) : wallItems.totalPages)})">
               <ul class="pagination justify-content-center">
 
-                <li class="page-item" th:classappend="${items.first}?'disabled'">
-                  <a style="font-size: 13px" th:onclick="'javascript:page(' + ${items.number -1} + ')'" aria-label='Previous' class="page-link">
-                    <span aria-hidden='true' >이전</span>
+                <li class="page-item" th:classappend="${wallItems.number eq 0}?'disabled':''">
+                  <a style="font-size: 13px" th:href="@{'/shopping/walldeco/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${wallItems.number -1}}" aria-label='Previous' class="page-link">
+                    <span aria-hidden='true'>이전</span>
                   </a>
                 </li>
 
-                <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq (page -1)}?'active':''">
-                  <a style="font-size: 13px" th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+                <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${wallItems.number eq page -1}?'active':''">
+                  <a style="font-size: 13px" th:href="@{'/shopping/walldeco/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${page -1}}" th:inline="text" class="page-link">[[${page}]]</a>
                 </li>
 
-                <li class="page-item" th:classappend="${items.last}?'disabled'">
-                  <a style="font-size: 13px" th:onclick="'javascript:page(' + ${items.number +   1} + ')'" aria-label='Next' class="page-link">
+                <li class="page-item" th:classappend="${wallItems.number +1 ge wallItems.totalPages}?'disabled':''">
+                  <a style="font-size: 13px" th:href="@{'/shopping/walldeco/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${wallItems.number+1}}" aria-label='Next' class="page-link">
                     <span aria-hidden='true'>다음</span>
                   </a>
                 </li>
+
               </ul>
             </div>
           </div>
@@ -162,7 +163,7 @@
       </div>
       <!-- End Nav Card -->
     </div>
-  </form>
+    </form>
   </div>
   <th:block th:include="/include/user_footer.html"></th:block>
   <th:block th:include="/include/common_js.html"></th:block>

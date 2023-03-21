@@ -120,9 +120,9 @@
       <img th:src="${item.imgUrl}" height="300" th:alt="${item.imgUrl}"/>
       </div>
       <div class="product-caption">
-      <h5>[[${item.itemNm}]]</h5>
+            <h5 style="font-weight:bold;font-size: 15px;" th:text="|${item.itemNm}|"></h5>
       <div class="price">
-      <p>[[${item.price}]]원</p>
+            <p th:text="|${#numbers.formatInteger(item.price,3,'COMMA')}원|"></p>
       </div>
       </div>
       </a>

@@ -308,7 +308,7 @@ public class AdminController {
     Item item;
     ItemRepository itemRepository;
     //재고변경 하기
-    @PutMapping(value="/admin/stockupdate/modify/{id}")
+    @PatchMapping(value="/admin/stockupdate/modify/{id}")
     public @ResponseBody ResponseEntity updateStock(@PathVariable Long id,
                                                     Integer addStock, Integer stockNumber,
                                                              Principal principal){

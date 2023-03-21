@@ -12,9 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -24,32 +21,77 @@ public class ShoppingController {
     private ItemService itemService;
 
     //상품 전체 보여주기 리스트로 가기
-    @GetMapping(value="shopping/shopping")
+    @GetMapping(value={"/shopping/shopping","/shopping/shopping/{page}"})
     public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
         Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
-        Page<MainItemDto> diaryItems = itemService.getDiaryItemPage(itemSearchDto, pageable);
-        Page<MainItemDto> wallItems = itemService.getWallDecoItemPage(itemSearchDto, pageable);
-        Page<MainItemDto> penItems = itemService.getPenItemPage(itemSearchDto, pageable);
-        Page<MainItemDto> livingItems = itemService.getLivingItemPage(itemSearchDto, pageable);
-        Page<MainItemDto> cardItems = itemService.getCardItemPage(itemSearchDto, pageable);
-        Page<MainItemDto> accItems = itemService.getAccItemPage(itemSearchDto, pageable);
-
-        System.out.println(diaryItems.getContent());
         model.addAttribute("items", items);
-        model.addAttribute("diaryItems", diaryItems);
-        model.addAttribute("wallItems", wallItems);
-        model.addAttribute("penItems", penItems);
-        model.addAttribute("livingItems", livingItems);
-        model.addAttribute("cardItems", cardItems);
-        model.addAttribute("accItems", accItems);
-        
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
         return "shopping/shopping";
     }
 
+    @GetMapping(value={"shopping/diary","shopping/diary/{page}"})
+    public String navDiary(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model) {
+
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
+        Page<MainItemDto> diaryItems = itemService.getDiaryItemPage(itemSearchDto, pageable);
+        model.addAttribute("diaryItems", diaryItems);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 5);
+        return "shopping/products/diary";
+    }
+
+    @GetMapping(value={"/shopping/walldeco","/shopping/walldeco/{page}"})
+    public String wallDeco(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
+        Page<MainItemDto> wallItems = itemService.getWallDecoItemPage(itemSearchDto, pageable);
+        model.addAttribute("wallItems", wallItems);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 5);
+        return "shopping/products/walldeco";
+    }
+
+    @GetMapping(value={"/shopping/living","/shopping/living/{page}"})
+    public String living(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
+        Page<MainItemDto> livingItems = itemService.getLivingItemPage(itemSearchDto, pageable);
+        model.addAttribute("livingItems", livingItems);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 5);
+        return "shopping/products/living";
+    }
+
+    @GetMapping(value={"/shopping/pen","/shopping/pen/{page}"})
+    public String pen(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
+        Page<MainItemDto> penItems = itemService.getPenItemPage(itemSearchDto, pageable);
+        model.addAttribute("penItems", penItems);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 5);
+        return "shopping/products/pen";
+    }
+
+    @GetMapping(value={"/shopping/card","/shopping/card/{page}"})
+    public String card(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
+        Page<MainItemDto> cardItems = itemService.getCardItemPage(itemSearchDto, pageable);
+        model.addAttribute("cardItems", cardItems);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 5);
+        return "shopping/products/card";
+    }
+
+    @GetMapping(value={"/shopping/acc","/shopping/acc/{page}"})
+    public String acc(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
+        Page<MainItemDto> accItems = itemService.getAccItemPage(itemSearchDto, pageable);
+        model.addAttribute("accItems", accItems);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 5);
+        return "shopping/products/acc";
+    }
     //상품 상세보기로 가기
     @GetMapping(value="/item/{itemId}")
     public String itemDtl(Model model, @PathVariable("itemId") Long itemId){
