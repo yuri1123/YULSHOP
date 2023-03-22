@@ -47,21 +47,9 @@
             background-color: #fafafa;
             border-color: #ccc;
         }
-
-
         .repImg{
-            width:100%;
-            height:400px;
-        }
-
-        .repImg{
-            width:100%;
-            height:400px;
-        }
-
-        .repImg{
-            height:100px;
-            width:100px;
+            height:80px;
+            width:80px;
         }
         .fs18{
             font-size:18px
@@ -87,6 +75,11 @@
         });
     });
 
+        function addComma(num){
+            var regexp = /\B(?=(\d{3})+(?!\d))/g;
+            return num.toString().replace(regexp, ',');
+        }
+
         //총 주문 금액을 구하는 함수
         function getOrderTotalPrice(){
         var orderTotalPrice = 0;
@@ -98,7 +91,8 @@
         orderTotalPrice += price*count;
     });
 
-        $("#orderTotalPrice").html(orderTotalPrice+'원');
+        $("#orderTotalPrice").html(addComma(orderTotalPrice)+'원');
+
     }
 
     //장바구니에 들어있는 상품의 수량을 변경시 상품의 가격과 상품의 수량을 곱해서 상품 금액을 변경해준다.
@@ -157,6 +151,7 @@
     }
 
         function deleteCartItem(obj){
+            if(confirm("정말로 삭제하시겠습니까?")){
         var cartItemId = obj.dataset.id;
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
@@ -186,8 +181,9 @@
     }
 
     }
-    });
-    }
+            });
+        }
+        }
 
         function orders(){
         var token = $("meta[name='_csrf']").attr("content");
@@ -275,6 +271,7 @@
                         <td>상품가격</td>
                         <td>상품수량</td>
                         <td>금액합계</td>
+                        <td>삭제</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -286,37 +283,43 @@
                             <img th:src="${cartItem.imgUrl}" class = "rounded repImg" th:alt="${cartItem.itemNm}">
                         </td>
                         <td class="text-center align-middle">
-                            <span th:text="${cartItem.itemNm}" class="fs18 font-weight-bold"></span>
+                            <span style="font-weight:bold;font-size: 15px;" th:text="${cartItem.itemNm}" class="fs18 font-weight-bold"></span>
                         </td>
                         <td class="text-center align-middle">
                                 <span th:id="'price_' + ${cartItem.cartItemId}"
                                       th:data-price="${cartItem.price}"
-                                      th:text="${cartItem.price} + '원'" class="align-self-center mr-2">
+                                      th:text="|${#numbers.formatInteger(cartItem.price,3,'COMMA')}원|"> class="align-self-center mr-2">
                                 </span>
                         </td>
+
                         <td class="text-center align-middle">
                             <input type="number" name="count" th:id="'count_' + ${cartItem.cartItemId}"
                                    th:value="${cartItem.count}" min="1" style="width: 70px"
                                    onchange="changeCount(this)" class="form-control mr-2" >
-                            <button type="button" class="close" aria-label="Close">
-                                <span aria-hidden="true" th:data-id="${cartItem.cartItemId}" onclick="deleteCartItem(this)">&times;</span>
-                            </button>
                         </td>
-
                         <td class="text-center align-middle">
                     <span th:id="'totalPrice_' + ${cartItem.cartItemId}"
-                          name="totalPrice" th:text="${cartItem.price * cartItem.count} + '원'">
+                          name="totalPrice" th:text="|${#numbers.formatInteger(cartItem.price * cartItem.count,3,'COMMA')}원|">
                     </span>
                         </td>
+                        <td class="text-center align-middle">
+                        <button type="button" class="close" aria-label="Close">
+                            <span th:data-id="${cartItem.cartItemId}" onclick="deleteCartItem(this)">&times;</span>
+                        </button>
+                        </td>
+
                     </tr>
                     </tbody>
                 </table>
                 <hr>
                 <h2 class="text-right">
-                    <span class="fs18">총 주문 금액 : </span><span id="orderTotalPrice" class="fs18 text-danger">0원</span>
+
                 </h2>
 
-                <div class="text-right mt-3">
+                <div class="d-flex justify-content-end text-right mt-3">
+                    <h2 class="mr-3">
+                        <span class="fs18">총 주문 금액 : </span><span id="orderTotalPrice" class="fs18 text-danger">0원</span>
+                    </h2>
                     <button type="button" class="backcol" onclick="orders()">주문하기</button>
                 </div>
 

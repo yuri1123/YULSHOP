@@ -30,7 +30,29 @@
       background-color: #fafafa;
       border-color: #ccc;
     }
+    .newbadge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #f4511e;
+      color: white;
+      padding: 5px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
+    }
 
+    .soldoutbadge{
+      position: absolute;
+      top: 10px;
+      right: 50px;
+      background-color: #82b1ff;
+      color: white;
+      padding: 5px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
+    }
   </style>
   <meta name="_csrf" th:content="${_csrf.token}"/>
   <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -122,6 +144,16 @@
               <div class="single-product mb-60">
                 <a th:href="'/item/'+${item.id}">
                   <div class="product-img">
+                    <th:block th:each="newItems, status: ${newItems}">
+                      <div th:if="${item.id == newItems.id}">
+                        <span class="newbadge">new</span>
+                      </div>
+                    </th:block>
+                    <th:block th:each="soldOut, status: ${soldOut}">
+                      <div th:if="${item.id == soldOut.id}">
+                        <span class="soldoutbadge">sold out</span>
+                      </div>
+                    </th:block>
                     <img th:src="${item.imgUrl}" height="300" th:alt="${item.imgUrl}"/>
                   </div>
                   <div class="product-caption">
@@ -136,24 +168,25 @@
             </div>
           </th:block>
           <div class="col-xl-10 col-lg-10 col-md-10 offset-1">
-            <div th:with="start=${(cardItems.number/maxPage)*maxPage +1}, end=(${(cardItems.totalPages == 0) ? 1 : (start + (maxPage - 1) < cardItems.totalPages ? start + (maxPage - 1) : cardItems.totalPages)})" >
+            <div class="justify-content-center" th:with="start=${(cardItems.number/maxPage)*maxPage + 1}, end=(${(cardItems.totalPages == 0) ? 1 : (start + (maxPage - 1) < cardItems.totalPages ? start + (maxPage - 1) : cardItems.totalPages)})" >
               <ul class="pagination justify-content-center">
 
-                <li class="page-item" th:classappend="${cardItems.first}?'disabled'">
-                  <a style="font-size: 13px" th:onclick="'javascript:page(' + ${cardItems.number -1} + ')'" aria-label='Previous' class="page-link">
-                    <span aria-hidden='true' >이전</span>
+                <li class="page-item" th:classappend="${cardItems.number eq 0}?'disabled':''">
+                  <a style="font-size: 13px" th:href="@{'/shopping/card/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${cardItems.number -1}}" aria-label='Previous' class="page-link">
+                    <span aria-hidden='true'>이전</span>
                   </a>
                 </li>
 
-                <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${cardItems.number eq (page -1)}?'active':''">
-                  <a style="font-size: 13px" th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+                <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${cardItems.number eq page -1}?'active':''">
+                  <a style="font-size: 13px" th:href="@{'/shopping/card/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${page -1}}" th:inline="text" class="page-link">[[${page}]]</a>
                 </li>
 
-                <li class="page-item" th:classappend="${cardItems.last}?'disabled'">
-                  <a style="font-size: 13px" th:onclick="'javascript:page(' + ${cardItems.number +   1} + ')'" aria-label='Next' class="page-link">
+                <li class="page-item" th:classappend="${cardItems.number +1 ge cardItems.totalPages}?'disabled':''">
+                  <a style="font-size: 13px" th:href="@{'/shopping/card/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${cardItems.number+1}}" aria-label='Next' class="page-link">
                     <span aria-hidden='true'>다음</span>
                   </a>
                 </li>
+
               </ul>
             </div>
           </div>

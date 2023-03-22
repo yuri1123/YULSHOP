@@ -21,8 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -100,6 +103,7 @@ public class ItemService {
         return itemRepository.getAdminItemPage(itemSearchDto, pageable);
     }
 
+
     public Page<MainItemDto> getAllMain(ItemSearchDto itemSearchDto, Pageable pageable){
         return itemRepository.getALLMainItemPage(itemSearchDto, pageable);
     }
@@ -107,6 +111,9 @@ public class ItemService {
     public Page<MainItemDto> getAdminCategoryPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return itemRepository.getALLCategoryItemPage(itemSearchDto,pageable);
     }
+
+
+    //쇼핑페이지
     @Transactional(readOnly = true)
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return itemRepository.getMainItemPage(itemSearchDto, pageable);
@@ -220,6 +227,15 @@ public class ItemService {
         return result;
     }
 
+    //new 뱃지 가져오기
+    public List<Item> getNew(){
+        List<Item> latest = itemRepository.getLatest(LocalDateTime.now().minusMonths(2));
+    return latest;
+        }
 
-
+    //soldout 뱃지 가져오기
+    public List<Item> getSoldOut(){
+        List<Item> soldout = itemRepository.getSoldOut();
+        return soldout;
+    }
 }

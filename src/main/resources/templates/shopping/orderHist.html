@@ -160,7 +160,7 @@
 
             <div class="mt-80 mb-80" th:each="order : ${orders.getContent()}">
                 <div class="d-flex col-12 mb-3 m-3 align-middle">
-                    <p th:text="'주문일시 : '+${order.orderDate}" class="fswe"> </p>
+                    <p style="font-weight:bold;font-size: 15px;" th:text="'주문일시 : '+${order.orderDate}" class="fswe"> </p>
                     <div class="ml-2">
                         <th:block th:if="${order.orderStatus == T(com.yuri.shoppingsite.constant.OrderStatus).ORDER}">
                             <button type="button" class="backcol" th:value="${order.orderId}" onclick="cancelOrder(this.value)">주문취소</button>
@@ -191,18 +191,16 @@
                         <img th:src="${orderItem.imgUrl}" class = "rounded repImg" th:alt="${orderItem.itemNm}">
                     </td>
                     <td class="text-center align-middle">
-                        <span th:text="${orderItem.itemNm}" class="fs18 font-weight-bold"></span>
+                        <span style="font-weight:bold;font-size: 15px;" th:text="${orderItem.itemNm}" class="fs18 font-weight-bold"></span>
                     </td>
                     <td class="text-center align-middle">
-                        <span th:text="${orderItem.orderPrice} +'원'"></span>
+                        <span th:text="|${#numbers.formatInteger(orderItem.orderPrice,3,'COMMA')}원|"></span>
                     </td>
                     <td class="text-center align-middle">
-                        <span th:text="${orderItem.count} +'개'"></span>
+                        <span th:text="|${#numbers.formatInteger(orderItem.count,1,'COMMA')}개|"></span>
                     </td>
                 </tr>
-
                 </tbody>
-
             </table>
         </div>
             </div>

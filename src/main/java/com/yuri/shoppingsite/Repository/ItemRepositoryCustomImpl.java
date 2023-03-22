@@ -136,20 +136,21 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime, item.addCount, item.orderTotalCount)
+                                item.regTime,
+                                item.addCount,
+                                item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(),
-                                itemSearchDto.getSearchQuery()))
                 .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
-                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT))
-                )
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(),
+//                                itemSearchDto.getSearchQuery()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
-                .orderBy(item.id.desc())
+                .orderBy(item.orderTotalCount.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -159,15 +160,16 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .fetchOne();
 
         return new PageImpl<>(content, pageable, total);
     }
-
     @Override
     public Page<MainItemDto> getALLMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
         QItem item = QItem.item;
@@ -278,18 +280,22 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime, item.addCount, item.orderTotalCount)
+                                item.regTime,
+                                item.addCount,
+                                item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
                 .where(item.category.eq(Category.WALLDECO))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(),
-                                itemSearchDto.getSearchQuery()))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(),
+//                                itemSearchDto.getSearchQuery()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
-                .orderBy(item.id.desc())
+                .orderBy(item.orderTotalCount.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -299,10 +305,12 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
-                .where(item.itemSellStatus.eq(ItemSellStatus.SELL), item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
+                .where(item.category.eq(Category.WALLDECO))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .fetchOne();
 
@@ -325,18 +333,22 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime, item.addCount, item.orderTotalCount)
+                                item.regTime,
+                                item.addCount,
+                                item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
                 .where(item.category.eq(Category.PEN))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(),
-                                itemSearchDto.getSearchQuery()))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(),
+//                                itemSearchDto.getSearchQuery()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
-                .orderBy(item.id.desc())
+                .orderBy(item.orderTotalCount.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -346,10 +358,12 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
-                .where(item.itemSellStatus.eq(ItemSellStatus.SELL), item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
+                .where(item.category.eq(Category.PEN))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .fetchOne();
 
@@ -372,18 +386,22 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime, item.addCount, item.orderTotalCount)
+                                item.regTime,
+                                item.addCount,
+                                item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
                 .where(item.category.eq(Category.LIVING))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(),
-                                itemSearchDto.getSearchQuery()))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(),
+//                                itemSearchDto.getSearchQuery()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
-                .orderBy(item.id.desc())
+                .orderBy(item.orderTotalCount.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -393,10 +411,12 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
-                .where(item.itemSellStatus.eq(ItemSellStatus.SELL), item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
+                .where(item.category.eq(Category.LIVING))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .fetchOne();
 
@@ -419,18 +439,22 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime, item.addCount, item.orderTotalCount)
+                                item.regTime,
+                                item.addCount,
+                                item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
                 .where(item.category.eq(Category.CARD))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(),
-                                itemSearchDto.getSearchQuery()))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(),
+//                                itemSearchDto.getSearchQuery()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
-                .orderBy(item.id.desc())
+                .orderBy(item.orderTotalCount.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -440,16 +464,17 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
-                .where(item.itemSellStatus.eq(ItemSellStatus.SELL), item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
+                .where(item.category.eq(Category.CARD))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .fetchOne();
 
         return new PageImpl<>(content, pageable, total);
     }
-
     @Override
     public Page<MainItemDto> getAccItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
         QItem item = QItem.item;
@@ -466,18 +491,22 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime, item.addCount, item.orderTotalCount)
+                                item.regTime,
+                                item.addCount,
+                                item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
                 .where(item.category.eq(Category.ACCESSORY))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(),
-                                itemSearchDto.getSearchQuery()))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(),
+//                                itemSearchDto.getSearchQuery()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
-                .orderBy(item.id.desc())
+                .orderBy(item.orderTotalCount.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -487,10 +516,12 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
-                .where(item.itemSellStatus.eq(ItemSellStatus.SELL), item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
+                .where(item.category.eq(Category.ACCESSORY))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .fetchOne();
 
@@ -513,18 +544,22 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.price,
                                 item.stockNumber,
                                 item.itemSellStatus,
-                                item.regTime, item.addCount, item.orderTotalCount)
+                                item.regTime,
+                                item.addCount,
+                                item.orderTotalCount)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
                 .where(item.category.eq(Category.DIARY))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(),
-                                itemSearchDto.getSearchQuery()))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(),
+//                                itemSearchDto.getSearchQuery()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
-                .orderBy(item.id.desc())
+                .orderBy(item.orderTotalCount.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -534,10 +569,12 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
-                .where(item.itemSellStatus.eq(ItemSellStatus.SELL), item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
+                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
+                .where(item.category.eq(Category.DIARY))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .fetchOne();
 

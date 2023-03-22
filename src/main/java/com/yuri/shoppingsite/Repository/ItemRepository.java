@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 //JpaRepository는 2개의 제네릭 타입을 사용하는데
@@ -64,4 +66,13 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
     @Modifying(clearAutomatically = true)
     @Query("update Item i set i.itemSellStatus=:itemSellStatus where i.id=:id")
     int updateItemSellStatus(@Param(value = "id") Long id, @Param(value = "itemSellStatus") ItemSellStatus itemSellStatus);
+
+//    @Query("select i from Item i where i.id=:id order by i.orderTotalCount limit 12")
+//    List<Item> getBestSeller(@Param(value = "id") Long id);
+    @Query("select i from Item i where i.regTime >= :startDate order by i.regTime desc")
+    List<Item> getLatest(@Param("startDate") LocalDateTime startDate);
+    @Query("select i from Item i where i.itemSellStatus='SOLD_OUT'")
+    List<Item> getSoldOut();
+
+
 }

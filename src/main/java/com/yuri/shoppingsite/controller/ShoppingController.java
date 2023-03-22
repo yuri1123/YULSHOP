@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -21,11 +22,16 @@ public class ShoppingController {
     private ItemService itemService;
 
     //상품 전체 보여주기 리스트로 가기
-    @GetMapping(value={"/shopping/shopping","/shopping/shopping/{page}"})
+    @GetMapping(value={"shopping/shopping","shopping/shopping/{page}"})
     public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
         Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
+        List<Item> newItems = itemService.getNew();
+        model.addAttribute("newItems",newItems);
+        List<Item> soldOut = itemService.getSoldOut();
+        model.addAttribute("soldOut",soldOut);
+
         model.addAttribute("items", items);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
@@ -50,6 +56,12 @@ public class ShoppingController {
         model.addAttribute("wallItems", wallItems);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
+
+        List<Item> newItems = itemService.getNew();
+        model.addAttribute("newItems",newItems);
+        List<Item> soldOut = itemService.getSoldOut();
+        model.addAttribute("soldOut",soldOut);
+
         return "shopping/products/walldeco";
     }
 
@@ -60,6 +72,10 @@ public class ShoppingController {
         model.addAttribute("livingItems", livingItems);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
+        List<Item> newItems = itemService.getNew();
+        model.addAttribute("newItems",newItems);
+        List<Item> soldOut = itemService.getSoldOut();
+        model.addAttribute("soldOut",soldOut);
         return "shopping/products/living";
     }
 

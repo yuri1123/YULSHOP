@@ -19,7 +19,6 @@
       font-weight:bold;
       background-color: #f1f1f1;
       border-color: #ccc;
-
     }
     .br {
       border-radius: 30px;
@@ -29,6 +28,34 @@
       color: #000;
       background-color: #fafafa;
       border-color: #ccc;
+    }
+    .image-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .newbadge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #f4511e;
+      color: white;
+      padding: 5px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .soldoutbadge{
+      position: absolute;
+      top: 10px;
+      right: 50px;
+      background-color: #82b1ff;
+      color: white;
+      padding: 5px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
     }
 
   </style>
@@ -122,8 +149,19 @@
 
               <div class="single-product mb-60">
                 <a th:href="'/item/'+${item.id}">
-                  <div class="product-img">
+                  <div class="product-img image-container">
+            <th:block th:each="newItems, status: ${newItems}">
+                    <div th:if="|${item.id == newItems.id}|">
+                    <span class="newbadge">new</span>
+                    </div>
+            </th:block>
+            <th:block th:each="soldOut, status: ${soldOut}">
+              <div th:if="|${item.id == soldOut.id}|">
+                <span class="soldoutbadge">sold out</span>
+              </div>
+            </th:block>
                     <img th:src="${item.imgUrl}" height="300" th:alt="${item.imgUrl}"/>
+
                   </div>
                   <div class="product-caption">
                     <h5 style="font-weight:bold;font-size: 15px;" th:text="|[${item.category}] ${item.itemNm}|"></h5>
@@ -136,28 +174,30 @@
 
             </div>
           </th:block>
+
           <div class="col-xl-10 col-lg-10 col-md-10 offset-1">
-            <div th:with="start=${(items.number/maxPage)*maxPage +1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
-              <ul class="pagination justify-content-center">
+          <div class="justify-content-center" th:with="start=${(items.number/maxPage)*maxPage + 1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
+            <ul class="pagination justify-content-center">
 
-                <li class="page-item" th:classappend="${items.first}?'disabled'">
-                  <a style="font-size: 13px" th:onclick="'javascript:page(' + ${items.number -1} + ')'" aria-label='Previous' class="page-link">
-                    <span aria-hidden='true' >이전</span>
-                  </a>
-                </li>
+              <li class="page-item" th:classappend="${items.number eq 0}?'disabled':''">
+                <a style="font-size: 13px" th:href="@{'/shopping/shopping/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number -1}}" aria-label='Previous' class="page-link">
+                  <span aria-hidden='true'>이전</span>
+                </a>
+              </li>
 
-                <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq (page -1)}?'active':''">
-                  <a style="font-size: 13px" th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
-                </li>
+              <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq page -1}?'active':''">
+                <a style="font-size: 13px" th:href="@{'/shopping/shopping/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${page -1}}" th:inline="text" class="page-link">[[${page}]]</a>
+              </li>
 
-                <li class="page-item" th:classappend="${items.last}?'disabled'">
-                  <a style="font-size: 13px" th:onclick="'javascript:page(' + ${items.number +   1} + ')'" aria-label='Next' class="page-link">
-                    <span aria-hidden='true'>다음</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
+              <li class="page-item" th:classappend="${items.number +1 ge items.totalPages}?'disabled':''">
+                <a style="font-size: 13px" th:href="@{'/shopping/shopping/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number+1}}" aria-label='Next' class="page-link">
+                  <span aria-hidden='true'>다음</span>
+                </a>
+              </li>
+
+            </ul>
           </div>
+
         </div>
       </div>
       <!-- End Nav Card -->
