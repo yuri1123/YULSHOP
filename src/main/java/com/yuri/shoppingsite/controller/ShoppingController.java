@@ -46,6 +46,10 @@ public class ShoppingController {
         model.addAttribute("diaryItems", diaryItems);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
+        List<Item> newItems = itemService.getNew();
+        model.addAttribute("newItems",newItems);
+        List<Item> soldOut = itemService.getSoldOut();
+        model.addAttribute("soldOut",soldOut);
         return "shopping/products/diary";
     }
 
@@ -86,6 +90,10 @@ public class ShoppingController {
         model.addAttribute("penItems", penItems);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
+        List<Item> newItems = itemService.getNew();
+        model.addAttribute("newItems",newItems);
+        List<Item> soldOut = itemService.getSoldOut();
+        model.addAttribute("soldOut",soldOut);
         return "shopping/products/pen";
     }
 
@@ -96,6 +104,10 @@ public class ShoppingController {
         model.addAttribute("cardItems", cardItems);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
+        List<Item> newItems = itemService.getNew();
+        model.addAttribute("newItems",newItems);
+        List<Item> soldOut = itemService.getSoldOut();
+        model.addAttribute("soldOut",soldOut);
         return "shopping/products/card";
     }
 
@@ -106,6 +118,10 @@ public class ShoppingController {
         model.addAttribute("accItems", accItems);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
+        List<Item> newItems = itemService.getNew();
+        model.addAttribute("newItems",newItems);
+        List<Item> soldOut = itemService.getSoldOut();
+        model.addAttribute("soldOut",soldOut);
         return "shopping/products/acc";
     }
     //상품 상세보기로 가기
