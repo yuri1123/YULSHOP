@@ -61,6 +61,29 @@
       .mar2 {
       margin: 0px 10px;
       }
+      .newbadge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #f4511e;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+      }
+
+      .soldoutbadge{
+            position: absolute;
+            top: 10px;
+            right: 50px;
+            background-color: #82b1ff;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+      }
       </style>
 
 
@@ -117,7 +140,16 @@
       <div class="single-product mb-60">
       <a th:href="'/item/'+${item.id}">
       <div class="product-img">
-
+            <th:block th:each="newItems, status: ${newItems}">
+                  <div th:if="|${item.id == newItems.id}|">
+                        <span class="newbadge">new</span>
+                  </div>
+            </th:block>
+            <th:block th:each="soldOut, status: ${soldOut}">
+                  <div th:if="|${item.id == soldOut.id}|">
+                        <span class="soldoutbadge">sold out</span>
+                  </div>
+            </th:block>
       <img th:src="${item.imgUrl}" height="300" th:alt="${item.imgUrl}"/>
       </div>
       <div class="product-caption">

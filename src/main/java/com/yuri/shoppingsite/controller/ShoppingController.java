@@ -143,6 +143,12 @@ public class ShoppingController {
         model.addAttribute("items", items);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 1);
+
+        List<Item> newItems = itemService.getNew();
+        model.addAttribute("newItems",newItems);
+        List<Item> soldOut = itemService.getSoldOut();
+        model.addAttribute("soldOut",soldOut);
+
         return "shopping/bestseller";
     }
 
@@ -156,6 +162,10 @@ public class ShoppingController {
         model.addAttribute("items", items);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 1);
+        List<Item> newItems = itemService.getNew();
+        model.addAttribute("newItems",newItems);
+        List<Item> soldOut = itemService.getSoldOut();
+        model.addAttribute("soldOut",soldOut);
         return "shopping/latest";
     }
 
