@@ -39,7 +39,7 @@
                  <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a href="/admin/adminmain">관리자페이지</a></li>
                 <li><a sec:authorize="isAuthenticated()" th:href="@{/member/mypage}">마이페이지</a></li>
                 <li><a th:href="@{/cart}">장바구니</a></li>
-                <li><a href="/community/noticelist">커뮤니티</a></li>
+                <li><a href="/community/noticelist">공지사항</a></li>
                   <li sec:authorize="isAnonymous()">
                       <a th:href="@{/member/login}">로그인</a>
                   </li>
@@ -90,12 +90,18 @@
                       <li><a href="/shopping/acc">ACCESSORY</a></li>
                     </ul>
                   </li>
-                  <li><a href="/shopping/shopping">SALES</a>
+                  <li><a href="/shopping/shopping">REVIEW</a>
 <!--                    <ul class="submenu">-->
 <!--                      <li><a href="blog.html">Blog</a></li>-->
 <!--                      <li><a href="single-blog.html">Blog Details</a></li>-->
 <!--                    </ul>-->
                   </li>
+                    <li><a href="/shopping/shopping">Q & A</a>
+                        <!--                    <ul class="submenu">-->
+                        <!--                      <li><a href="blog.html">Blog</a></li>-->
+                        <!--                      <li><a href="single-blog.html">Blog Details</a></li>-->
+                        <!--                    </ul>-->
+                    </li>
 <!--                  <li sec:authorize="isAuthenticated()"><a th:href="@{/orders}">PURCHASE</a>-->
 <!--                    <ul class="submenu">-->
 <!--                      <li><a href="login.html">Login</a></li>-->

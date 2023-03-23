@@ -237,6 +237,14 @@ public class AdminController {
     //기본 정보 관리
 
     //자사 정보 관리
+    @GetMapping("/admin/companyinfo")
+    public String companyinfo(){
+
+
+
+        return "admin/companyinfo";
+    }
+
 
     //유저 권한 관리
     //유저 권한 관리 페이지로 이동

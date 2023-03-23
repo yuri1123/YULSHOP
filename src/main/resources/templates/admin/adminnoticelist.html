@@ -60,7 +60,8 @@
 
     </style>
 </head>
-
+<meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
+<meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
 <body>
 
 <script th:inline="javascript">
