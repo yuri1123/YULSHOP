@@ -52,7 +52,6 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
             return null;
         }
 
-
     @Override
     public Page<Member> getAdminMemberPage(MemberSearchDto memberSearchDto, Pageable pageable) {
 

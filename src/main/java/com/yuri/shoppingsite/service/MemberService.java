@@ -3,6 +3,7 @@ package com.yuri.shoppingsite.service;
 import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.domain.shop.*;
+import com.yuri.shoppingsite.domain.user.MemberAccountDto;
 import com.yuri.shoppingsite.domain.user.MemberFormDto;
 import com.yuri.shoppingsite.domain.user.MemberSearchDto;
 import com.yuri.shoppingsite.domain.user.Member;
@@ -69,10 +70,16 @@ public class MemberService implements UserDetailsService {
     }
     //현재 로그인한 회원의 정보 가져오기
     @Transactional(readOnly = true)
-    public MemberFormDto getmember(String name){
+    public MemberFormDto getmemberDto(String name){
         Member member = memberRepository.findByName(name);
         MemberFormDto memberFormDto = MemberFormDto.of(member);
         return memberFormDto;
+    }
+    @Transactional(readOnly = true)
+    public MemberAccountDto getAccountDto(String name){
+        Member member = memberRepository.findByName(name);
+        MemberAccountDto memberAccountDto = MemberAccountDto.of(member);
+        return memberAccountDto;
     }
     //현재 로그인한 회원의 권한 가져오기
     @Transactional(readOnly = true)
@@ -104,10 +111,10 @@ public class MemberService implements UserDetailsService {
     }
 
     //멤버 정보 수정하기
-    public Long updateMember(MemberFormDto memberFormDto, Principal principal, PasswordEncoder passwordEncoder) throws Exception{
+    public Long updateMember(MemberFormDto memberFormDto, Principal principal) throws Exception{
 
         Member member = memberRepository.findByName(principal.getName());
-        member.updateMember(memberFormDto, passwordEncoder);
+        member.updateMember(memberFormDto);
         return member.getId();
     }
 
@@ -134,6 +141,15 @@ public class MemberService implements UserDetailsService {
         int result = memberRepository.updateUserRole(id,role);
         return result;
     }
+
+    //계좌 업데이트
+    public Long updateAccount(MemberAccountDto memberAccountDto, Principal principal) throws Exception{
+
+        Member member = memberRepository.findByName(principal.getName());
+        member.updateAccount(memberAccountDto);
+        return member.getId();
+    }
+
 
 }
 

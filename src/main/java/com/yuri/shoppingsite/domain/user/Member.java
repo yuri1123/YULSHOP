@@ -33,6 +33,9 @@ public class Member extends BaseEntity {
     private String phone;
     private String smsreceive;
     private String emailreceive;
+    private String accountbank;
+    private String accountnum;
+    private String accountname;
 
     @Enumerated(EnumType.STRING) //자바의 이넘타입을 엔티티 속성으로 지정
     //enum을 사용할 때 기본적으로 순서 저장되는데, enum의 순서가 바뀔 경우 문제가 발생할 수
@@ -60,19 +63,24 @@ public class Member extends BaseEntity {
         return member;
     }
 
-    public void updateMember(MemberFormDto memberFormDto,
-                                      PasswordEncoder passwordEncoder) {
+    public void updateMember(MemberFormDto memberFormDto) {
         this.name = memberFormDto.getName();
         this.email = memberFormDto.getEmail();
         this.postcode = memberFormDto.getPostcode();
         this.address1 = memberFormDto.getAddress1();
         this.address2 = memberFormDto.getAddress2();
-        String password = passwordEncoder.encode(memberFormDto.getPassword());
-        this.password = password;
         this.nickname = memberFormDto.getNickname();
         this.birth = memberFormDto.getBirth();
         this.phone = memberFormDto.getPhone();
         this.smsreceive = memberFormDto.getSmsreceive();
         this.emailreceive = memberFormDto.getEmailreceive();
     }
+
+    public void updateAccount(MemberAccountDto memberAccountDto){
+        this.name = memberAccountDto.getName();
+        this.accountbank = memberAccountDto.getAccountbank();
+        this.accountnum = memberAccountDto.getAccountnum();
+        this.accountname = memberAccountDto.getAccountname();
+    }
+
 }

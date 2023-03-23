@@ -36,8 +36,6 @@ public class MemberFormDto {
     private String smsreceive;
     @NotEmpty(message = "EMAIL수신여부는 필수 입력 값입니다.")
     private String emailreceive;
-
-
     private static ModelMapper modelMapper = new ModelMapper();
 
     public static  MemberFormDto of(Member member){

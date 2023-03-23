@@ -28,8 +28,8 @@
 
 
     </style>
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<!--    <meta name="_csrf" th:content="${_csrf.token}"/>-->
+<!--    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
     <th:block th:include="/include/common_css.html"></th:block>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -92,7 +92,7 @@
 
 
         <div class="row col-12 mt-80 text-center justify-content-center ">
-
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             <div class="col-2 offset-1 mr-1 border border-primary">
                 <img src="/admin_asset/img/profile-img.png" alt="Profile" class="mt-1 rounded-circle">
             </div>
@@ -122,11 +122,11 @@
                     </a>
                 </div>
                 <div class="col-2 border border-secondary text-center pt-25 mr-1">
-                    <a th:href="@{/member/coupon}">
+                    <a th:href="@{/member/newpassword}">
                     <h3>
                         <i class="fa-solid fa-tags"></i>
                     </h3>
-                    <p>쿠폰관리</p>
+                    <p>비밀번호 변경</p>
                     </a>
                 </div>
                 <div class="col-2 border border-secondary text-center pt-25 mr-1">

@@ -52,8 +52,6 @@
       font-weight: bold;
     }
   </style>
-  <meta name="_csrf" th:content="${_csrf.token}"/>
-  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 <script th:inline="javascript">
@@ -108,6 +106,7 @@
     </div>
     <hr>
     <form th:action="@{'/shopping/shopping/' + ${accItems.number}}" role="form" method="get" th:object="${accItems}">
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
       <!--        검색하기-->
       <div class="form-inline justify-content-end mt-30 mb-30" th:object="${itemSearchDto}">
         <select th:field="*{searchDateType}" class="form-control m-1 align-middle border br" style="width:auto;">

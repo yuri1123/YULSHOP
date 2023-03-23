@@ -50,8 +50,6 @@ public class AdminController {
     @Autowired
     private final MemberService memberService;
 
-    @Autowired
-    ChartService chartService;
     //관리자 페이지로 가기
     @GetMapping(value={"/admin/adminmain", "/admin/adminmain/{year}"})
     public String adminmain(Model model){

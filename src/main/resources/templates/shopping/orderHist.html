@@ -157,7 +157,7 @@
                 <div class="section-tittle mb-30">
                     <h2>ORDER HISTORY</h2>
                 </div>
-
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             <div class="mt-80 mb-80" th:each="order : ${orders.getContent()}">
                 <div class="d-flex col-12 mb-3 m-3 align-middle">
                     <p style="font-weight:bold;font-size: 15px;" th:text="'주문일시 : '+${order.orderDate}" class="fswe"> </p>

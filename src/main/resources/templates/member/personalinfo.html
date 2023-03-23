@@ -16,21 +16,21 @@
         .backcol {
             background: #1e1e1e;
             border: #1e1e1e;
+            width: 100px;
+            height: 40px;
+            border-radius: 10px;
         }
         .backcol:hover{
             background: #a367e7;
             border: #a367e7;
-        }
-        .fontcolors {
-            margin-top:40px;
-            margin-bottom: 40px;
-            font-size: 15px;
+            width: 100px;
+            height: 40px;
+            border-radius: 10px;
         }
 
-        .page-link {
-            color: #000;
-            background-color: #fff;
-            border: 1px solid #ccc;
+        .bordernone {
+            background-color: transparent;
+            border: none;
         }
         .page-item.active .page-link {
             z-index: 1;
@@ -40,66 +40,43 @@
             border-color: #ccc;
 
         }
-        .page-link:focus, .page-link:hover {
-            color: #000;
-            background-color: #fafafa;
-            border-color: #ccc;
-        }
-
-
-        .repImgDiv{
-            margin-right:15px;
-            height:auto;
-            width:50%;
-        }
-        .repImg{
-            width:100%;
-            height:400px;
-        }
-
-        .repImgDiv{
-            margin-right:15px;
-            height:auto;
-            width:50%;
-        }
-        .repImg{
-            width:100%;
-            height:400px;
-        }
-
-        .repImgDiv{
-            margin-right:15px;
-            margin-left:15px;
-            height:auto;
-        }
-        .repImg{
-            height:100px;
-            width:100px;
-        }
-        .card{
-            width:750px;
-            height:100%;
-            padding:30px;
-            margin-bottom:20px;
-        }
-        .fs18{
-            font-size:18px
-        }
 
         .fs14 {
             font-size:14px;
-        }
-        .fswe{
-            font-size:19px;
-            font-weight: 500;
         }
         .inputwidth {
             width:40vw;
         }
 
+        /* 모바일 화면에서 모달창의 스타일 */
+        @media screen and (max-width: 768px) {
+            .modal_locate {
+                position: fixed;
+                top: 15%;
+                left: 10%;
+                transform: translate(-20%, -30%);
+                width: 80%;
+                max-height: 80%;
+            }
+        }
+
+        /* 데스크톱 화면에서 모달창의 스타일 */
+        @media screen and (min-width: 769px) {
+            .modal_locate {
+                position: fixed;
+                top: 30%;
+                left: 27%;
+                transform: translate(-20%, -30%);
+                width: 50%; /* 모달창의 너비 */
+                max-width: 800px; /* 모달창의 최대 너비 */
+                max-height: 80%; /* 모달창의 최대 높이 */
+                overflow: auto; /* 모달창이 넘칠 경우 스크롤바 표시 */
+            }
+        }
+
     </style>
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<!--    <meta name="_csrf" th:content="${_csrf.token}"/>-->
+<!--    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
 
 </head>
 <body>
@@ -109,6 +86,7 @@
 
     <div class="container">
         <form role="form" th:object="${memberFormDto}" method="post">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         <div class="row product-btn d-flex text-start" id="gap">
 
             <!-- Section Tittle -->
@@ -136,29 +114,29 @@
                     <th><hr></th>
                     <td><hr></td>
                 </tr>
-                <tr>
-                    <th scope="row">새 비밀번호</th>
-                    <td><input id="passwd" name="passwd" th:field="*{password}" fw-filter="isMin[4]&amp;isMax[16]" fw-label="비밀번호" fw-msg="" autocomplete="off" maxlength="16"  value="" type="password"> (영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 10자~16자)</td>
-                </tr>
-                <tr>
-                    <th><hr></th>
-                    <td><hr></td>
-                </tr>
-                <tr class="">
-                    <th scope="row">새 비밀번호 확인</th>
-                    <td><input id="user_passwd_confirm" name="user_passwd_confirm" fw-filter="isMatch[passwd]" fw-label="비밀번호 확인" fw-msg="비밀번호가 일치하지 않습니다." autocomplete="off" maxlength="16" value="" type="password"> <span id="pwConfirmMsg"></span>
-                        </td>
-                </tr>
-                <tr>
-                    <th><hr></th>
-                    <td><hr></td>
-                </tr>
+<!--                <tr>-->
+<!--                    <th scope="row">새 비밀번호</th>-->
+<!--                    <td><input id="passwd" name="passwd" th:field="*{password}" fw-filter="isMin[4]&amp;isMax[16]" fw-label="비밀번호" fw-msg="" autocomplete="off" maxlength="16"  value="" type="password"> (영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 10자~16자)</td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <th><hr></th>-->
+<!--                    <td><hr></td>-->
+<!--                </tr>-->
+<!--                <tr class="">-->
+<!--                    <th scope="row">새 비밀번호 확인</th>-->
+<!--                    <td><input id="user_passwd_confirm" name="user_passwd_confirm" fw-filter="isMatch[passwd]" fw-label="비밀번호 확인" fw-msg="비밀번호가 일치하지 않습니다." autocomplete="off" maxlength="16" value="" type="password"> <span id="pwConfirmMsg"></span>-->
+<!--                        </td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <th><hr></th>-->
+<!--                    <td><hr></td>-->
+<!--                </tr>-->
 
                 <tr>
                     <th scope="row">이메일 <img src="//img.echosting.cafe24.com/skin/base/common/ico_required.gif" alt="필수"></th>
                     <td>
                         <input id="email" th:field="*{email}" fw-filter="isFill&amp;isEmail" fw-label="이메일" fw-alone="N" fw-msg="" value="" type="text"> <span id="emailMsg"><br></span>
-                        <span class="displaynone fs14">이메일 주소 변경 시 로그아웃 후 재인증을 하셔야만 로그인이 가능합니다.<br>인증 메일은 24시간 동안 유효하며, 유효 시간이 만료된 후에는 가입 정보로 로그인 하셔서 재발송 요청을 해주시기 바랍니다.</span>
+<!--                        <span class="displaynone fs14">이메일 주소 변경 시 로그아웃 후 재인증을 하셔야만 로그인이 가능합니다.<br>인증 메일은 24시간 동안 유효하며, 유효 시간이 만료된 후에는 가입 정보로 로그인 하셔서 재발송 요청을 해주시기 바랍니다.</span>-->
                     </td>
                 </tr>
                 <tr>
@@ -261,12 +239,63 @@
                     <th><hr></th>
                     <td><hr></td>
                 </tr>
+                <form role="form"  th:object="${memberAccountDto}" method="post">
                 <tr class="displaynone">
                     <th scope="row">환불계좌 </th>
                     <td>
-                        <span id=""></span> <a href="#none"><img src="//img.echosting.cafe24.com/skin/base_ko_KR/member/btn_account_change.gif"
-                                                                 alt="환불계좌변경" id="id_has_bank_img" class="displaynone">   <img src="//img.echosting.cafe24.com/skin/base_ko_KR/member/btn_account.gif"
-                                                                                                                            alt="환불계좌등록" id="id_reg_bank_img" class="displaynone"></a>
+                        <th:block th:if="*{accountnum != null}">
+                        <span></span><button type=button class="bordernone" data-toggle="modal" data-target="#myModal">
+                            <img src="//img.echosting.cafe24.com/skin/base_ko_KR/member/btn_account_change.gif" alt="환불계좌변경" id="id_has_bank_img" class="displaynone"></button>
+                        </th:block>
+
+                        <!--계좌 없으면-->
+                        <th:block th:if="*{accountnum == null}">
+                        <span></span><button type=button class="bordernone" data-toggle="modal" data-target="#myModal">
+                        <img src="//img.echosting.cafe24.com/skin/base_ko_KR/member/btn_account.gif" alt="환불계좌등록" id="id_reg_bank_img" class="displaynone"></button>
+                        </th:block>
+
+                        <!-- 모달 창 -->
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog modal_locate" role="document">
+                                <div class="modal-content">
+                                    <!-- 모달 헤더 -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="myModalLabel">환불 계좌 등록/변경</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+
+                                    <!-- 모달 바디 -->
+                                    <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="accountbank">계좌은행</label>
+                                                <input type="text" class="form-control" id="accountbank" th:field="*{accountbank}" placeholder="계좌은행">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="accountnum">계좌번호</label>
+                                                <input type="text" class="form-control" id="accountnum" th:field="*{accountnum}" placeholder="계좌번호">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="accountname">입금자명</label>
+                                                <input type="text" class="form-control" id="accountname" th:field="*{accountname}" placeholder="입금자명">
+                                            </div>
+                                    </div>
+<!--                                    th:action="@{/update/account}"-->
+                                    <!-- 모달 푸터 -->
+                                    <div class="modal-footer">
+<!--                                        <button type="submit" th:formaction="|@{/account/auth}|" class="btn btn-warning" data-dismiss="modal">실명인증하기</button>-->
+                                        <button type="reset" class="backcol" data-dismiss="modal">초기화하기</button>
+                                        <button type="submit" th:formaction="|@{/member/update/account}|" class="backcol">등록하기</button>
+                                    </div>
+<!--                                        </form>-->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+
                     </td>
                 </tr>
                 <tr>
@@ -300,8 +329,8 @@
 
         <div class="row col-12 mt-40 text-start justify-content-end ">
             <div>
-                <button class="btn-primary backcol rad" type="submit" th:formaction="@{/member/update}">저장하기</button>
-                <button class="btn-primary backcol rad" >실행취소하기</button>
+                <button class="backcol rad" type="submit" th:formaction="|@{/member/update}|">저장하기</button>
+                <button class="backcol rad" >실행취소하기</button>
             </div>
         </div>
 

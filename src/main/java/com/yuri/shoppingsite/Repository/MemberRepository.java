@@ -19,4 +19,9 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
         @Query("update Member m set m.role=:role where m.id=:id")
         int updateUserRole(@Param(value="id") Long id, @Param(value="role") Role role);
 
+//        @Modifying(clearAutomatically = true)
+//        @Query("update Member m set m.accountbank=:accountbank, m.accountnum=:accountnum, m.accountname=:accountname where m.name=:name")
+//        int updateAccount(@Param(value="name") Long name, @Param(value="accountbank") String accountbank,
+//                          @Param(value="accountnum") String accountnum,@Param(value="accountname") String accountname);
+
 }
