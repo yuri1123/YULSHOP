@@ -176,10 +176,10 @@
                         <tr>
                         <th class="justify-content-center text-center align-middle" scope="row">회사주소</th>
                         <td class="justify-content-center text-center align-middle">
-                        <input  th:field="*{companypostcode}" id="postcode" fw-filter="isLengthRange[1][14]" fw-label="우편번호1" fw-msg="" class=" mb-1 form-control" placeholder="" readonly="readonly" maxlength="14" value="" type="text">
+                        <input  th:field="*{companypostcode}" id="companypostcode" fw-filter="isLengthRange[1][14]" fw-label="우편번호1" fw-msg="" class=" mb-1 form-control" placeholder="" readonly="readonly" maxlength="14" value="" type="text">
                         <a href="#none" onclick="sample6_execDaumPostcode()" id="postBtn"><img src="//img.echosting.cafe24.com/skin/base_ko_KR/member/btn_zipcode.gif" alt="우편번호"></a><br>
-                        <input id="address1" th:field="*{companyaddress1}"   fw-filter="isFill" fw-label="주소" fw-msg="" class="inputwidth mb-1 form-control" placeholder="기본주소" readonly="readonly" value="" type="text"><br>
-                        <input id="address2" th:field="*{companyaddress2}"  fw-filter="" fw-label="주소" fw-msg="" class="inputwidth mb-1 form-control" placeholder="나머지주소" value="" type="text">
+                        <input id="companyaddress1" th:field="*{companyaddress1}"   fw-filter="isFill" fw-label="주소" fw-msg="" class="inputwidth mb-1 form-control" placeholder="기본주소" readonly="readonly" value="" type="text"><br>
+                        <input id="companyaddress2" th:field="*{companyaddress2}"  fw-filter="" fw-label="주소" fw-msg="" class="inputwidth mb-1 form-control" placeholder="나머지주소" value="" type="text">
                         <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
                         <script>
                             function sample6_execDaumPostcode() {
