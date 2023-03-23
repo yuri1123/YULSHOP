@@ -11,7 +11,9 @@ import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.domain.Chart.CategoryItemsInterface;
 import com.yuri.shoppingsite.domain.Chart.MainGraphInterface;
 import com.yuri.shoppingsite.domain.community.NoticeFormDto;
+import com.yuri.shoppingsite.domain.company.CompanyFormDto;
 import com.yuri.shoppingsite.domain.shop.*;
+import com.yuri.shoppingsite.domain.user.MemberFormDto;
 import com.yuri.shoppingsite.domain.user.MemberSearchDto;
 import com.yuri.shoppingsite.domain.user.Member;
 import com.yuri.shoppingsite.service.*;
@@ -238,10 +240,12 @@ public class AdminController {
 
     //자사 정보 관리
     @GetMapping("/admin/companyinfo")
-    public String companyinfo(){
-
-
-
+    public String companyinfo(Model model){
+//            if(bindingResult.hasErrors()){
+//            return "admin/companyinfo";
+//        }
+        model.addAttribute("CompanyFormDto", new CompanyFormDto());
+        model.addAttribute("pagestate", "등록");
         return "admin/companyinfo";
     }
 
