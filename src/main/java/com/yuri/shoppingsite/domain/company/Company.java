@@ -50,11 +50,26 @@ public class Company extends BaseEntity {
         company.setCompanystart(companyFormDto.getCompanystart());
         company.setCompanyfax(companyFormDto.getCompanyfax());
         company.setCompanyaccbank(companyFormDto.getCompanyaccbank());
-        company.setCompanyaccnum(company.getCompanyaccnum());
-        company.setCompanyaccname(company.getCompanyaccname());
+        company.setCompanyaccnum(companyFormDto.getCompanyaccnum());
+        company.setCompanyaccname(companyFormDto.getCompanyaccname());
         return company;
     }
 
-
+    public void updateCompany(CompanyFormDto companyFormDto){
+        this.companyname = companyFormDto.getCompanyname();
+        this.companynum = companyFormDto.getCompanynum();
+        this.companystand = companyFormDto.getCompanystand();
+        this.repname = companyFormDto.getRepname();
+        this.companypostcode = companyFormDto.getCompanypostcode();
+        this.companyaddress1 = companyFormDto.getCompanyaddress1();
+        this.companyaddress2 = companyFormDto.getCompanyaddress2();
+        this.companyphone = companyFormDto.getCompanyphone();
+        this.companyemail = companyFormDto.getCompanyemail();
+        this.companystart = companyFormDto.getCompanystart();
+        this.companyfax = companyFormDto.getCompanyfax();
+        this.companyaccbank = companyFormDto.getCompanyaccbank();
+        this.companyaccnum = companyFormDto.getCompanyaccnum();
+        this.companyaccname = companyFormDto.getCompanyaccname();
+    }
 
 }
