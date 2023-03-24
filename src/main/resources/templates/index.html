@@ -31,11 +31,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row col-lg-10 offset-1">
                     <div class="col-xl-4 col-lg-6">
                         <div class="single-category mb-30">
                             <div class="category-img">
-                                <a th:href="@{shopping/shopping}">
+                                <a th:href="@{shopping/diary}">
                                 <img src="assets/yuls/diary.jpg" width="400" height="300" alt="">
                                 <div class="category-caption">
                                     <!--                                    <h2>Man`s Cloth</h2>-->
@@ -49,7 +49,7 @@
                     <div class="col-xl-4 col-lg-6">
                         <div class="single-category mb-30">
                             <div class="category-img">
-                                <a th:href="@{shopping/shopping}">
+                                <a th:href="@{shopping/walldeco}">
                                 <img src="assets/yuls/walldeco.jpg" width="400" height="300" alt="">
                                 <div class="category-caption">
                                     <!--                                    <h2>Man`s Cloth</h2>-->
@@ -63,7 +63,7 @@
                     <div class="col-xl-4 col-lg-6">
                         <div class="single-category mb-30">
                             <div class="category-img">
-                                <a th:href="@{shopping/shopping}">
+                                <a th:href="@{shopping/pen}">
                                 <img src="assets/yuls/pen.jpg" width="400" height="300" alt="">
                                 <div class="category-caption">
 <!--                                    <h2>Man`s Cloth</h2>-->
@@ -78,7 +78,7 @@
                     <div class="col-xl-4 col-lg-6">
                         <div class="single-category mb-30">
                             <div class="category-img">
-                                <a th:href="@{shopping/shopping}">
+                                <a th:href="@{shopping/living}">
                                 <img src="assets/yuls/living.jpg" width="400" height="300" alt="">
                                 <div class="category-caption">
                                     <!--                                    <h2>Man`s Cloth</h2>-->
@@ -93,7 +93,7 @@
                     <div class="col-xl-4 col-lg-6">
                         <div class="single-category mb-30">
                             <div class="category-img">
-                                <a th:href="@{shopping/shopping}">
+                                <a th:href="@{shopping/card}">
                                 <img src="assets/yuls/card.jpg" width="400" height="300" alt="">
                                 <div class="category-caption">
                                     <!--                                    <h2>Man`s Cloth</h2>-->
@@ -108,7 +108,7 @@
                     <div class="col-xl-4 col-lg-6">
                         <div class="single-category mb-30">
                             <div class="category-img">
-                                <a th:href="@{shopping/shopping}">
+                                <a th:href="@{shopping/acc}">
                                 <img src="assets/yuls/acc.jpg" width="400" height="300"  alt="">
                                 <div class="category-caption">
                                     <!--                                    <h2>Man`s Cloth</h2>-->
@@ -156,13 +156,13 @@
                             <div class="col-xl-4 col-lg-6">
                                 <div class="single-product mb-60">
                                     <a th:href="'/item/'+${item.id}">
-                                        <div class="product-img">
+                                        <div class="product-img mb-3">
                                             <img th:src="${item.imgUrl}" height="300" width="400" th:alt="${item.imgUrl}"/>
                                         </div>
                                         <div class="product-caption">
-                                            <h5>[[${item.itemNm}]]</h5>
+                                            <h5 style="font-weight:bold;font-size: 15px;" >[[${item.itemNm}]]</h5>
                                             <div class="price">
-                                                <p>[[${item.price}]]원</p>
+                                                <p th:text="|${#numbers.formatInteger(item.price,3,'COMMA')}원|"></p>
                                             </div>
                                         </div>
                                     </a>

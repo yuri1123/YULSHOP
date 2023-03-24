@@ -3,6 +3,7 @@ package com.yuri.shoppingsite.controller;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.yuri.shoppingsite.Repository.CompanyRepository;
 import com.yuri.shoppingsite.Repository.ItemRepository;
 import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.constant.Category;
@@ -11,6 +12,7 @@ import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.domain.Chart.CategoryItemsInterface;
 import com.yuri.shoppingsite.domain.Chart.MainGraphInterface;
 import com.yuri.shoppingsite.domain.community.NoticeFormDto;
+import com.yuri.shoppingsite.domain.company.Company;
 import com.yuri.shoppingsite.domain.company.CompanyFormDto;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.user.MemberFormDto;
@@ -51,6 +53,8 @@ public class AdminController {
     private final MemberRepository memberRepository;
     @Autowired
     private final MemberService memberService;
+    @Autowired
+    CompanyService companyService;
 
     //관리자 페이지로 가기
     @GetMapping(value={"/admin/adminmain", "/admin/adminmain/{year}"})
@@ -238,17 +242,67 @@ public class AdminController {
 
     //기본 정보 관리
 
-    //자사 정보 관리
-    @GetMapping("/admin/companyinfo")
+    //자사 정보 관리(상세/등록폼)
+    @GetMapping(value={"/admin/companyinfo",})
     public String companyinfo(Model model){
-//            if(bindingResult.hasErrors()){
-//            return "admin/companyinfo";
-//        }
-        model.addAttribute("CompanyFormDto", new CompanyFormDto());
-        model.addAttribute("pagestate", "등록");
+        if(companyService.findbyFirstId() != null){
+            try {
+                CompanyFormDto companyFormDto = companyService.findbyFirstId();
+                model.addAttribute("companyFormDto", companyFormDto);
+            } catch(EntityNotFoundException e) {
+                model.addAttribute("errorMessage", "회사 정보가 없습니다.");
+                model.addAttribute("companyFormDto", new CompanyFormDto());
+                model.addAttribute("pagestate", "상세");
+            }
+        } else {
+            model.addAttribute("companyFormDto", new CompanyFormDto());
+            model.addAttribute("pagestate", "등록");
+        }
+
         return "admin/companyinfo";
     }
 
+
+
+    //자사 정보 등록하기
+    @PostMapping("admin/enrollcompany")
+    public String enrollcompany(@Valid CompanyFormDto companyFormDto,
+                                BindingResult bindingResult,
+                                Model model){
+
+        if(bindingResult.hasErrors()){
+            return "admin/companyinfo";
+        }
+        try {
+            //상품 저장 로직을 호출한다. 매개변수로 상품정보와 상품 이미지 정보를 담고있는 itemImgFileList 넘겨줌
+            Company company = Company.createCompany(companyFormDto);
+            companyService.saveCompany(company);
+        } catch (Exception e){
+            model.addAttribute("errorMessage","회사 정보 등록 중 에러가 발생하였습니다.");
+            return "admin/companyinfo";
+        }
+
+        return "redirect:/admin/companyinfo";
+    }
+
+    //자사 정보 수정하기
+    @PostMapping("admin/updatecompany/{id}")
+    public String updateCompany(@Valid CompanyFormDto companyFormDto,
+                                BindingResult bindingResult,
+                                Model model,@PathVariable Long id) throws Exception{
+        System.out.println("수정하기 폼 오남");
+        if(bindingResult.hasErrors()){
+            return "admin/companyinfo";
+        }
+        try{
+            companyService.updateCompany(companyFormDto);
+        } catch (Exception e){
+            model.addAttribute("errorMessage", "상품 수정 중 에러가 발생하였습니다.");
+            return "admin/uploadproduct";
+        }
+
+        return "redirect:/admin/companyinfo";
+    }
 
     //유저 권한 관리
     //유저 권한 관리 페이지로 이동
@@ -383,6 +437,7 @@ public class AdminController {
         return "admin/productsellingresult";
     }
     NoticeService noticeService;
+    private final CompanyRepository companyRepository;
 
     //커뮤니티
     //공지사항 목록보기

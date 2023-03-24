@@ -59,32 +59,14 @@
 
 <th:block th:include="/include/admin_header.html"/>
 <th:block th:include="/include/admin_sidebar.html"/>
-<script th:inline="javascript">
-    //상품 등록시 실패 메시지를 받아서 상품 등록 페이지에 재진입시 alert를 통해 실패 사유를 보여줌
-    $(document).ready(function (){
-        var errorMessage = [[${errorMessage}]];
-        if(errorMessage != null){
-            alert(errorMessage);
-        }
-        bindDomEvent();
-    });
-
-    function bindDomEvent(){
-        $(".custom-file-input").on("change", function (){
-            var fileName = $(this).val().split("\\").pop(); //이미지 파일명
-            var fileExt = fileName.substring(fileName.lastIndexOf(".")+1); //확장자 추출
-            fileExt = fileExt.toLowerCase(); //소문자 변환
-            //파일 첨부시 이미지 파일인지 검사. 보통 데이터 검증시 스크립트에서 벨리데이션을 한번 하고,
-            //스크립트는 사용자가 변경이 가능하므로 서버에서 한번 더 벨리데이션 한다. 스크립트에서 벨리데이션을 하는 이유는
-            //서버쪽으로 요청을 하면 네트워크를 통해 서버에 요청이 도착하고 다시 그 결과를 클라이언트에 반환하는 등 리소스를 소모하기 대문이다.
-            if(fileExt != "jpg" && fileExt != "jpeg" &&fileExt != "gif" && fileExt != "png" && fileExt != "bmp"){
-                alert("이미지 파일만 등록이 가능합니다.");
-                return;
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            let errorMessage = [[${errorMessage}]];
+            if (errorMessage != null) {
+                alert(errorMessage);
             }
-            //label 태그 안의 내용을 jquery의 .html을 이용하여 파일명을 입력해준다.
-            $(this).siblings(".custom-file-input").html(fileName);
         });
-    }
+</script>
 
 </script>
 <div class="container-fluid">
@@ -95,7 +77,7 @@
                 <h1 class="text-center">회사 정보 등록</h1>
             </th:block>
             <th:block th:unless="${pagestate == '등록'}">
-                <h1 class="text-center">회사 정보 수정</h1>
+                <h1 class="text-center">회사 정보 보기</h1>
             </th:block>
         </div>
 
@@ -104,14 +86,14 @@
                 <h5 class="my-3 border-bottom pb-2">회사 정보 등록</h5>
             </th:block>
             <th:block th:unless="${pagestate == '등록'}">
-                <h5 class="my-3 border-bottom pb-2">회사 정보 수정</h5>
+                <h5 class="my-3 border-bottom pb-2">회사 정보 보기</h5>
             </th:block>
         </div>
-
+<!--        th:action="@{'/admin/enrollcompany'}"-->
         <div class="container">
-            <form role="form" method="post" th:object="${CompanyFormDto}">
+            <form role="form"  method="post" th:object="${companyFormDto}">
                 <div class="row col-12 mt-40 text-start justify-content-start mb-80 ">
-<!--                    <input type="hidden" th:field="*{id}">-->
+                    <input type="hidden" th:field="*{id}">
                     <table>
                         <colgroup>
                             <col style="width:150px;">
@@ -146,20 +128,6 @@
                             <td><hr></td>
                         </tr>
 
-                        <tr>
-                            <th class="justify-content-center text-center align-middle" scope="row">대표 이메일</th>
-                            <td class="justify-content-center text-center align-middle">
-                                <input type="email" th:field="*{companyemail}" class="form-control"
-                                       placeholder="대표 이메일을 입력해주세요">
-                                <p th:if="${#fields.hasErrors('companyemail')}" th:errors="*{companyemail}"
-                                   class="fieldError">Incorrect data</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th><hr></th>
-                            <td><hr></td>
-                        </tr>
-                        <tr>
                             <th class="justify-content-center text-center align-middle" scope="row">회사구분</th>
                             <td class="justify-content-center text-center align-middle">
                                 <select th:field = "*{companystand}" class="form-select">
@@ -173,13 +141,35 @@
                             <th><hr></th>
                             <td><hr></td>
                         </tr>
+
+                        <tr>
+                            <th class="justify-content-center text-center align-middle" scope="row">대표자명</th>
+                            <td class="justify-content-center text-center align-middle">
+                                <input type="text" th:field="*{repname}" class="form-control"
+                                       placeholder="대표자명을 입력해주세요">
+                                <p th:if="${#fields.hasErrors('repname')}" th:errors="*{repname}"
+                                   class="fieldError">Incorrect data</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><hr></th>
+                            <td><hr></td>
+                        </tr>
+
                         <tr>
                         <th class="justify-content-center text-center align-middle" scope="row">회사주소</th>
                         <td class="justify-content-center text-center align-middle">
-                        <input  th:field="*{companypostcode}" id="companypostcode" fw-filter="isLengthRange[1][14]" fw-label="우편번호1" fw-msg="" class=" mb-1 form-control" placeholder="" readonly="readonly" maxlength="14" value="" type="text">
-                        <a href="#none" onclick="sample6_execDaumPostcode()" id="postBtn"><img src="//img.echosting.cafe24.com/skin/base_ko_KR/member/btn_zipcode.gif" alt="우편번호"></a><br>
-                        <input id="companyaddress1" th:field="*{companyaddress1}"   fw-filter="isFill" fw-label="주소" fw-msg="" class="inputwidth mb-1 form-control" placeholder="기본주소" readonly="readonly" value="" type="text"><br>
-                        <input id="companyaddress2" th:field="*{companyaddress2}"  fw-filter="" fw-label="주소" fw-msg="" class="inputwidth mb-1 form-control" placeholder="나머지주소" value="" type="text">
+                            <div class="row d-flex ms-1 mb-3 align-middle">
+                        <input th:field="*{companypostcode}" id="companypostcode" fw-filter="isLengthRange[1][14]"
+                               fw-label="우편번호1" fw-msg="" class="mb-1 form-control" placeholder="우편번호"
+                               readonly="readonly" maxlength="14" value="" type="text" style="width: 30%;">
+                        <a style="width:20%;" href="#none" onclick="sample6_execDaumPostcode()" id="postBtn">
+                            <img style="width:100px; height: 30px;" src="//img.echosting.cafe24.com/skin/base_ko_KR/member/btn_zipcode.gif" alt="우편번호"></a>
+                            </div>
+                        <input style="width:100%;" id="companyaddress1" th:field="*{companyaddress1}"   fw-filter="isFill" fw-label="주소" fw-msg=""
+                               class="inputwidth form-control" placeholder="기본주소" readonly="readonly" value="" type="text"><br>
+                        <input style="width:100%;" id="companyaddress2" th:field="*{companyaddress2}"  fw-filter="" fw-label="주소"
+                               fw-msg="" class="inputwidth mb-1 form-control" placeholder="나머지주소" value="" type="text">
                         <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
                         <script>
                             function sample6_execDaumPostcode() {
@@ -221,15 +211,12 @@
                             <td><hr></td>
                         </tr>
 
-
-
-
                         <tr>
-                            <th class="justify-content-center text-center align-middle" scope="row">대표자명</th>
+                            <th class="justify-content-center text-center align-middle" scope="row">대표 전화번호</th>
                             <td class="justify-content-center text-center align-middle">
-                                <input type="text" th:field="*{repname}" class="form-control"
-                                       placeholder="대표자명을 입력해주세요">
-                                <p th:if="${#fields.hasErrors('repname')}" th:errors="*{repname}"
+                                <input type="text" th:field="*{companyphone}" class="form-control"
+                                       placeholder="대표번호를 입력해주세요">
+                                <p th:if="${#fields.hasErrors('companyphone')}" th:errors="*{companyphone}"
                                    class="fieldError">Incorrect data</p>
                             </td>
                         </tr>
@@ -238,55 +225,85 @@
                             <td><hr></td>
                         </tr>
 
+                        <tr>
+                            <th class="justify-content-center text-center align-middle" scope="row">대표 이메일</th>
+                            <td class="justify-content-center text-center align-middle">
+                                <input type="email" th:field="*{companyemail}" class="form-control"
+                                       placeholder="대표 이메일을 입력해주세요">
+                                <p th:if="${#fields.hasErrors('companyemail')}" th:errors="*{companyemail}"
+                                   class="fieldError">Incorrect data</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><hr></th>
+                            <td><hr></td>
+                        </tr>
+                        <tr>
 
+                        <tr>
+                            <th class="justify-content-center text-center align-middle" scope="row">개업연월일</th>
+                            <td class="justify-content-center text-center align-middle">
+                                <input type="date" th:field="*{companystart}" class="form-control"
+                                       placeholder="개업연월일을 입력해주세요">
+                                <p th:if="${#fields.hasErrors('companystart')}" th:errors="*{companystart}"
+                                   class="fieldError">Incorrect data</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><hr></th>
+                            <td><hr></td>
+                        </tr>
 
+                        <tr>
+                            <th class="justify-content-center text-center align-middle" scope="row">대표 팩스번호</th>
+                            <td class="justify-content-center text-center align-middle">
+                                <input type="text" th:field="*{companyfax}" class="form-control"
+                                       placeholder="팩스번호를 입력해주세요">
+                                <p th:if="${#fields.hasErrors('companyfax')}" th:errors="*{companyfax}"
+                                   class="fieldError">Incorrect data</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><hr></th>
+                            <td><hr></td>
+                        </tr>
 
+                        <tr>
+                            <th class="justify-content-center text-center align-middle" scope="row">계좌번호</th>
+                            <td class="justify-content-center text-center align-middle d-flex">
+                                <input type="text" th:field="*{companyaccbank}" class="form-control mr-1"
+                                       placeholder="은행" style="width:30%;">
+                                <input type="text" th:field="*{companyaccnum}" class="form-control  mr-1"
+                                          placeholder="계좌번호" style="width:70%;">
+                                <input type="text" th:field="*{companyaccname}" class="form-control"
+                                       placeholder="계좌주명" style="width:30%;">
 
+                                <p th:if="${#fields.hasErrors('companyaccbank')}" th:errors="*{companyaccbank}"
+                                   class="fieldError">Incorrect data</p>
+                                <p th:if="${#fields.hasErrors('companyaccnum')}" th:errors="*{companyaccnum}"
+                                   class="fieldError">Incorrect data</p>
+                                <p th:if="${#fields.hasErrors('companyaccname')}" th:errors="*{companyaccname}"
+                                   class="fieldError">Incorrect data</p>
+                            </td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><hr></th>
+                            <td><hr></td>
+                        </tr>
+                        <tr>
+                            <th class="justify-content-center text-center align-middle" scope="row"></th>
+                            <td class="justify-content-end text-right align-middle">
 
-
-<!--                        <tr>-->
-<!--                            <th class="justify-content-center text-center align-middle" scope="row">상품재고</th>-->
-<!--                            <td class="justify-content-center text-center align-middle">-->
-<!--                                <input type="number" th:field="*{stockNumber}" class="form-control" placeholder="상품의 재고 입력해주세요">-->
-<!--                                <p th:if="${#fields.hasErrors('stockNumber')}"-->
-<!--                                   th:errors="*{stockNumber}" class="fieldError">Incorrect data</p>-->
-<!--                            </td>-->
-<!--                        </tr>-->
-<!--                        <tr>-->
-<!--                            <th><hr></th>-->
-<!--                            <td><hr></td>-->
-<!--                        </tr>-->
-
-<!--                        <tr>-->
-<!--                            <th class="justify-content-center text-center align-middle" scope="row">상세내용</th>-->
-<!--                            <td class="justify-content-center text-center align-middle">-->
-<!--                            <textarea aria-label ="With textarea"-->
-<!--                                      th:field="*{itemDetail}" class="form-control" placeholder="상품의 상세 내용을 입력해주세요"></textarea>-->
-<!--                                <p th:if="${#fields.hasErrors('itemDetail')}"-->
-<!--                                   th:errors="*{itemDetail}" class="fieldError">Incorrect data</p>-->
-<!--                            </td>-->
-<!--                        </tr>-->
-<!--                        <tr>-->
-<!--                            <th><hr></th>-->
-<!--                            <td><hr></td>-->
-<!--                        </tr>-->
-<!--                        <tr>-->
-<!--                            <th class="justify-content-center text-center align-middle" scope="row"></th>-->
-<!--                            <td class="justify-content-end text-right align-middle">-->
-
-<!--                                <th:block th:if="${#strings.isEmpty(itemFormDto.id)}">-->
-
-<!--                                    <input class="btn-primary backcol rad mr-1" type="submit" th:formaction="@{/admin/uploadproduct}" th:value="저장하기">-->
-<!--                                </th:block>-->
-<!--                                &lt;!&ndash;                    상품의 아이디가 있는 경우 수정 로직을 호출하는 버튼을 보여준다&ndash;&gt;-->
-<!--                                <th:block th:unless="${#strings.isEmpty(itemFormDto.id)}">-->
-<!--                                    <input class="btn-primary backcol rad mr-2" type="submit" th:formaction="@{'/admin/uploadproduct/' + ${itemFormDto.id} }" th:value="수정하기">-->
-<!--                                </th:block>-->
-<!--                                <th:block >-->
-<!--                                    <input class="btn-primary backcol rad" type="reset" th:value="초기화하기">-->
-<!--                                </th:block>-->
-<!--                            </td>-->
-<!--                        </tr>-->
+                                <th:block th:if="${#strings.isEmpty(companyFormDto.id)}">
+                                    <input class="btn-primary backcol rad mr-1" type="submit" th:formaction="@{/admin/enrollcompany}" th:value="등록하기">
+                                </th:block>
+                                <th:block th:unless="${#strings.isEmpty(companyFormDto.id)}">
+                                    <input class="btn-primary backcol rad mr-2" type="submit" th:formaction="@{'/admin/updatecompany/' + ${companyFormDto.id} }" th:value="수정하기">
+                                </th:block>
+                                    <input class="btn-primary backcol rad" type="reset" th:value="초기화하기">
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
 
