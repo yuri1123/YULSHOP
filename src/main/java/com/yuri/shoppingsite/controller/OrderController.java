@@ -1,7 +1,9 @@
 package com.yuri.shoppingsite.controller;
 
+import com.yuri.shoppingsite.domain.company.Company;
 import com.yuri.shoppingsite.domain.shop.OrderDto;
 import com.yuri.shoppingsite.domain.shop.OrderHistDto;
+import com.yuri.shoppingsite.service.CompanyService;
 import com.yuri.shoppingsite.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,7 @@ import java.util.Optional;
 public class OrderController {
 
     private final OrderService orderService;
+    private final CompanyService companyService;
 
     @PostMapping(value = "/order")
     //스프링에서 비동기 처리를 할 때 @RequestBody와 @ResponseBody 어노테이션을 사용한다.
@@ -68,6 +71,10 @@ public class OrderController {
         model.addAttribute("orders", ordersHistDtoList);
         model.addAttribute("page", pageable.getPageNumber());
         model.addAttribute("maxPage",5);
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "shopping/orderHist";
     }
 

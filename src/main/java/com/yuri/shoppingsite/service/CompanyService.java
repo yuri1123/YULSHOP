@@ -54,4 +54,9 @@ public class CompanyService {
         CompanyFormDto companyFormDto = CompanyFormDto.of(companyInfo);
         return companyFormDto;
     }
+
+    public List<Company> getcompanyList(){
+        List<Company> companyList = companyRepository.findAllcompany();
+        return companyList;
+    }
 }

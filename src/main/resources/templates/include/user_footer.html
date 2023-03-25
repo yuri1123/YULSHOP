@@ -1,6 +1,7 @@
 <footer>
 
   <!-- Footer Start-->
+
   <div class="footer-area footer-padding">
               <hr>
     <div class="container mt-5">
@@ -8,6 +9,9 @@
         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mr-3 text-center">
           <div class="single-footer-caption mb-50 ">
             <div class="single-footer-caption mb-30 ">
+
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
               <!-- logo -->
               <div class="footer-logo">
                 <a href="index.html"><img src="/assets/img/logo/logo2_footer.png" alt=""></a>
@@ -18,6 +22,7 @@
                   더 나은 내일을 위해 항상 노력하겠습니다.</p>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -27,12 +32,12 @@
               <h4>COMPANY</h4>
               <div class="footer-pera">
                 <p style="font-size: 14px">
-                  상호 : (주)율스샵<br>
-                  사업자등록번호 : 123-456-78910<br>
-                  전화 : 031-123-4567<br>
-                  주소 : 수원시 영통구 망포동 랄라22길 5-1(랄라동) 3층<br>
-                  메일 : yurifrom1123@gmail.com<br>
-                  팩스 : 02-1234-5678
+                  상호 : [[${company.companyname}]]<br>
+                  사업자등록번호 :[[${company.companynum}]]<br>
+                  전화 : [[${company.companyphone}]]<br>
+                  주소 : ( [[${company.companypostcode}]] ) [[${company.companyaddress1}]] [[${company.companyaddress2}]]<br>
+                  메일 : [[${company.companyemail}]]<br>
+                  팩스 :  [[${company.companyfax}]]
                   </p>
               </div>
             </div>
@@ -43,14 +48,15 @@
             <div class="footer-tittle">
               <h4>BANK</h4>
               <div class="footer-pera">
-                <p style="font-size: 14px">신한은행<br>
-                   110-301-851060<br>
-                   (주)율스샵</p>
+                <p style="font-size: 14px">[[${company.companyaccbank}]]<br>
+                  [[${company.companyaccnum}]]<br>
+                  [[${company.companyaccname}]]</p>
               </div>
             </div>
           </div>
         </div>
       </div>
+
       </div>
       <!-- Footer bottom -->
     <center>
@@ -77,5 +83,7 @@
       </div>
   <!-- Footer End-->
   </center>
+
+
   </div>
 </footer>

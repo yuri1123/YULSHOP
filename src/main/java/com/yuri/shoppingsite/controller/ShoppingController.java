@@ -1,6 +1,8 @@
 package com.yuri.shoppingsite.controller;
 
+import com.yuri.shoppingsite.domain.company.Company;
 import com.yuri.shoppingsite.domain.shop.*;
+import com.yuri.shoppingsite.service.CompanyService;
 import com.yuri.shoppingsite.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ import java.util.Optional;
 public class ShoppingController {
     @Autowired
     private ItemService itemService;
+    @Autowired
+    private CompanyService companyService;
 
     //상품 전체 보여주기 리스트로 가기
     @GetMapping(value={"shopping/shopping","shopping/shopping/{page}"})
@@ -35,6 +39,12 @@ public class ShoppingController {
         model.addAttribute("items", items);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
+
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+
+        model.addAttribute("company",company);
         return "shopping/shopping";
     }
 
@@ -50,6 +60,10 @@ public class ShoppingController {
         model.addAttribute("newItems",newItems);
         List<Item> soldOut = itemService.getSoldOut();
         model.addAttribute("soldOut",soldOut);
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "shopping/products/diary";
     }
 
@@ -65,7 +79,10 @@ public class ShoppingController {
         model.addAttribute("newItems",newItems);
         List<Item> soldOut = itemService.getSoldOut();
         model.addAttribute("soldOut",soldOut);
-
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "shopping/products/walldeco";
     }
 
@@ -80,6 +97,10 @@ public class ShoppingController {
         model.addAttribute("newItems",newItems);
         List<Item> soldOut = itemService.getSoldOut();
         model.addAttribute("soldOut",soldOut);
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "shopping/products/living";
     }
 
@@ -94,6 +115,10 @@ public class ShoppingController {
         model.addAttribute("newItems",newItems);
         List<Item> soldOut = itemService.getSoldOut();
         model.addAttribute("soldOut",soldOut);
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "shopping/products/pen";
     }
 
@@ -108,6 +133,10 @@ public class ShoppingController {
         model.addAttribute("newItems",newItems);
         List<Item> soldOut = itemService.getSoldOut();
         model.addAttribute("soldOut",soldOut);
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "shopping/products/card";
     }
 
@@ -122,6 +151,10 @@ public class ShoppingController {
         model.addAttribute("newItems",newItems);
         List<Item> soldOut = itemService.getSoldOut();
         model.addAttribute("soldOut",soldOut);
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "shopping/products/acc";
     }
     //상품 상세보기로 가기
@@ -129,6 +162,10 @@ public class ShoppingController {
     public String itemDtl(Model model, @PathVariable("itemId") Long itemId){
         ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
         model.addAttribute("item", itemFormDto);
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "shopping/itemDtl";
     }
 
@@ -148,6 +185,10 @@ public class ShoppingController {
         model.addAttribute("newItems",newItems);
         List<Item> soldOut = itemService.getSoldOut();
         model.addAttribute("soldOut",soldOut);
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
 
         return "shopping/bestseller";
     }
@@ -166,6 +207,10 @@ public class ShoppingController {
         model.addAttribute("newItems",newItems);
         List<Item> soldOut = itemService.getSoldOut();
         model.addAttribute("soldOut",soldOut);
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "shopping/latest";
     }
 

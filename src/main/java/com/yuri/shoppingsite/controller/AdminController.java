@@ -245,7 +245,7 @@ public class AdminController {
     //자사 정보 관리(상세/등록폼)
     @GetMapping(value={"/admin/companyinfo",})
     public String companyinfo(Model model){
-        if(companyService.findbyFirstId() != null){
+        if(companyService.getcompanyList() != null){
             try {
                 CompanyFormDto companyFormDto = companyService.findbyFirstId();
                 model.addAttribute("companyFormDto", companyFormDto);
@@ -254,12 +254,12 @@ public class AdminController {
                 model.addAttribute("companyFormDto", new CompanyFormDto());
                 model.addAttribute("pagestate", "상세");
             }
-        } else {
+        } else if(companyService.getcompanyList() == null){
             model.addAttribute("companyFormDto", new CompanyFormDto());
             model.addAttribute("pagestate", "등록");
         }
 
-        return "admin/companyinfo";
+        return "/admin/companyinfo";
     }
 
 
@@ -269,7 +269,6 @@ public class AdminController {
     public String enrollcompany(@Valid CompanyFormDto companyFormDto,
                                 BindingResult bindingResult,
                                 Model model){
-
         if(bindingResult.hasErrors()){
             return "admin/companyinfo";
         }

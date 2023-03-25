@@ -2,12 +2,15 @@ package com.yuri.shoppingsite.controller;
 
 import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.constant.Role;
+import com.yuri.shoppingsite.domain.company.Company;
 import com.yuri.shoppingsite.domain.shop.ItemFormDto;
 import com.yuri.shoppingsite.domain.user.Member;
 import com.yuri.shoppingsite.domain.user.MemberAccountDto;
 import com.yuri.shoppingsite.domain.user.MemberFormDto;
+import com.yuri.shoppingsite.service.CompanyService;
 import com.yuri.shoppingsite.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,13 +30,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
 
+    @Autowired
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private final CompanyService companyService;
 
     //회원가입 페이지로 이동
     @GetMapping("/signup")
     public String memberForm(Model model){
         model.addAttribute("memberFormDto", new MemberFormDto());
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "member/signup";
     }
 
@@ -61,7 +72,11 @@ public class MemberController {
 
     //    로그인페이지로 이동
     @GetMapping("/login")
-    public String gologin(){
+    public String gologin(Model model){
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "member/login";
     }
 
@@ -81,6 +96,10 @@ public class MemberController {
         Role member = memberService.getAuth(principal.getName());
         model.addAttribute("member",member);
         model.addAttribute("nickname",nickname);
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "member/mypage";
     }
 
@@ -91,6 +110,10 @@ public class MemberController {
         MemberAccountDto memberAccountDto = memberService.getAccountDto(principal.getName());
         model.addAttribute("memberFormDto", memberFormDto);
         model.addAttribute("memberAccountDto", memberAccountDto);
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "member/personalinfo";
     }
 
@@ -130,25 +153,41 @@ public class MemberController {
     public String coupon(Principal principal, Model model){
         MemberFormDto memberFormDto = memberService.getmemberDto(principal.getName());
         model.addAttribute("memberFormDto", memberFormDto);
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "member/newpassword";
     }
 
     //내가 쓴 게시물 보기 페이지로 이동
     @GetMapping("/myboard")
-    public String myboard(){
+    public String myboard(Model model){
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "member/myboard";
     }
 
 
     //배송지관리 리스트페이지로 이동
     @GetMapping("/delivery/list")
-    public String deleverylist(){
+    public String deleverylist(Model model){
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "member/deliveryaddresslist";
     }
 
     //배송지관리 등록페이지로 이동
     @GetMapping("/delivery/enroll")
-    public String deliveryenroll(){
+    public String deliveryenroll(Model model){
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
         return "member/deliveryaddressenroll";
     }
 

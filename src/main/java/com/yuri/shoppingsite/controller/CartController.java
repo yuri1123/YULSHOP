@@ -1,13 +1,15 @@
 package com.yuri.shoppingsite.controller;
 
+import com.yuri.shoppingsite.domain.company.Company;
 import com.yuri.shoppingsite.domain.shop.CartDetailDto;
 import com.yuri.shoppingsite.domain.shop.CartItemDto;
 import com.yuri.shoppingsite.domain.shop.CartOrderDto;
 import com.yuri.shoppingsite.service.CartService;
+import com.yuri.shoppingsite.service.CompanyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +25,8 @@ import java.util.List;
 public class CartController {
 
     private final CartService cartService;
+    @Autowired
+    private CompanyService companyService;
 
     //장바구니 담기
     @PostMapping(value = "/cart")
@@ -56,14 +60,22 @@ public class CartController {
     }
 
     //장바구니 리스트 가기
-    @GetMapping("/cart")
-    public String orderHist(Principal principal, Model model){
-        List<CartDetailDto> cartDetailList =
-                cartService.getCartList(principal.getName());
-        model.addAttribute("cartItems", cartDetailList);
-        return "shopping/cartList";
-    }
 
+    @GetMapping("/cart")
+    public String orderHist(Principal principal, Model model) {
+        if (principal == null) {
+            return "/member/login";
+        } else if (principal != null) {
+            List<CartDetailDto> cartDetailList =
+                    cartService.getCartList(principal.getName());
+            model.addAttribute("cartItems", cartDetailList);
+        }
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
+            return "shopping/cartList";
+    }
     //장바구니 상품 수량 업데이트
     //Http메소드에서 PATCH는 요청된 자원의 일부를 업데이트할 때 PATCH 사용
     //장바구니 상품의 수량만 업데이트하기 때문에 @PatchMapping 사용
