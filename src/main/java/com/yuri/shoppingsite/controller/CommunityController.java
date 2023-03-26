@@ -34,7 +34,6 @@ public class CommunityController {
     }
 
 
-
     //review 게시판 페이지로 이동
     @GetMapping("community/review")
     public String goReview(Model model){

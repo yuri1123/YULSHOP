@@ -20,6 +20,7 @@ public class NoticeFormDto {
     @NotBlank(message = "제목은 필수 입력값입니다.")
     private String title;
     @NotBlank(message = "내용은 필수 입력값입니다.")
+    @Lob
     private String content;
     private int view;
     private String createdBy;

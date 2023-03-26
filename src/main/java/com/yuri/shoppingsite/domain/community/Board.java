@@ -21,6 +21,7 @@ public class Board extends BaseEntity {
     private String type; //게시판의 유형
     private String itemNm; //상품명(리뷰게시판)
     private String title;
+    @Lob
     private String content;
     private int view;
 //    @OneToMany(mappedBy = "Board", cascade = CascadeType.REMOVE)

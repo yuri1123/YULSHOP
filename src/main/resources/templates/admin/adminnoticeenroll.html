@@ -87,23 +87,19 @@
 
     <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-2">
       <form role="form" method="post" th:object="${noticeFormDto}">
-
-<!--          <div class="mb-3">-->
-<!--              <label th:for="id" class="form-label mt-2">순번</label>-->
-<!--              &lt;!&ndash;                    <input type="text"  th:field="*{productname}" id="productname" class="form-control">&ndash;&gt;-->
-<!--              <input type="text" th:field="*{id}" class="form-control">-->
-<!--          </div>-->
+          <input type="hidden" th:field="*{type}"
+                 th:value="${noticeFormDto.type != null && noticeFormDto.type.trim().length() > 0 ? noticeFormDto.type : 'notice'}">
 <!--          <p th:if="${#fields.hasErrors('id')}" th:errors="*{id}" class="fieldError">Incorrect data</p>-->
 
           <div class="mb-3">
             <label th:for="noticeTitle" class="form-label mt-2">글제목</label>
-            <input type="text" th:field="*{noticeTitle}" class="form-control">
+            <input type="text" th:field="*{title}" class="form-control">
           </div>
-          <p th:if="${#fields.hasErrors('noticeTitle')}" th:errors="*{noticeTitle}" class="fieldError">Incorrect data</p>
+          <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fieldError">Incorrect data</p>
 
           <div class="mb-3">
-            <label th:for="noticeContent" class="form-label">글내용</label>
-              <textarea  th:field="*{noticeContent}" id="summernote" type="text" th:class="form-control"
+            <label th:for="content" class="form-label">글내용</label>
+              <textarea  th:field="*{content}" id="summernote" type="text" th:class="form-control"
                         name="boardContents" rows="10"></textarea>
 
 <!--              <script>-->
@@ -168,7 +164,7 @@
 
 
           </div>
-          <p th:if="${#fields.hasErrors('noticeContent')}" th:errors="*{noticeContent}" class="fieldError">Incorrect data</p>
+          <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="fieldError">Incorrect data</p>
 
 <!--          <div class="mb-3">-->
 <!--            <label th:for="noticeView" class="form-label">조회수</label>-->
@@ -177,8 +173,10 @@
 <!--          <p th:if="${#fields.hasErrors('noticeView')}" th:errors="*{noticeView}" class="fieldError">Incorrect data</p>-->
 
           <div class="col-3 offset-9">
-              <input class="btn-primary backcol rad" type="submit" th:formaction="@{/admin/uploadproduct}" th:value="저장하기">
-            </div>
+              <input class="btn-primary backcol rad" type="submit" th:formaction="@{/admin/adminnoticeenroll}" th:value="저장하기">
+<!--              <input class="btn-primary backcol rad" type="submit" th:formaction="@{/admin/updatenotice}" th:value="수정하기">-->
+              <input class="btn-primary backcol rad" type="reset" th:value="초기화하기">
+          </div>
 
 <!--            <input type = "hidden" th:name = "${_csrf.parameterName}"-->
 <!--                   th:value="${_csrf.token}">-->

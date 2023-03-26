@@ -27,11 +27,15 @@ public class BoardService {
         return noticeFormDto;
     }
 
-    public Board saveBoard(Board board) {
+    public Board save(Board board) {
         return boardRepository.save(board);
     }
 
-    public void updateCompany(NoticeFormDto noticeFormDto) {
+    public void createNotice(NoticeFormDto noticeFormDto){
+        Board board = modelMapper.map(noticeFormDto, Board.class);
+        boardRepository.save(board);
+        }
+    public void updateNotice(NoticeFormDto noticeFormDto) {
         Board board = boardRepository.findById(noticeFormDto.getId()).orElse(null);
         if (board != null) {
             modelMapper.map(noticeFormDto, board);

@@ -103,26 +103,29 @@
       </div>
     </div>
     <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-85">
-      <table class="table table">
-        <thead class="text-center">
-        <tr>
-          <th>NO</th>
-          <th>TITLE</th>
-          <th>POSTED BY</th>
-          <th>DATE</th>
-          <th>VIEW</th>
-        </tr>
-        </thead>
-        <tbody class="text-center">
-        <tr th:each="list:${noticeList}">
-          <td th:text="${list.id}">NO</td>
-          <td th:text="${list.title}">TITLE</td>
-          <td th:text="${list.createdBy}">POSTED BY</td>
-          <td th:text="${list.regTime}"}>DATE</td>
-          <td th:text="${list.view}">VIEW</td>
-        </tr>
-        </tbody>
-      </table>
+      <div class="product-caption">
+        <table class="table table">
+          <thead class="text-center">
+          <tr>
+            <th>게시물아이디</th>
+            <th>제목</th>
+            <th>조회수</th>
+            <th>등록자</th>
+            <th>등록일</th>
+          </tr>
+          </thead>
+          <tbody class="text-center">
+          <tr th:each="board, status: ${boardList}">
+            <td th:text="${board.id}"></td>
+            <td>
+              <a th:href="'/community/noticelist/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
+            </td>
+            <td th:text="${board.view}"></td>
+            <td th:text="${board.createdBy}"></td>
+            <td th:text="${#temporals.format(board.regTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+          </tr>
+          </tbody>
+        </table>
     </div>
 
   </div>
@@ -132,6 +135,6 @@
 <th:block th:include="/include/admin_footer.html"/>
 <th:block th:include="/include/admin_js.html"/>
 
-
+</div>
 </body>
 </html>
