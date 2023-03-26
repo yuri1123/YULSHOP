@@ -93,10 +93,15 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12" id="gap">
-      <h1 class="text-center">공지 목록</h1>
-    </div>
 
+    <div class="col-lg-12 col-md-12 col-sm-12" id="gap">
+      <h1 class="text-center">공지사항 목록</h1>
+    </div>
+    <div class="col-3 offset-8 mb-2">
+      <div class="form-inline justify-content-center">
+        <button class="btn-primary backcol rad"><a th:href="@{/admin/uploadnotice}">공지글 작성</a></button>
+      </div>
+    </div>
     <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-85">
       <table class="table table">
         <thead class="text-center">

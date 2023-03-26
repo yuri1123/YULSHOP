@@ -10,6 +10,7 @@ import com.yuri.shoppingsite.constant.ItemSellStatus;
 import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.domain.chart.CategoryItemsInterface;
 import com.yuri.shoppingsite.domain.chart.MainGraphInterface;
+import com.yuri.shoppingsite.domain.community.Board;
 import com.yuri.shoppingsite.domain.community.NoticeFormDto;
 import com.yuri.shoppingsite.domain.company.Company;
 import com.yuri.shoppingsite.domain.company.CompanyFormDto;
@@ -47,6 +48,8 @@ public class AdminController {
     private final MemberService memberService;
     @Autowired
     CompanyService companyService;
+    @Autowired
+    BoardService boardService;
 
     //관리자 페이지로 가기
     @GetMapping(value={"/admin/adminmain", "/admin/adminmain/{year}"})
@@ -453,16 +456,21 @@ public class AdminController {
         model.addAttribute("maxPage", 1);
         return "admin/productsellingresult";
     }
-    BoardService boardService;
     private final CompanyRepository companyRepository;
 
     //커뮤니티
     //공지사항 목록보기
     @GetMapping("admin/noticelist")
     public String adminnoticelist(Model model){
-        model.addAttribute("noticeList", boardService.getNotice());
+//        if(boardService == null) {
+//            boardService = new BoardService(); // boardService 객체 생성
+//        } else if(boardService != null){
+       List<Board> boardList = boardService.getNotice();
+        model.addAttribute("boardList",boardList);
+//        }
         return "admin/adminnoticelist";
     }
+
 
     //공지사항 등록하기
     @GetMapping("admin/noticeenroll")
