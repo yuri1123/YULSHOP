@@ -116,10 +116,10 @@
         <tbody class="text-center">
         <tr th:each="list:${noticeList}">
           <td th:text="${list.id}">NO</td>
-          <td th:text="${list.noticeTitle}">TITLE</td>
+          <td th:text="${list.title}">TITLE</td>
           <td th:text="${list.createdBy}">POSTED BY</td>
           <td th:text="${list.regTime}"}>DATE</td>
-          <td th:text="${list.noticeView}">VIEW</td>
+          <td th:text="${list.view}">VIEW</td>
         </tr>
         </tbody>
       </table>
