@@ -5,23 +5,20 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.yuri.shoppingsite.Repository.CompanyRepository;
 import com.yuri.shoppingsite.Repository.ItemRepository;
-import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.constant.Category;
 import com.yuri.shoppingsite.constant.ItemSellStatus;
 import com.yuri.shoppingsite.constant.Role;
-import com.yuri.shoppingsite.domain.Chart.CategoryItemsInterface;
-import com.yuri.shoppingsite.domain.Chart.MainGraphInterface;
+import com.yuri.shoppingsite.domain.chart.CategoryItemsInterface;
+import com.yuri.shoppingsite.domain.chart.MainGraphInterface;
 import com.yuri.shoppingsite.domain.community.NoticeFormDto;
 import com.yuri.shoppingsite.domain.company.Company;
 import com.yuri.shoppingsite.domain.company.CompanyFormDto;
 import com.yuri.shoppingsite.domain.shop.*;
-import com.yuri.shoppingsite.domain.user.MemberFormDto;
 import com.yuri.shoppingsite.domain.user.MemberSearchDto;
 import com.yuri.shoppingsite.domain.user.Member;
 import com.yuri.shoppingsite.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -456,14 +453,14 @@ public class AdminController {
         model.addAttribute("maxPage", 1);
         return "admin/productsellingresult";
     }
-    NoticeService noticeService;
+    BoardService boardService;
     private final CompanyRepository companyRepository;
 
     //커뮤니티
     //공지사항 목록보기
     @GetMapping("admin/noticelist")
     public String adminnoticelist(Model model){
-        model.addAttribute("noticeList",noticeService.getNotice());
+        model.addAttribute("noticeList", boardService.getNotice());
         return "admin/adminnoticelist";
     }
 

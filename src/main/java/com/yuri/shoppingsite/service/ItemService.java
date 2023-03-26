@@ -7,8 +7,8 @@ import com.yuri.shoppingsite.Repository.OrderItemRepository;
 import com.yuri.shoppingsite.constant.Category;
 import com.yuri.shoppingsite.constant.ItemSellStatus;
 import com.yuri.shoppingsite.constant.Role;
-import com.yuri.shoppingsite.domain.Chart.CategoryItemsInterface;
-import com.yuri.shoppingsite.domain.Chart.MainGraphInterface;
+import com.yuri.shoppingsite.domain.chart.CategoryItemsInterface;
+import com.yuri.shoppingsite.domain.chart.MainGraphInterface;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.user.Member;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

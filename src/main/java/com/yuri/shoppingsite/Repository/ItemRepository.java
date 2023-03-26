@@ -2,7 +2,7 @@ package com.yuri.shoppingsite.Repository;
 
 import com.yuri.shoppingsite.constant.Category;
 import com.yuri.shoppingsite.constant.ItemSellStatus;
-import com.yuri.shoppingsite.domain.Chart.CategoryItemsInterface;
+import com.yuri.shoppingsite.domain.chart.CategoryItemsInterface;
 import com.yuri.shoppingsite.domain.shop.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

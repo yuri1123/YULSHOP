@@ -1,35 +1,49 @@
 package com.yuri.shoppingsite.service;
 
-import com.yuri.shoppingsite.domain.community.BoardDTO;
-import com.yuri.shoppingsite.mapper.BoardMapper;
+import com.yuri.shoppingsite.Repository.BoardRepository;
+import com.yuri.shoppingsite.domain.community.Board;
+import com.yuri.shoppingsite.domain.community.NoticeFormDto;
+import com.yuri.shoppingsite.domain.company.Company;
+import com.yuri.shoppingsite.domain.company.CompanyFormDto;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class BoardService {
+
     @Autowired
-    BoardMapper boardMapper;
+    private BoardRepository boardRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
-    public List<BoardDTO> listAll(){
-        return boardMapper.listAll();
+    @Transactional(readOnly = true)
+    public NoticeFormDto getNoticeForm() {
+        Board board = boardRepository.findallNoticebyid(getNoticeForm().getId());
+        NoticeFormDto noticeFormDto = NoticeFormDto.of(board);
+        return noticeFormDto;
     }
 
-    public BoardDTO selectOne(int bid){
-        return boardMapper.selectOne(bid);
+    public Board saveBoard(Board board) {
+        return boardRepository.save(board);
     }
 
-    public int register(BoardDTO boardDTO){
-        return boardMapper.register(boardDTO);
+    public void updateCompany(NoticeFormDto noticeFormDto) {
+        Board board = boardRepository.findById(noticeFormDto.getId()).orElse(null);
+        if (board != null) {
+            modelMapper.map(noticeFormDto, board);
+            boardRepository.save(board);
+        }
     }
 
-    public int update(BoardDTO boardDTO){
-        return boardMapper.update(boardDTO);
+    public List<Board> getNotice(){
+        List<Board> notice = boardRepository.findallNotice();
+        return notice;
     }
 
-    public int delete(int bid){
-        return boardMapper.delete(bid);
-    }
+
 
 }

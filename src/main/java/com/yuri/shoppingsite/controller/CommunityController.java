@@ -1,74 +1,80 @@
 package com.yuri.shoppingsite.controller;
 
-import com.yuri.shoppingsite.domain.community.Answer;
-import com.yuri.shoppingsite.domain.community.AnswerForm;
-import com.yuri.shoppingsite.domain.community.Question;
-import com.yuri.shoppingsite.domain.community.QuestionForm;
-import com.yuri.shoppingsite.domain.user.Member;
-import com.yuri.shoppingsite.domain.user.SiteUser;
-import com.yuri.shoppingsite.service.AnswerService;
-import com.yuri.shoppingsite.service.NoticeService;
-import com.yuri.shoppingsite.service.QuestionService;
-import com.yuri.shoppingsite.service.UserService;
+import com.yuri.shoppingsite.domain.community.Board;
+import com.yuri.shoppingsite.domain.company.Company;
+import com.yuri.shoppingsite.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
-import java.security.Principal;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
 public class CommunityController {
 
-    @Autowired
-    private NoticeService noticeService;
-
-    @Autowired
-    private QuestionService questionService;
-
-    @Autowired
-    private AnswerService answerService;
-
-    @Autowired
-    private final UserService userService;
+    private final BoardService boardService;
+    private final CompanyService companyService;
     //community - notice
 
     //notice 리스트 페이지로 이동
     @GetMapping("community/noticelist")
     public String goNotice(Model model){
         System.out.println("notice 리스트로 이동하기");
-        model.addAttribute("list",noticeService.getNotice());
+        List<Board> boardList = boardService.getNotice();
+        model.addAttribute("boardList",boardList);
+
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
     return "community/noticelist";
     }
-    //noitce
 
-    //qna 게시판으로 이동
-    @GetMapping("community/qna")
-    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
-                       @RequestParam(value = "kw", defaultValue = "") String kw) {
-        Page<Question> paging = this.questionService.getList(page, kw);
-        model.addAttribute("paging", paging);
-        model.addAttribute("kw", kw);
-        return "community/qna";
+
+
+    //review 게시판 페이지로 이동
+    @GetMapping("community/review")
+    public String goReview(Model model){
+        System.out.println("review 리스트로 이동하기");
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
+        return "community/review";
     }
 
-    //질문등록 폼가기
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("question/create")
-    public String qcreate(QuestionForm questionForm){
-        return "community/qnacreate";
+    //qna 게시판 페이지로 이동
+    @GetMapping("community/qnaboard")
+    public String goqnaboard(Model model){
+        System.out.println("qnaboard 리스트로 이동하기");
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
+        return "community/qnaboard";
     }
+
+
+
+//    //qna 게시판으로 이동
+//    @GetMapping("community/qna")
+//    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+//                       @RequestParam(value = "kw", defaultValue = "") String kw) {
+//        Page<Question> paging = this.questionService.getList(page, kw);
+//        model.addAttribute("paging", paging);
+//        model.addAttribute("kw", kw);
+//        return "community/qna";
+//    }
+//
+//    //질문등록 폼가기
+//    @PreAuthorize("isAuthenticated()")
+//    @GetMapping("question/create")
+//    public String qcreate(QuestionForm questionForm){
+//        return "community/qnacreate";
+//    }
 //
 //    //질문 등록하기
 //    @PreAuthorize("isAuthenticated()")

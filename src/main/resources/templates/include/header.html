@@ -39,25 +39,13 @@
                  <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a href="/admin/adminmain">관리자페이지</a></li>
                 <li><a sec:authorize="isAuthenticated()" th:href="@{/member/mypage}">마이페이지</a></li>
                 <li><a th:href="@{/cart}">장바구니</a></li>
-                <li><a href="/community/noticelist">공지사항</a></li>
+                <li><a th:href="@{/community/noticelist}">공지사항</a></li>
                   <li sec:authorize="isAnonymous()">
                       <a th:href="@{/member/login}">로그인</a>
                   </li>
                   <li sec:authorize="isAuthenticated()">
                       <a th:href="@{/member/logout}">로그아웃</a>
                   </li>
-
-
-<!--                  <li class="nav-item">-->
-<!--                      <a class="nav-link"  th:href="@{/member/login}">로그인</a>-->
-<!--                      <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">로그아웃</a>-->
-<!--                  </li>-->
-<!--                  <li class="nav-item">-->
-
-<!--                <li>-->
-<!--                <a sec:authorize="isAnonymous()" th:href="@{/member/login}">로그인</a>-->
-<!--                <a sec:authorize="isAuthenticated()" href="@{/member/logout}">로그아웃</a>-->
-<!--                </li>-->
               </ul>
             </div>
           </div>
@@ -67,12 +55,6 @@
     <div class="header-bottom header-sticky">
       <div class="container-fluid">
         <div class="row align-items-center">
-          <!-- Logo -->
-<!--          <div class="col-xl-1 col-lg-1 col-md-1 col-sm-3">-->
-<!--            <div class="logo">-->
-<!--              <a href="../index.html"><img src="../assets/img/logo/logo.png" alt=""></a>-->
-<!--            </div>-->
-<!--          </div>-->
           <div class="col-10 offset-1 align-items-center justify-content-center text-center">
             <!-- Main-menu -->
             <div class="main-menu d-none d-lg-block">
@@ -82,66 +64,22 @@
                   <li><a th:href="@{/shopping/latest}">LATEST</a></li>
                   <li><a href="/shopping/shopping">PRODUCTS</a>
                     <ul class="submenu">
-                      <li><a href="/shopping/diary">DIARY</a></li>
-                      <li><a href="/shopping/walldeco">WALL DECO</a></li>
-                      <li><a href="/shopping/pen">PEN&CASE</a></li>
-                      <li><a href="/shopping/living">LIVING</a></li>
-                      <li><a href="/shopping/card">CARD&POSTCARD</a></li>
-                      <li><a href="/shopping/acc">ACCESSORY</a></li>
+                      <li><a th:href="@{/community/diary}">DIARY</a></li>
+                      <li><a th:href="@{/community/walldeco}" >WALL DECO</a></li>
+                      <li><a th:href="@{/community/pen}" >PEN&CASE</a></li>
+                      <li><a th:href="@{/community/living}">LIVING</a></li>
+                      <li><a th:href="@{/community/card}" >CARD&POSTCARD</a></li>
+                      <li><a th:href="@{/community/acc}">ACCESSORY</a></li>
                     </ul>
                   </li>
-                  <li><a href="/shopping/shopping">REVIEW</a>
-<!--                    <ul class="submenu">-->
-<!--                      <li><a href="blog.html">Blog</a></li>-->
-<!--                      <li><a href="single-blog.html">Blog Details</a></li>-->
-<!--                    </ul>-->
+                  <li><a th:href="@{/community/review}">REVIEW</a>
                   </li>
-                    <li><a href="/shopping/shopping">Q & A</a>
-                        <!--                    <ul class="submenu">-->
-                        <!--                      <li><a href="blog.html">Blog</a></li>-->
-                        <!--                      <li><a href="single-blog.html">Blog Details</a></li>-->
-                        <!--                    </ul>-->
+                    <li><a th:href="@{/community/qnaboard}">Q & A</a>
                     </li>
-<!--                  <li sec:authorize="isAuthenticated()"><a th:href="@{/orders}">PURCHASE</a>-->
-<!--                    <ul class="submenu">-->
-<!--                      <li><a href="login.html">Login</a></li>-->
-<!--                      <li><a href="cart.html">Card</a></li>-->
-<!--                      <li><a href="elements.html">Element</a></li>-->
-<!--                      <li><a href="about.html">About</a></li>-->
-<!--                      <li><a href="confirmation.html">Confirmation</a></li>-->
-<!--                      <li><a href="cart.html">Shopping Cart</a></li>-->
-<!--                      <li><a href="checkout.html">Product Checkout</a></li>-->
-<!--                    </ul>-->
-<!--                  </li>-->
-<!--                  <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">-->
-<!--                      <a th:href="@{/admin/items}">ENROLL</a>-->
-<!--                  </li>-->
                 </ul>
               </nav>
             </div>
           </div>
-<!--          <div class="col-xl-5 col-lg-3 col-md-3 col-sm-3 fix-card">-->
-<!--            <ul class="header-right f-right d-none d-lg-block d-flex justify-content-between">-->
-<!--              <li class="d-none d-xl-block">-->
-<!--                <div class="form-box f-right ">-->
-<!--                  <input type="text" name="Search" placeholder="Search products">-->
-<!--                  <div class="search-icon">-->
-<!--                    <i class="fas fa-search special-tag"></i>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </li>-->
-<!--              <li class=" d-none d-xl-block">-->
-<!--                <div class="favorit-items">-->
-<!--                  <i class="far fa-heart"></i>-->
-<!--                </div>-->
-<!--              </li>-->
-<!--              <li>-->
-<!--                <div class="shopping-card">-->
-<!--                  <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>-->
-<!--                </div>-->
-<!--              </li>-->
-<!--              <li class="d-none d-lg-block"> <a href="#" class="btn header-btn">Sign in</a></li>-->
-<!--            </ul>-->
           </div>
           <!-- Mobile Menu -->
           <div class="col-12">

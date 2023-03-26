@@ -1,6 +1,4 @@
-package com.yuri.shoppingsite.domain.Chart;
-
-import java.time.LocalDateTime;
+package com.yuri.shoppingsite.domain.chart;
 
 public interface MainGraphInterface {
 

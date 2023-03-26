@@ -28,8 +28,7 @@ public class Question {
         private LocalDateTime createDate;
         @ManyToOne
         private Member author;
-        @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
-        private List<Answer> answerList;
+
 
         private LocalDateTime modifyDate;
 

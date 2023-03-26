@@ -1,4 +1,4 @@
-package com.yuri.shoppingsite.domain.Chart;
+package com.yuri.shoppingsite.domain.chart;
 
 import com.yuri.shoppingsite.constant.Category;
 

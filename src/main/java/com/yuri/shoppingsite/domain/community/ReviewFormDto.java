@@ -1,19 +1,15 @@
 package com.yuri.shoppingsite.domain.community;
 
-import com.yuri.shoppingsite.domain.company.Company;
-import com.yuri.shoppingsite.domain.company.CompanyFormDto;
 import lombok.Getter;
 import lombok.Setter;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.annotation.LastModifiedBy;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class NoticeFormDto {
+public class ReviewFormDto {
 
     private Long id;
     private String type;
@@ -28,10 +24,4 @@ public class NoticeFormDto {
 
     private LocalDateTime regTime;
     private LocalDateTime updateTime;
-
-    private static ModelMapper modelMapper = new ModelMapper();
-    public static NoticeFormDto of(Board board){
-        return modelMapper.map(board, NoticeFormDto.class);
-    }
-
 }
