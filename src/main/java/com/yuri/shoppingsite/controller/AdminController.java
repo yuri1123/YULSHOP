@@ -45,13 +45,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AdminController {
 
-    @Autowired
     private final ItemService itemService;
-    @Autowired
     private final OrderService orderService;
-    @Autowired
-    private final MemberRepository memberRepository;
-    @Autowired
     private final MemberService memberService;
     @Autowired
     CompanyService companyService;
@@ -63,7 +58,6 @@ public class AdminController {
         int sellingCount = itemService.getSellingCount();
         int sellingIncome = itemService.getSellingIncome();
         List<OrderItem> sellingitems = orderService.recentselling();
-
         List<MainGraphInterface> mainGraph = itemService.getMainGraphDtos();
         System.out.println(mainGraph);
 
@@ -95,7 +89,6 @@ public class AdminController {
         model.addAttribute("sellingCount",sellingCount);
         model.addAttribute("sellingIncome",sellingIncome);
         model.addAttribute("sellingitems",sellingitems);
-//        model.addAttribute("monthlySalesList",monthlySalesList);
         return "admin/adminmain";
     }
 
@@ -389,28 +382,56 @@ public class AdminController {
     //전체 통계 페이지 가기
     @GetMapping("admin/totalresult")
         public String totalResult(Model model){
-        List<CategoryItemsInterface> categoryitems = itemService.getCategoryContent();
-        System.out.println(categoryitems);
+        //매출통계
+        List<OrderItem> sellingitems = orderService.recentselling();
+        List<MainGraphInterface> mainGraph = itemService.getMainGraphDtos();
+        System.out.println(mainGraph);
+
         Gson gson = new Gson();
         JsonArray jsonArray = new JsonArray();
+        Iterator<MainGraphInterface> mg = mainGraph.iterator();
+        while(mg.hasNext()){
+            MainGraphInterface mainGraphDto = mg.next();
+            JsonObject object = new JsonObject();
+            int count = mainGraphDto.getCount();
+            int revenue = mainGraphDto.getOrder_price();
+            String date = mainGraphDto.getReg_time();
+
+            System.out.println(count);
+            System.out.println(revenue);
+
+            object.addProperty("mgCount",count);
+            object.addProperty("mgRevenue",revenue);
+            object.addProperty("mgDate", String.valueOf(date));
+
+            jsonArray.add(object);
+        }
+        String json = gson.toJson(jsonArray);
+        System.out.println(json);
+        model.addAttribute("json",json);
+        model.addAttribute("sellingitems",sellingitems);
+
+
+
+        List<CategoryItemsInterface> categoryitems = itemService.getCategoryContent();
+//        System.out.println(categoryitems);
+        JsonArray jsonArray1 = new JsonArray();
 
         Iterator<CategoryItemsInterface> cid = categoryitems.iterator();
         while(cid.hasNext()){
             CategoryItemsInterface categoryItemsInterface = cid.next();
-            JsonObject object = new JsonObject();
+            JsonObject object1 = new JsonObject();
             Category category = categoryItemsInterface.getCategory();
             int totalIncome = categoryItemsInterface.getTotalIncome();
 
-            object.addProperty("Category", String.valueOf(category));
-            object.addProperty("Income",totalIncome);
-            jsonArray.add(object);
+            object1.addProperty("Category", String.valueOf(category));
+            object1.addProperty("Income",totalIncome);
+            jsonArray1.add(object1);
         }
 
-        String json = gson.toJson(jsonArray);
-        System.out.println(json);
-        model.addAttribute("json",json);
-
-        model.addAttribute("categoryitems",categoryitems);
+        String json1 = gson.toJson(jsonArray1);
+        System.out.println(json1);
+        model.addAttribute("json1",json1);
         return "admin/totalresult";
 }
 

@@ -96,9 +96,9 @@
       <h1 class="text-center">상품별 판매량 조회</h1>
     </div>
 
-  <div class="col-9 offset-4 pb-2">
+  <div class="col-9 offset-4">
       <!--        검색하기-->
-      <div  class="form-inline justify-content-center" th:object="${itemSearchDto}">
+      <div class="form-inline justify-content-center mr-2" th:object="${itemSearchDto}">
           <select th:field="*{searchDateType}" class="form-control m-1" style="width:auto;">
               <option value="all">전체기간</option>
               <option value="1d">1일</option>
@@ -109,6 +109,7 @@
           <select th:field="*{searchSellStatus}" class="form-control m-1" style="width:auto;">
               <option value="">판매상태(전체)</option>
               <option value="SELL">판매</option>
+              <option value="NOT_SELL">판매중단</option>
               <option value="SOLD_OUT">품절</option>
           </select>
           <select th:field="*{searchBy}" class="form-control m-1" style="width:auto;">
@@ -139,18 +140,12 @@
 
     <th:block th:each="item, status: ${items.getContent()}">
     <tr class="text-center align-middle">
-      <td><img th:src="${item.imgUrl}" height="100" th:alt="${item.imgUrl}"/></td>
+      <td><img th:src="${item.imgUrl}" height="80px"width="100px" th:alt="${item.imgUrl}"/></td>
       <td class="mt-3 align-middle">[[${item.category}]]</td>
-      <td class="align-middle"><a href="#" class="text-primary fw-bold">[[${item.itemNm}]]</a></td>
-      <td class="mt-3 align-middle" id="money3" >[[${item.price}]]원</td>
-        <script>
-            let money3 = $('#money3').text();
-            let money2 = money3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            $('#money3').text(money2);
-        </script>
-      <td class="mt-3 align-middle">[[${item.orderTotalCount}]]건</td>
-      <td class="mt-3 align-middle" id="money">[[${item.orderTotalIncome}]]원</td>
-
+      <td class="align-middle" style="font-weight: bold;font-size: 15px;" th:text="${item.itemNm}"></td>
+      <td class="mt-3 align-middle" th:text="|${#numbers.formatInteger(item.price,1,'COMMA')}원|"></td>
+      <td class="mt-3 align-middle" th:text="|${#numbers.formatInteger(item.orderTotalCount,1,'COMMA')}건|"></td>
+      <td class="mt-3 align-middle" th:text="|${#numbers.formatInteger(item.orderTotalIncome,1,'COMMA')}원|"></td>
         <script>
             let money = $('#money').text();
             let money2 = money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -163,30 +158,30 @@
 
 </div>
 
-      <div class="mb-80">
-            <div class="justify-content-center" th:with="start=${(items.number/maxPage)*maxPage + 1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
-            <ul class="pagination justify-content-center">
+      <div class="justify-content-center mt-3">
 
-            <li class="page-item" th:classappend="${items.number eq 0}?'disabled':''">
-            <a th:href="@{'/shopping/shopping/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number -1}}" aria-label='Previous' class="page-link">
-            <span class="fs14" aria-hidden='true'>이전</span>
-            </a>
-            </li>
+          <!--        페이징 처리 시작-->
+          <div th:with="start=${(items.number/maxPage)*maxPage +1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
+              <ul class="pagination justify-content-center">
 
-            <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq page -1}?'active':''">
-            <a th:href="@{'/shopping/shopping/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${page -1}}" th:inline="text" class="page-link">[[${page}]]</a>
-            </li>
+                  <li class="page-item" th:classappend="${items.first}?'disabled'">
+                      <a style="font-size: 13px" th:onclick="'javascript:page(' + ${items.number -1} + ')'" aria-label='Previous' class="page-link">
+                          <span aria-hidden='true' >이전</span>
+                      </a>
+                  </li>
 
-            <li class="page-item" th:classappend="${items.number +1 ge items.totalPages}?'disabled':''">
-            <a th:href="@{'/shopping/shopping/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number+1}}" aria-label='Next' class="page-link">
-            <span aria-hidden='true'>다음</span>
-            </a>
-            </li>
+                  <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq (page -1)}?'active':''">
+                      <a style="font-size: 13px" th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+                  </li>
 
-            </ul>
-            </div>
+                  <li class="page-item" th:classappend="${items.last}?'disabled'">
+                      <a style="font-size: 13px" th:onclick="'javascript:page(' + ${items.number +   1} + ')'" aria-label='Next' class="page-link">
+                          <span aria-hidden='true'>다음</span>
+                      </a>
+                  </li>
+              </ul>
+          </div>
       </div>
-
 </div>
 </div><!-- End Top Selling -->
 

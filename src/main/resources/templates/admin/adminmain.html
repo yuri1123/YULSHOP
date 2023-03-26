@@ -306,7 +306,7 @@
                   <tbody>
                     <tr th:each="sellingitems : ${sellingitems}">
                       <td class="text-center align-middle">
-                        <p>[[${sellingitems.regTime}]]</p>
+                        <p th:text="${#temporals.format(sellingitems.regTime, 'yyyy-MM-dd HH:mm:ss')}"></p>
                       </td>
                       <td class="text-center align-middle">
                         <p>[[${sellingitems.itemNm}]]</p>

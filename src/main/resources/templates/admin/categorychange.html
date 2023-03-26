@@ -205,7 +205,7 @@
             <span th:if="|${items.category == T(com.yuri.shoppingsite.constant.Category).ACCESSORY}|" class="badge badge badge alert-primary">ACCESSORY</span>
         </td>
           <td th:text="${items.itemNm}"></td>
-          <td th:text="${items.regTime}"></td>
+            <td th:text="${#temporals.format(items.regTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
           <td class="d-flex">
 
             <select class="mr-3" id="category">

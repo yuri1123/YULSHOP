@@ -26,29 +26,126 @@
       <!-- category income -->
       <div class="card">
 
+
+        <div class="card-body">
+          <h5 class="card-title">전체 판매 통계 <span> | Today</span></h5>
+
+          <!-- Line Chart -->
+          <center>
+            <canvas style="max-width:1500px ;max-height:600px" id="chart"></canvas>
+          </center>
+          <script th:inline="javascript">
+
+            let jsonData = [[${json}]];
+            obj = JSON.parse(jsonData);
+
+            var labelList = new Array();
+            var countList = new Array();
+            var revenueList = new Array();
+
+            for(key in obj){
+              labelList.push(obj[key].mgDate);
+              countList.push(obj[key].mgCount);
+              revenueList.push(obj[key].mgRevenue);
+            }
+
+
+            let ctx = document.getElementById('chart').getContext('2d');
+            new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: labelList,
+                datasets: [{
+                  label: '수익',
+                  yAxisID: 'A',
+                  borderColor: '#2eca6a',
+                  backgroundColor: '#2eca6a',
+                  data: revenueList,
+                  fill: false
+                }, {
+                  label: '판매량',
+                  yAxisID: 'B',
+                  borderColor: '#4154f1',
+                  backgroundColor: '#4154f1',
+                  data: countList,
+                  fill: false
+                }]
+              },
+              options: {
+                tooltips: {
+                  mode: 'nearest'
+                },
+                scales: {
+                  yAxes: [{
+                    id: 'A',
+                    type: 'linear',
+                    position: 'left',
+                    ticks: {
+                      // min: 0,
+                      // max: 100,
+                      stepSize: 50000,
+                      fontColor: '#000000',
+                      callback: function(value, index, values) {
+                        return value + ' 원';
+                      }
+                    }
+                  }, {
+                    id: 'B',
+                    type: 'linear',
+                    position: 'right',
+                    ticks: {
+                      // min: 60,
+                      // max: 140,
+                      stepSize: 1,
+                      fontColor: '#000000',
+                      callback: function(value, index, values) {
+                        return value + ' 건';
+                      }
+                    }
+                  }]
+                },
+                elements: {
+                  line: {
+                    tension: 0, // disables bezier curves
+                  },
+                  point: {
+                    radius: 4,
+                    borderWidth: 2,
+                    pointStyle: 'circle'
+                  }
+                }
+
+              }
+            });
+          </script>
+          <!-- End Line Chart -->
+
+        </div>
+
         <div class="card-body pb-4">
           <h5 class="card-title">카테고리별 매출액 비중 <span>| Today</span></h5>
           <center>
           <canvas class="" id="logNameChart" style="max-width: 400px; max-height: 400px; "></canvas>
           </center>
           <script th:inline="javascript">
-            let labelList = new Array();
-            let valueList = new Array();
+            let labelList1 = new Array();
+            let valueList1 = new Array();
 
-            let jsonData = [[${json}]];
-            obj = JSON.parse(jsonData);
+            let jsonData1 = [[${json1}]];
+            console.log(jsonData1)
+            obj1 = JSON.parse(jsonData1);
 
-            for(key in obj){
-              labelList.push(obj[key].Category);
-              valueList.push(obj[key].Income);
-              console.log(obj[key].Category);
+            for(key in obj1){
+              labelList1.push(obj1[key].Category);
+              valueList1.push(obj1[key].Income);
+              console.log(obj1[key].Category);
             }
             let data = {
-              labels: labelList,
+              labels: labelList1,
               datasets: [{
                 backgroundColor: ['#B9F3E4','#EA8FEA','#F6E6C2','#FFAACF', '#FDEBED','#FFB9B9'],
                 // borderColor: '#22252B',
-                data : valueList,
+                data : valueList1,
               }],
               options: {
                 responsive: true,
@@ -79,91 +176,16 @@
               type: 'pie',
               data: data
             });
-
-
           </script>
         </div>
       </div><!-- End Website Traffic -->
 
-      <!-- Budget Report -->
-      <div class="card">
-        <div class="filter">
-          <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-            <li class="dropdown-header text-start">
-              <h6>Filter</h6>
-            </li>
-
-            <li><a class="dropdown-item" href="#">Today</a></li>
-            <li><a class="dropdown-item" href="#">This Month</a></li>
-            <li><a class="dropdown-item" href="#">This Year</a></li>
-          </ul>
-        </div>
-
-        <div class="card-body pb-0">
-          <h5 class="card-title">Budget Report <span>| This Month</span></h5>
-
-          <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
-
-          <script>
-            document.addEventListener("DOMContentLoaded", () => {
-              var budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
-                legend: {
-                  data: ['Allocated Budget', 'Actual Spending']
-                },
-                radar: {
-                  // shape: 'circle',
-                  indicator: [{
-                    name: 'Sales',
-                    max: 6500
-                  },
-                    {
-                      name: 'Administration',
-                      max: 16000
-                    },
-                    {
-                      name: 'Information Technology',
-                      max: 30000
-                    },
-                    {
-                      name: 'Customer Support',
-                      max: 38000
-                    },
-                    {
-                      name: 'Development',
-                      max: 52000
-                    },
-                    {
-                      name: 'Marketing',
-                      max: 25000
-                    }
-                  ]
-                },
-                series: [{
-                  name: 'Budget vs spending',
-                  type: 'radar',
-                  data: [{
-                    value: [4200, 3000, 20000, 35000, 50000, 18000],
-                    name: 'Allocated Budget'
-                  },
-                    {
-                      value: [5000, 14000, 28000, 26000, 42000, 21000],
-                      name: 'Actual Spending'
-                    }
-                  ]
-                }]
-              });
-            });
-          </script>
-
-        </div>
-      </div><!-- End Budget Report -->
         </div>
     </div><!-- End Right side columns -->
+</main><!-- End #main -->
 
   <th:block th:include="/include/admin_footer.html"/>
   <th:block th:include="/include/admin_js.html"/>
-</main><!-- End #main -->
 
 
 

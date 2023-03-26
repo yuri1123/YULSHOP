@@ -157,9 +157,9 @@
                             <span th:if="|${items.category == T(com.yuri.shoppingsite.constant.Category).ACCESSORY}|" class="badge badge badge alert-primary">ACCESSORY</span>
                         </td>
                         <td th:text="${items.itemNm}"></td>
-                        <td th:text="${items.addCount}"></td>
-                        <td th:text="${items.orderTotalCount}"></td>
-                        <td th:text="${items.stockNumber}"></td>
+                        <td th:text="|${#numbers.formatInteger(items.addCount,1,'COMMA')}개|"></td>
+                        <td th:text="|${#numbers.formatInteger(items.orderTotalCount,1,'COMMA')}개|"></td>
+                        <td th:text="|${#numbers.formatInteger(items.stockNumber,1,'COMMA')}개|"></td>
                         <td>
 
                         </td>

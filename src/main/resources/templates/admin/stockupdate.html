@@ -216,7 +216,7 @@
                         </td>
                         <td th:text="${items.itemNm}"></td>
 
-                        <td  th:text="${items.stockNumber}"></td>
+                        <td th:text="|${#numbers.formatInteger(items.stockNumber,1,'COMMA')}개|"></td>
                         <td class="d-flex">
                         <input type="number" name="addstock" id="addstock" min="1" style="width: 70px" class="mr-3">
                             <span class="backcol1 white-color" onclick="updateStock()">저장</span>

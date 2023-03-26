@@ -214,7 +214,7 @@
               <span th:if="|${items.category == T(com.yuri.shoppingsite.constant.Category).ACCESSORY}|" class="badge badge badge alert-primary">ACCESSORY</span>
             </td>
             <td th:text="${items.itemNm}"></td>
-            <td th:text="${items.stockNumber}"></td>
+            <td th:text="|${#numbers.formatInteger(items.stockNumber,1,'COMMA')}개|"></td>
             <td class="d-flex">
               <select class="mr-3" id="itemSellStatus" name="itemSellStatus">
                 <th:block th:if="|${items.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}|" >
