@@ -87,8 +87,11 @@
 
     <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-2">
       <form role="form" method="post" th:object="${noticeFormDto}">
-          <input type="hidden" th:field="*{type}"
-                 th:value="${noticeFormDto.type != null && noticeFormDto.type.trim().length() > 0 ? noticeFormDto.type : 'notice'}">
+          <select type="hidden" th:field = "*{type}" class="form-select">
+              <option value="NOTICE" selected>공지사항</option>
+<!--              <option value="REVIEW">리뷰게시판</option>-->
+<!--              <option value="QNA">Q&A게시판</option>-->
+          </select>
 <!--          <p th:if="${#fields.hasErrors('id')}" th:errors="*{id}" class="fieldError">Incorrect data</p>-->
 
           <div class="mb-3">
