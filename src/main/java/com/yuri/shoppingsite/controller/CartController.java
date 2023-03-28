@@ -24,15 +24,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CartController {
 
-    private final CartService cartService;
+    @Autowired
+    private CartService cartService;
     @Autowired
     private CompanyService companyService;
 
     //장바구니 담기
     @PostMapping(value = "/cart")
-    public @ResponseBody ResponseEntity order(@RequestBody @Valid CartItemDto cartItemDto,
-                                              BindingResult bindingResult,
-                                              Principal principal){
+    public @ResponseBody ResponseEntity cart(@RequestBody @Valid CartItemDto cartItemDto,
+                                             BindingResult bindingResult,
+                                             Principal principal){
         //장바구니에 담을 상품 정보를 받는 cartItemDto 객체에 데이터 바인딩 시 에러가 있는지 검사
         if(bindingResult.hasErrors()){
             StringBuilder sb = new StringBuilder();
@@ -62,13 +63,14 @@ public class CartController {
     //장바구니 리스트 가기
 
     @GetMapping("/cart")
-    public String orderHist(Principal principal, Model model) {
+    public String cart(Principal principal, Model model) {
         if (principal == null) {
             return "/member/login";
         } else if (principal != null) {
             List<CartDetailDto> cartDetailList =
                     cartService.getCartList(principal.getName());
             model.addAttribute("cartItems", cartDetailList);
+        System.out.println("나와라뿅뿅뿅"+cartDetailList);
         }
         List<Company> companyList = companyService.getcompanyList();
         Company company = companyList.get(0);
@@ -79,7 +81,7 @@ public class CartController {
     //장바구니 상품 수량 업데이트
     //Http메소드에서 PATCH는 요청된 자원의 일부를 업데이트할 때 PATCH 사용
     //장바구니 상품의 수량만 업데이트하기 때문에 @PatchMapping 사용
-    @PatchMapping(value="/cartItem/{cartItemId}")
+    @PatchMapping(value="/cart/cartItem/{cartItemId}")
     public @ResponseBody ResponseEntity updateCartItem(@PathVariable("cartItemId") Long cartItemId,
                                                        int count, Principal principal){
         //장바구니에 담겨있는 상품의 개수를 0개 이하로 업데이트 요청 할 때 에러 메시지 반환
@@ -96,7 +98,7 @@ public class CartController {
 
     //HTTP메소드에서 DELETE의 경우 요청된 자원을 삭제할 때 사용한다.
     //장바구니 상품을 삭제하기 때문에 @DeleteMapping 사용
-    @DeleteMapping(value = "/cartItem/{cartItemId}")
+    @DeleteMapping(value = "/cart/cartItem/{cartItemId}")
     public @ResponseBody ResponseEntity deleteCartItem(
             @PathVariable("cartItemId") Long cartItemId, Principal principal){
         //수정 권한 체크

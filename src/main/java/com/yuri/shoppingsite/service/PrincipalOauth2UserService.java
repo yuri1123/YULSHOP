@@ -1,21 +1,10 @@
 package com.yuri.shoppingsite.service;
 
 import com.yuri.shoppingsite.Repository.MemberRepository;
-import com.yuri.shoppingsite.Repository.UserRepository;
 import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.domain.auth.PrincipalDetails;
 import com.yuri.shoppingsite.domain.user.Member;
-import com.yuri.shoppingsite.domain.user.SiteUser;
-import com.yuri.shoppingsite.constant.UserRole;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -23,9 +12,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

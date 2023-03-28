@@ -158,7 +158,7 @@ public class ShoppingController {
         return "shopping/products/acc";
     }
     //상품 상세보기로 가기
-    @GetMapping(value="/item/{itemId}")
+    @GetMapping(value="/shopping/item/{itemId}")
     public String itemDtl(Model model, @PathVariable("itemId") Long itemId){
         ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
         model.addAttribute("item", itemFormDto);

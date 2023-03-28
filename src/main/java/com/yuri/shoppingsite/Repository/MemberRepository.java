@@ -17,8 +17,6 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
         Member findByEmail(String email);
         Member findByName(String name);
 
-
-
         @Modifying(clearAutomatically = true)
         @Query("update Member m set m.role=:role where m.id=:id")
         int updateUserRole(@Param(value="id") Long id, @Param(value="role") Role role);

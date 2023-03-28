@@ -142,7 +142,7 @@
             <div class="col-xl-4 col-lg-4 col-md-6">
 
               <div class="single-product mb-60">
-                <a th:href="'/item/'+${item.id}">
+                <a th:href="'/shopping/item/'+${item.id}">
                   <div class="product-img">
                     <th:block th:each="newItems, status: ${newItems}">
                       <div th:if="|${item.id == newItems.id}|">

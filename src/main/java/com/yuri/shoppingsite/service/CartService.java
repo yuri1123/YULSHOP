@@ -40,7 +40,7 @@ public class CartService {
             cartRepository.save(cart);
 
         }
-        //현재 상품이 장바구니에 이 미들어가 있는지 조회한다.
+        //현재 상품이 장바구니에 이미들어가 있는지 조회한다.
         CartItem savedCartItem =
                 cartItemRepository.findByCartIdAndItemId(cart.getId(), item.getId());
         //장바구니에 이미 있던 상품일 경우 기존 수량에 현재 장바구니에 담을 수량 만큼 더해준다.
@@ -61,16 +61,21 @@ public class CartService {
     public List<CartDetailDto> getCartList(String name){
         List<CartDetailDto> cartDetailDtoList = new ArrayList<>();
         Member member = memberRepository.findByName(name);
+        System.out.println(member);
         //현재 로그인한 회원의 장바구니 엔티티를 조회한다.
         Cart cart = cartRepository.findByMemberId(member.getId());
+        System.out.println(cart);
         //상품을 한번도 안담을 경우 장바구니 엔티티가 없으므로 빈 리스트를 반환한다.
         if(cart == null){
             return cartDetailDtoList;
+        } else {
+            cartDetailDtoList = cartItemRepository.findCartDetailDtoList(cart.getId());
+            System.out.println("이게 문제냐?" +cartDetailDtoList);
+            return cartDetailDtoList;
         }
         //장바구니에 담겨있는 상품 정보를 조회한다.
-    cartDetailDtoList = cartItemRepository.findCartDetailDtoList(cart.getId());
-        return cartDetailDtoList;
     }
+
 
     @Transactional(readOnly = true)
     public boolean validateCartItem(Long cartItemId, String name){

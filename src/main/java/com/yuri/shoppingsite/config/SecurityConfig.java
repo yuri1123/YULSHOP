@@ -74,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // http 요청에 대한 보안을 설정한다.
     // 페이지 권한 설정, 로그인 페이지 설정, 로그아웃 메소드 등에 대한 설정
     protected void configure(HttpSecurity http) throws Exception{
-        http.csrf().disable();
+//        http.csrf().disable();
         http.formLogin()
                 //로그인 페이지 URL 설정
                 .loginPage("/member/login")
@@ -104,7 +104,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //permitAll()을 통해 모든 사용자가 인증(로그인)없이 해당 경로에 접근할 수 있도록 설정한다.
                 //메인페이지, 회원관련 URL, 상품 상세 페이지, 상품이미지 불러오기가 해당
                 .mvcMatchers("/", "/member/**",
-                        "/shopping/**","/assets/yuls/**","/community/**","/include/**","/order/**").permitAll()
+                        "/shopping/**","/assets/yuls/**","/community/**","/include/**"
+                        ,"/order/**","/cart/**","/assets/**","/admin_asset/**").permitAll()
                 // /amdin으로 시작하는 경로는 해당 계정이 ADMIN Role인 경우에만 접근 가능하도록 설정
                 .mvcMatchers("/admin/**").hasRole("ADMIN");
         //나머지 경로는 모드 인증을 요구하도록 설정
@@ -125,10 +126,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(encoder());
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/assets/**/**");
-    }
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers("/assets/**/**","/admin_asset/**/**");
+//    }
 
     @Bean
     public PasswordEncoder encoder() {
