@@ -188,7 +188,7 @@
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
 
-        var url = "/order/orders";
+        var url = "/cart/orders";
 
         var dataList = new Array();
         var paramData = new Object();
@@ -221,7 +221,7 @@
         success  : function(result, status){
         alert("주문이 완료 되었습니다.");
         //주문 요청 결과 성공하면 구매 이력 페이지로 이동
-        location.href='/orders';
+        location.href='order/orders';
     },
         error : function(jqXHR, status, error){
 

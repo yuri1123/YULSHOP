@@ -87,6 +87,7 @@
 
     <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-2">
       <form role="form" method="post" th:object="${noticeFormDto}">
+          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
           <select type="hidden" th:field = "*{type}" class="form-select">
               <option value="NOTICE" selected>공지사항</option>
 <!--              <option value="REVIEW">리뷰게시판</option>-->

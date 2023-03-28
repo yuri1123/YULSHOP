@@ -110,7 +110,7 @@ public class CartController {
         return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
     }
 
-    //장바구니 상품 수량 업데이트
+    //장바구니 주문하기
     @PostMapping(value="/cart/orders")
     public @ResponseBody ResponseEntity orderCartItem(@RequestBody CartOrderDto cartOrderDto,
                                                       Principal principal){

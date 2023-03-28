@@ -483,20 +483,12 @@ public class AdminController {
     public String uploadnotice(@Valid NoticeFormDto noticeFormDto,
                                BindingResult bindingResult,
                                Model model) {
-        if (bindingResult.hasErrors()) {
-            return "admin/adminnoticeenroll";
-        }
-        try {
             if (noticeFormDto.getType() == null) {
                 // type 필드가 null인 경우 처리할 로직
             } else {
                 // type 필드가 null이 아닌 경우 처리할 로직
             }
             boardService.createNotice(noticeFormDto);
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", "상품 수정 중 에러가 발생하였습니다.");
-            return "admin/adminnoticeenroll";
-        }
         return "admin/adminnoticelist";
     }
 
