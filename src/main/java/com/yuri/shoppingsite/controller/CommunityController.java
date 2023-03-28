@@ -2,12 +2,14 @@ package com.yuri.shoppingsite.controller;
 
 import com.yuri.shoppingsite.domain.community.Board;
 import com.yuri.shoppingsite.domain.company.Company;
+import com.yuri.shoppingsite.domain.shop.ItemFormDto;
 import com.yuri.shoppingsite.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -55,6 +57,18 @@ public class CommunityController {
         model.addAttribute("company",company);
         return "community/qnaboard";
     }
+
+    @GetMapping("community/noticedtl/{id}")
+    public String noticedtl(@PathVariable("id") Long id, Model model){
+        Board board = boardService.getNoticebyId(id);
+        model.addAttribute("board",board);
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        model.addAttribute("company",company);
+
+        return "community/noticedtl";
+    }
+
 
 
 

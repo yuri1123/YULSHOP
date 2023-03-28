@@ -1,23 +1,17 @@
 package com.yuri.shoppingsite.config;
 
+import com.yuri.shoppingsite.service.PrincipalOauth2UserService;
 import com.yuri.shoppingsite.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 //@Configuration은 스프링의 환경설정 파일임을 의미
@@ -75,6 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     MemberService memberService;
+    @Autowired private PrincipalOauth2UserService principalOauth2UserService;
     @Override
     // http 요청에 대한 보안을 설정한다.
     // 페이지 권한 설정, 로그인 페이지 설정, 로그아웃 메소드 등에 대한 설정
@@ -95,6 +90,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
                 //로그아웃 성공 시 이동할 URL 설정
                 .logoutSuccessUrl("/");
+
+         http.oauth2Login()				// OAuth2기반의 로그인인 경우
+                .loginPage("/member/login")		// 인증이 필요한 URL에 접근하면 /loginForm으로 이동
+                .defaultSuccessUrl("/")			// 로그인 성공하면 "/" 으로 이동
+                .failureUrl("/member/login")		// 로그인 실패 시 /loginForm으로 이동
+                .userInfoEndpoint()			// 로그인 성공 후 사용자정보를 가져온다
+                .userService(principalOauth2UserService);	//사용자정보를 처리할 때 사용한다
+
 
         //시큐리티 처리에 HttpServletRequest 이용
         http.authorizeRequests()
@@ -119,7 +122,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
         auth.userDetailsService(memberService)
-                .passwordEncoder(passwordEncoder());
+                .passwordEncoder(encoder());
     }
 
     @Override
@@ -128,9 +131,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    //비밀번호를 데이터베이스에 그대로 저장했을 경우, 데이터베이스가 해킹당하면 고객 회원정보가 그대로 노출
-    //BCryptPasswordEncoder의 해시 함수를 이요해 비밀번호를 암호화하여 저장한다.
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
 }
+//
+//    @Bean
+//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }

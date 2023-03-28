@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
-<html xmlns:th="http://www.thymleaf.org">
+<html xmlns:th="http://www.thymleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <th:block th:include="/include/common_css.html"></th:block>
     <meta charset="UTF-8">
@@ -95,6 +96,12 @@
             color: #bd2130;
         }
 
+        .logo_img {
+            /* 원형으로 자르기 */
+            border-radius: 50%;
+            /* 테두리 회색으로 설정하기 */
+            border: 1px solid lightgrey;
+        }
 
 
     </style>
@@ -122,7 +129,6 @@
     </div>
 </div>
 <!-- Header End -->
-
 <!--로그인화면-->
 <div class="container-fluid">
         <div class="row">
@@ -142,10 +148,15 @@
 <!--                        <label th:for="name">LOGIN</label>-->
                         <input type="text" name="name" id ="name" placeholder="ID">
                         <input type="password" name="password" id="password" placeholder="Password">
-                        <label for="remember-check">
-                            <input type="checkbox" id="remember-check">아이디 저장하기
-                        </label>
+<!--                        <label class="justify-content-end text-end" for="remember-me">-->
+
+<!--                            <input type="checkbox" id="remember-me" name="remember-me"-->
+<!--                                   th:checked="${param.rememberMe == 'true'}">-->
+<!--                            아이디 기억하기-->
+<!--                        </label>-->
                         <input type="submit" value="로그인">
+                        <a th:href="@{/oauth2/authorization/naver}"><img class="logo_img" width="40vw" height="40vh" src="/assets/yuls/naver.png"></a>
+                        <a href="/oauth2/authorization/google"><img class="logo_img" width="40vw" height="40vh" src="/assets/yuls/google.png"></a>
                      </form>
 
                      <script th:inline="javascript">
@@ -154,14 +165,11 @@
                          if(errorMessage!= null){
                              alert(errorMessage);
                          }
-                         // });
                      </script>
 
                 </div>
               </div>
              </div>
-
-<!--            <div> <p th:if="${loginErrorMsg}" class="error m-2" th:text="${loginErrorMsg}"></p></div>-->
 
 
               <div class="col-lg-12 col-md-12 col-sm-12">

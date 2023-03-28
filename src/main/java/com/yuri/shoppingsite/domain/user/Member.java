@@ -3,14 +3,15 @@ package com.yuri.shoppingsite.domain.user;
 import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.domain.common.BaseEntity;
 import com.yuri.shoppingsite.domain.shop.ItemFormDto;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -41,6 +42,10 @@ public class Member extends BaseEntity {
     //enum을 사용할 때 기본적으로 순서 저장되는데, enum의 순서가 바뀔 경우 문제가 발생할 수
     //있기 때문에 "EnumType.STRING" 옵션을 사용해서 String으로 지정하기를 권장
     private Role role;
+
+    private String provider;    // oauth2를 이용할 경우 어떤 플랫폼을 이용하는지
+    private String providerId;  // oauth2를 이용할 경우 아이디값
+
 
     //Member 엔티티를 생성하는 메소드. 회원생성 메소드를 엔티티에 넣으면
     // 코드 변경시 한군데만 수정하면 되는 이점이 있음
@@ -81,6 +86,30 @@ public class Member extends BaseEntity {
         this.accountbank = memberAccountDto.getAccountbank();
         this.accountnum = memberAccountDto.getAccountnum();
         this.accountname = memberAccountDto.getAccountname();
+    }
+
+    @Builder(builderClassName = "UserDetailRegister", builderMethodName = "userDetailRegister")
+    public Member(String name, String password, String email, Role role) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+    }
+
+    @Builder(builderClassName = "OAuth2Register", builderMethodName = "oauth2Register")
+    public Member(String name, String password, String email, Role role, String provider, String providerId) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.provider = provider;
+        this.providerId = providerId;
+    }
+    public Member(String name, String password, String nickname, String birth, String phone, List<GrantedAuthority> authorities) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.role = role;
     }
 
 }

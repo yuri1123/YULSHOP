@@ -48,6 +48,10 @@ public class BoardService {
         return notice;
     }
 
+    public Board getNoticebyId(Long id){
+        Board notice = boardRepository.findallNoticebyid(id);
+        return notice;
+    }
 
 
 }

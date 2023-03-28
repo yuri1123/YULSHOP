@@ -103,12 +103,12 @@
                     <h2>NOTICE</h2>
                 </div>
             </div>
-            <div class="col-xl-8 col-lg-7 col-md-7">
+            <div class="col-md-3 offset-md-8 mb-3">
                 <div class="properties__button f-right">
+                    <button class="btn-primary backcol rad"><a th:href="@{/community/noticelist}">목록가기</a></button>
                 </div>
             </div>
         </div>
-
         <!-- Nav Card -->
         <div class="tab-content" id="nav-tabContent">
             <!-- card one -->
@@ -118,32 +118,53 @@
                 <div class="row">
                         <div class="col-12">
 
-<!--                            <div class="single-product mb-60">-->
-<!--                      -->
-<!--                                    </div>-->
                                     <div class="product-caption">
-                                        <table class="table table">
-                                            <thead class="text-center">
+
+                                        <table>
+                                            <colgroup>
+                                                <col style="width:20vw;">
+                                                <col style="width:80vw;">
+                                            </colgroup>
+                                            <tbody>
                                             <tr>
-                                                <th>게시물아이디</th>
-                                                <th>제목</th>
-                                                <th>조회수</th>
-                                                <th>등록자</th>
-                                                <th>등록일</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody class="text-center">
-                                            <tr th:each="board, status: ${boardList}">
-                                                <td th:text="${board.id}"></td>
-                                                <td>
-                                                    <a th:href="'/community/noticedtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
+                                                <th class="justify-content-center text-center align-middle" scope="row">글제목</th>
+                                                <td class="text-start justify-content-center align-middle">
+                                                    [[${board.title}]]
                                                 </td>
-                                                <td th:text="${board.view}"></td>
-                                                <td th:text="${board.createdBy}"></td>
-                                                <td th:text="${#temporals.format(board.regTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                             </tr>
+                                            <tr>
+                                                <th><hr></th>
+                                                <td><hr></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="justify-content-center text-center align-middle" scope="row">작성자</th>
+                                                <td class="justify-content-start text-start align-middle">
+                                                    [[${board.createdBy}]]
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th><hr></th>
+                                                <td><hr></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="justify-content-center text-center align-middle" scope="row">글내용</th>
+                                                <td class="justify-content-start text-start align-middle">
+                                                    <p th:utext="${board.content}"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th><hr></th>
+                                                <td><hr></td>
+                                            </tr>
+<!--                                            <tr>-->
+<!--                                                <th></th>-->
+<!--                                                <td class="text-end align-middle">-->
+<!--                                                    <button type="button" class="btn-primary backcol rad" th:text="목록가기" th:href="@{/admin/noticelist}"></button>-->
+<!--                                                </td>-->
+<!--                                            </tr>-->
                                             </tbody>
                                         </table>
+
                                     </div>
 
                                 </a>

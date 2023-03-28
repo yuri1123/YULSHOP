@@ -2,6 +2,7 @@ package com.yuri.shoppingsite.controller;
 
 import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.constant.Role;
+import com.yuri.shoppingsite.domain.auth.PrincipalDetails;
 import com.yuri.shoppingsite.domain.company.Company;
 import com.yuri.shoppingsite.domain.shop.ItemFormDto;
 import com.yuri.shoppingsite.domain.user.Member;
@@ -11,19 +12,20 @@ import com.yuri.shoppingsite.service.CompanyService;
 import com.yuri.shoppingsite.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/member")
 @Controller
@@ -67,7 +69,7 @@ public class MemberController {
             return "member/signup";
         }
 
-        return "redirect:/";
+        return "redirect:/member/login";
     }
 
     //    로그인페이지로 이동
@@ -87,15 +89,47 @@ public class MemberController {
         return "member/login";
     }
 
+    // !!!! OAuth로 로그인 시 이 방식대로 하면 CastException 발생함
+    @GetMapping("/form/loginInfo")
+    @ResponseBody
+    public String formLoginInfo(Authentication authentication, @AuthenticationPrincipal PrincipalDetails principalDetails){
+
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        Member member = principal.getMember();
+        System.out.println(member);
+
+        Member user1 = principalDetails.getMember();
+        System.out.println(user1);
+        //User(id=2, username=11, password=$2a$10$m/1Alpm180jjsBpYReeml.AzvGlx/Djg4Z9/JDZYz8TJF1qUKd1fW, email=11@11, role=ROLE_USER, createTime=2022-01-30 19:07:43.213, provider=null, providerId=null)
+        //user == user1
+
+        return member.toString();
+    }
+    @GetMapping("/loginInfo")
+    @ResponseBody
+    public String loginInfo(Authentication authentication, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        String result = "";
+
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        if(principal.getMember().getProvider() == null) {
+            result = result + "Form 로그인 : " + principal;
+        }else{
+            result = result + "OAuth2 로그인 : " + principal;
+        }
+        return result;
+    }
+
+
+
     MemberRepository memberRepository;
     Member member;
     //마이페이지로 이동
     @GetMapping("/mypage")
     public String mypage(Model model,Principal principal){
-        String nickname = memberService.getNickname(principal.getName());
+        String name = principal.getName();
         Role member = memberService.getAuth(principal.getName());
         model.addAttribute("member",member);
-        model.addAttribute("nickname",nickname);
+        model.addAttribute("name",name);
         List<Company> companyList = companyService.getcompanyList();
         Company company = companyList.get(0);
         System.out.println(company);
