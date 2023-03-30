@@ -51,6 +51,9 @@
         .mgb-15{
             margin-bottom:15px;
         }
+        .nav-item {
+            color:#aebccb;
+        }
 
     </style>
 
@@ -166,7 +169,6 @@
 
 </script>
 
-
 <th:block th:include="/include/header.html"></th:block>
 
 <div class="container">
@@ -203,14 +205,12 @@
                     </div>
                     <hr class="my-4">
                     <div class="d-flex align-items-center mb-4 pt-2 align-items-center">
-<!--                        <div class="input-group quantity mr-3" >-->
                         <p style="margin:0px;" th:text="|${#numbers.formatInteger(item.price,3,'COMMA')} 원|"></p>
                         <p style="margin:0px; white-space: pre;">   x   </p>
                             <input style="width: 80px; height: 30px"  type="number" name="count" id="count" class="form-control text-right" value="1" min="1">
                         <p style="margin:0px; white-space: pre;"> 개</p>
                         <hr size="1">
                         <h5 style="margin:0px;" name="totalPrice" id="totalPrice" class="font-weight-bold"></h5>
-<!--                        </div>-->
                     </div>
                     <hr class="my-4">
                     <div>
@@ -233,10 +233,10 @@
                 </div>
             </div>
             <div class="row px-xl-5">
-                <div class="col-10 offset-1 mt-3">
+                <div class="col-12 mt-3">
                     <div class="nav nav-tabs justify-content-center border-secondary mb-4">
                         <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
-                        <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Information</a>
+                        <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Pictures</a>
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="tab-pane-1">
@@ -245,12 +245,11 @@
 
                         </div>
                         <div class="tab-pane fade" id="tab-pane-2">
-                            <h4 class="mb-3">Additional Picture</h4>
+                            <h4 class="mb-3">Additional Pictures</h4>
                             <p th:each="itemImg : ${item.itemImgDtoList}" class="text-center">
                             <img th:if="${not #strings.isEmpty(itemImg.imgUrl)}" th:src="${itemImg.imgUrl}"
-                                 class="rounded mgb-15" width="800"></p>
+                                 class="rounded mgb-15" width="400vw" max-width="650px"></p>
                         </div>
-
                     </div>
 
                             </div>
@@ -262,103 +261,7 @@
         <!-- Shop Detail End -->
 
 
-<!--        <div class="col-lg-10 col-md-10 col-sm-10 offset-1 gap">-->
-<!--        <h5 class="my-3 border-bottom pb-2" th:text="${item.itemNm}"></h5>-->
-<!--        </div>-->
-
-<!--            <div class="col-md-4 offset-1 justify-content-center text-center">-->
-<!--                <input type="hidden" id="itemId" th:value="${item.id}">-->
-<!--&lt;!&ndash;                        <div class="repImgDiv">&ndash;&gt;-->
-<!--                            <img th:src="${item.itemImgDtoList[0].imgUrl}"-->
-<!--                                 th:alt="${item.itemNm}" class="imgsize">-->
-<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-<!--            </div>-->
-
-<!--            <div class="col-md-4 offset-2 justify-content-start text-start">-->
-<!--            <span th:if="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}"-->
-<!--                  class="badge badge-warning">-->
-<!--                판매중-->
-<!--            </span>-->
-<!--                <span th:unless="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}"-->
-<!--                      class="badge btn-dark">-->
-<!--                품절-->
-<!--            </span>-->
-<!--                <h4 th:text="${item.itemNm}"></h4>-->
-<!--                <hr className="my-4">-->
-
-<!--                <p th:text="${item.itemDetail}"></p>-->
-
-
-<!--                <div class="d-flex justify-content-evenly">-->
-<!--                    <input type="hidden" th:value="${item.price}" id="price" name="price">-->
-<!--                </div>-->
-
-<!--                <div className="text-right">-->
-<!--                    <div class="h4 text-primary text-left">-->
-<!--&lt;!&ndash;                        <input type="hidden" th:value="${item.price}" id="price" name="price">&ndash;&gt;-->
-<!--                        <span th:text="${item.price}"></span>원-->
-<!--                    </div>-->
-<!--                    <div className="input-group w-50">-->
-<!--                        <div className="input-group-prepend">-->
-<!--                            <span className="input-group-text">수량</span>-->
-<!--                        </div>-->
-<!--&lt;!&ndash;                        <input type="number" name="count" id="count" className="form-control" value="1"&ndash;&gt;-->
-<!--&lt;!&ndash;                               min="1">&ndash;&gt;-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <hr class="my-4">-->
-
-<!--                <table border="0">-->
-<!--                    <colgroup>-->
-<!--                        <col style="width:40%;">-->
-<!--                        <col style="width:18%;">-->
-<!--                        <col style="width:40%;">-->
-<!--                    </colgroup>-->
-<!--                    <tbody class=""><tr>-->
-<!--                        <td class="text-end"><p th:text="${item.itemNm}"></p></td>-->
-<!--                        <td class="text-center mr-3">-->
-<!--&lt;!&ndash;                            <input type="number" name="count" id="count" class="form-control" value="1" min="1"></td>&ndash;&gt;-->
-<!--                        <td class="text-end ml-2">-->
-<!--                            <p th:text="${item.price}+원"></p>-->
-<!--                        </td>-->
-<!--                    </tr></tbody>-->
-<!--                </table>-->
-
-
-<!--                <div class="text-right mgt-50 mr-30">-->
-<!--                    <h5>결제 금액</h5>-->
-<!--&lt;!&ndash;                    <h3 name="totalPrice" id="totalPrice" class="font-weight-bold"></h3>&ndash;&gt;-->
-<!--                </div>-->
-<!--                <div th:if="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}"-->
-<!--                     class="text-right mr-30">-->
-<!--                    <button type="button" class="btn-outline-warning"-->
-<!--                            onclick="addCart()">장바구니 담기-->
-<!--                    </button>-->
-
-<!--                    <button type="button" class="btn-outline-warning"-->
-<!--                            onclick="order()">주문하기-->
-<!--                    </button>-->
-
-<!--                </div>-->
-<!--                <div th:unless="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}"-->
-<!--                     class="text-right mr-30">-->
-<!--                    <button type="button" class="btn btn-danger btn-lg">품절</button>-->
-<!--                </div>-->
-<!--&lt;!&ndash;                 </div>&ndash;&gt;-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--        <div class="col-lg-10 col-md-10 col-sm-10 offset-1 gap">-->
-<!--                <hr>-->
-<!--                <h4 class="display-5">상품 상세 설명</h4>-->
-<!--                <hr class="my-4">-->
-<!--                <p class="lead text-center" th:text="${item.itemDetail}"></p>-->
-<!--                <div th:each="itemImg : ${item.itemImgDtoList}" class="text-center">-->
-<!--                    <img th:if="${not #strings.isEmpty(itemImg.imgUrl)}" th:src="${itemImg.imgUrl}"-->
-<!--                         class="rounded mgb-15" width="800">-->
-<!--                </div>-->
-<!--        </div>-->
 <th:block th:include="/include/user_footer.html"></th:block>
-<!--<th:block th:include="/include/common_js.html"></th:block>-->
+<th:block th:include="/include/common_js.html"></th:block>
 </body>
 </html>
