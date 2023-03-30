@@ -33,7 +33,7 @@ public class ItemImgService {
             //uploadFile 메소드를 호출한다. 호출결과 로컬에 저장된 파일의 이름을 imgName 변수에 저장한다.
             imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
             //저장한 상품 이미지를 불러올 경로를 설정한다. 외부 리소스를 불러오는 urlpatterns로 webmvcconfig클래스에서
-            //"/images/**를 설정해주었다. 또한 application.properties에서 설정한 uploadPth 프로퍼티 경로인 "c:/shop/"아래
+            //"/images/**를 설정해주었다. 또한 application.properties에서 설정한 uploadPath 프로퍼티 경로인 "c:/shop/"아래
             // item 폴더에 이미지를 저장하므로 상품 이미지를 불러오는 경로로 "/images/item/"을 붙여준다.
             imgUrl = "/images/item/" + imgName;
         }
