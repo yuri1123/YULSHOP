@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //permitAll()을 통해 모든 사용자가 인증(로그인)없이 해당 경로에 접근할 수 있도록 설정한다.
                 //메인페이지, 회원관련 URL, 상품 상세 페이지, 상품이미지 불러오기가 해당
                 .antMatchers("/", "/shopping/**","/include/**","/member/login","/member/signup").permitAll()
-                .antMatchers("/order/**","/cart/**","/community/**","/member/**").hasRole("ADMIN,USER")
+//                .antMatchers("/order/**","/cart/**","/community/**","/member/**").hasAnyRole("ADMIN,USER")
                 // /amdin으로 시작하는 경로는 해당 계정이 ADMIN Role인 경우에만 접근 가능하도록 설정
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 //나머지 경로는 모드 인증을 요구하도록 설정

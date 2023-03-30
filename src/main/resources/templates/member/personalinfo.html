@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<sec:csrfMetaTags/>
 <head>
     <th:block th:include="/include/common_css.html"></th:block>
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
@@ -75,8 +77,8 @@
         }
 
     </style>
-<!--    <meta name="_csrf" th:content="${_csrf.token}"/>-->
-<!--    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+    <meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf}">
 
 </head>
 <body>
@@ -85,8 +87,8 @@
 <section class="latest-product-area">
 
     <div class="container">
-        <form role="form" th:object="${memberFormDto}" method="post">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+        <form role="form" th:object="${memberFormDto}" method="post" >
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         <div class="row product-btn d-flex text-start" id="gap">
 
             <!-- Section Tittle -->
@@ -329,7 +331,8 @@
 
         <div class="row col-12 mt-40 text-start justify-content-end ">
             <div>
-                <button class="backcol rad" type="submit" th:formaction="|@{/member/update}|">저장하기</button>
+                <button class="backcol rad" type="submit" th:formaction="|@{/member/update}|"
+                        onclick="return confirm('수정하시겠습니까?');" >저장하기</button>
                 <button class="backcol rad" >실행취소하기</button>
             </div>
         </div>
