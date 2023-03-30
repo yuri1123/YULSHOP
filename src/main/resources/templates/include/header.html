@@ -36,7 +36,7 @@
 <!--                          <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>-->
 <!--                      </div>-->
 <!--                  </li>-->
-                 <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a href="/admin/adminmain">관리자페이지</a></li>
+                 <li sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/admin/adminmain">관리자페이지</a></li>
                 <li><a sec:authorize="isAuthenticated()" th:href="@{/member/mypage}">마이페이지</a></li>
                 <li><a th:href="@{/cart}">장바구니</a></li>
                 <li><a th:href="@{/community/noticelist}">공지사항</a></li>

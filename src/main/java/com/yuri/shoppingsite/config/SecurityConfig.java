@@ -1,6 +1,5 @@
 package com.yuri.shoppingsite.config;
 
-import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.service.PrincipalOauth2UserService;
 import com.yuri.shoppingsite.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -29,6 +29,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        http
 //                .csrf()
 //                .disable();
+         http.headers()
+                 .and()
+                 .csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                 .and();
+
         http.formLogin()
                 //로그인 페이지 URL 설정
                 .loginPage("/member/login")
@@ -45,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //로그아웃 성공 시 이동할 URL 설정
                 .logoutSuccessUrl("/");
 
-         http.oauth2Login()				// OAuth2기반의 로그인인 경우
+        http.oauth2Login()				// OAuth2기반의 로그인인 경우
                 .loginPage("/member/login")		// 인증이 필요한 URL에 접근하면 /loginForm으로 이동
                 .defaultSuccessUrl("/")			// 로그인 성공하면 "/" 으로 이동
                 .failureUrl("/member/login")		// 로그인 실패 시 /loginForm으로 이동
@@ -57,13 +63,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 //permitAll()을 통해 모든 사용자가 인증(로그인)없이 해당 경로에 접근할 수 있도록 설정한다.
                 //메인페이지, 회원관련 URL, 상품 상세 페이지, 상품이미지 불러오기가 해당
-                .mvcMatchers("/", "/member/**",
-                        "/shopping/**","/community/**","/include/**"
-                        ,"/order/**","/cart/**").permitAll()
+                .antMatchers("/", "/shopping/**","/include/**","/member/login","/member/signup").permitAll()
+                .antMatchers("/order/**","/cart/**","/community/**","/member/**").hasRole("ADMIN,USER")
                 // /amdin으로 시작하는 경로는 해당 계정이 ADMIN Role인 경우에만 접근 가능하도록 설정
-                .mvcMatchers("/admin/**","/admin/**/**").hasRole("ADMIN")
-        //나머지 경로는 모드 인증을 요구하도록 설정
-                            .anyRequest().authenticated();
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                //나머지 경로는 모드 인증을 요구하도록 설정
+                .anyRequest().authenticated();
         //미인증 사용자가 리소스에 접근하였을 때 수행되는 핸들러 등록
 //        http.exceptionHandling()
 //                .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
@@ -80,10 +85,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(encoder());
     }
 
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().antMatchers("/assets/**/**","/admin_asset/**/**","/assets/yuls/**");
-//    }
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/assets/**/**","/admin_asset/**/**");
+    }
 
     @Bean
     public PasswordEncoder encoder() {
