@@ -5,9 +5,9 @@
 <head>
     <th:block th:include="/include/common_css.html"></th:block>
     <style>
-        #gap {
-            margin-top: 80px;
-            margin-bottom: 50px;
+
+        .span {
+
         }
 
         .hover:hover {
@@ -17,22 +17,18 @@
         .backcol {
             background: #1e1e1e;
             border: #1e1e1e;
+            width: 100px;
+            height: 40px;
+            border-radius: 10px;
         }
         .backcol:hover{
             background: #a367e7;
             border: #a367e7;
-        }
-        .fontcolors {
-            margin-top:40px;
-            margin-bottom: 40px;
-            font-size: 15px;
+            width: 100px;
+            height: 40px;
+            border-radius: 10px;
         }
 
-        .page-link {
-            color: #000;
-            background-color: #fff;
-            border: 1px solid #ccc;
-        }
         .page-item.active .page-link {
             z-index: 1;
             color: #555;
@@ -47,71 +43,13 @@
             border-color: #ccc;
         }
 
-        .rad{
-            border-radius: 10px;
-            padding: 10px 30px;
-        }
-
-        .mar {
-            margin-right: 20px;
-        }
-
-        .acol {
-            color: black;
-        }
-        .mar2 {
-            margin: 0px 10px;
-        }
 
          .mgb-15{
              margin-bottom:15px;
          }
-        .mgt-30{
-            margin-top:30px;
-        }
-        .mgt-50{
-            margin-top:50px;
-        }
-        .repImgDiv{
-            margin-right:15px;
-            height:auto;
-            width:50%;
-        }
-        .repImg{
-            width:100%;
-            height:400px;
-        }
-        .wd50{
-            height:auto;
-            width:50%;
-        }
 
         .mgb-15{
             margin-bottom:15px;
-        }
-        .mgt-30{
-            margin-top:30px;
-        }
-        .mgt-50{
-            margin-top:50px;
-        }
-        .repImgDiv{
-            margin-right:15px;
-            height:auto;
-            width:50%;
-        }
-        .repImg{
-            width:100%;
-            height:400px;
-        }
-        .wd50{
-            height:auto;
-            width:50%;
-        }
-
-        .imgsize {
-            width: 40vw;
-            height: 50vh;
         }
 
     </style>
@@ -125,9 +63,7 @@
 <!-- 사용자 스크립트 추가 -->
 <script th:inline="javascript">
     $(document).ready(function(){
-
         calculateTotalPrice();
-
         $("#count").change(function(){
             calculateTotalPrice();
         });
@@ -137,7 +73,95 @@
         var count = $("#count").val();
         var price = $("#price").val();
         var totalPrice = price*count;
-        $("#totalPrice").html(totalPrice + '원');
+        $("#totalPrice").html(addComma(totalPrice) + '원');
+    }
+
+    function addComma(num){
+        var regexp = /\B(?=(\d{3})+(?!\d))/g;
+        return num.toString().replace(regexp, ',');
+    }
+
+        function addCart() {
+        if (confirm("장바구니에 담으시겠습니까?")) {
+        const token = $("meta[name='_csrf']").attr("content")
+        const header = $("meta[name='_csrf_header']").attr("content");
+        var url = "/cart";
+        var paramData = {
+        itemId: $("#itemId").val(),
+        count: $("#count").val()
+    };
+
+        var param = JSON.stringify(paramData);
+
+        $.ajax({
+        url: url,
+        type: "POST",
+        contentType: "application/json",
+        data: param,
+        beforeSend: function (xhr) {
+        /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+        xhr.setRequestHeader(header, token);
+    },
+        dataType: "json",
+        cache: false,
+        success: function (result, status) {
+        alert("장바구니에 담았습니다");
+        location.href = '/shopping/shopping';
+    },
+        error: function (jqXHR, status, error) {
+
+        if (jqXHR.status == '401') {
+        alert('로그인 후 이용해주세요');
+        location.href = '/member/login';
+    } else {
+        alert(jqXHR.responseText);
+    }
+
+    }
+    });
+    }
+    }
+
+    function order() {
+        if (confirm("주문하시겠습니까?")) {
+
+            const token = $("meta[name='_csrf']").attr("content")
+            const header = $("meta[name='_csrf_header']").attr("content");
+            var url = "/order";
+            var paramData = {
+                itemId: $("#itemId").val(),
+                count: $("#count").val()
+            };
+
+            var param = JSON.stringify(paramData);
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                contentType: "application/json",
+                data: param,
+                beforeSend: function (xhr) {
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: "json",
+                cache: false,
+                success: function (result, status) {
+                    alert("주문이 완료 되었습니다.");
+                    location.href = '/shopping/shopping';
+                },
+                error: function (jqXHR, status, error) {
+
+                    if (jqXHR.status == '401') {
+                        alert('로그인 후 이용해주세요');
+                        location.href = '/member/login';
+                    } else {
+                        alert(jqXHR.responseText);
+                    }
+
+                }
+            });
+        }
     }
 
 </script>
@@ -145,198 +169,195 @@
 
 <th:block th:include="/include/header.html"></th:block>
 
-
-
-<div class="container-fluid">
+<div class="container">
     <div class="row">
-        <div class="col-lg-10 col-md-10 col-sm-10 offset-1 gap">
-        <h5 class="my-3 border-bottom pb-2" th:text="${item.itemNm}"></h5>
-        </div>
 
-            <div class="col-4 offset-1 justify-content-start">
-
-                <input type="hidden" id="itemId" th:value="${item.id}">
-                        <div className="repImgDiv">
-                            <img th:src="${item.itemImgDtoList[0].imgUrl}"
-                                 th:alt="${item.itemNm}" class="imgsize">
+        <!-- Shop Detail Start -->
+        <div class="container-fluid py-5">
+            <div class="row col-10 offset-1 px-xl-5">
+                <div class="col-lg-5 pt-5 pb-4">
+                    <div id="product-carousel">
+                        <div class="carousel-inner border">
+                            <div class="carousel-item active">
+                                <div class="carousel-item active">
+                                    <input type="hidden" id="itemId1" th:value="${item.id}">
+                                    <img class="w-100 h-100" style="width: 60vw;max-height:400px;height: auto;object-fit: cover" th:src="${item.itemImgDtoList[0].imgUrl}"th:alt="${item.itemNm}">
+                                </div>
+                            </div>
                         </div>
-            </div>
-
-            <div class="col-4 offset-2 justify-content-end pt-4">
-            <span th:if="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}"
-                  class="badge badge-warning">
-                판매중
-            </span>
-                <span th:unless="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}"
-                      class="badge btn-dark">
-                품절
-            </span>
-                <h4 th:text="${item.itemNm}"></h4>
-                <hr className="my-4">
-
-                <p th:text="${item.itemDetail}"></p>
-
-
-                <div class="d-flex justify-content-evenly">
-                    <input type="hidden" th:value="${item.price}" id="price" name="price">
+                    </div>
                 </div>
 
-
-
-                <div className="text-right">
-                    <div class="h4 text-primary text-left">
-<!--                        <input type="hidden" th:value="${item.price}" id="price" name="price">-->
-                        <span th:text="${item.price}"></span>원
+                <div class="col-lg-5 offset-1 pt-5 pb-5">
+                    <h4 class="font-weight-semi-bold" th:text="${item.itemNm}"></h4>
+                    <div class="d-flex mb-3">
                     </div>
+                    <input type="hidden" th:value="${item.price}" id="price" name="price">
+                    <h5 class="font-weight-semi-bold mb-4" th:text="|${#numbers.formatInteger(item.price,3,'COMMA')}원|"></h5>
+                    <p class="mb-4"></p>
+                    <div class="d-flex mb-3">
+
+                    </div>
+                    <div class="d-flex mb-4">
+
+                    </div>
+                    <hr class="my-4">
+                    <div class="d-flex align-items-center mb-4 pt-2 align-items-center">
+<!--                        <div class="input-group quantity mr-3" >-->
+                        <p style="margin:0px;" th:text="|${#numbers.formatInteger(item.price,3,'COMMA')} 원|"></p>
+                        <p style="margin:0px; white-space: pre;">   x   </p>
+                            <input style="width: 80px; height: 30px"  type="number" name="count" id="count" class="form-control text-right" value="1" min="1">
+                        <p style="margin:0px; white-space: pre;"> 개</p>
+                        <hr size="1">
+                        <h5 style="margin:0px;" name="totalPrice" id="totalPrice" class="font-weight-bold"></h5>
+<!--                        </div>-->
+                    </div>
+                    <hr class="my-4">
+                    <div>
+                    <th:block th:if="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}"
+                         class="align-items-center mb-4 pt-2">
+                        <button type="button" class="backcol"
+                                onclick="addCart()"><i class="fa fa-shopping-cart mr-1"></i>CART
+                        </button>
+
+                        <button type="button" class="backcol"
+                                onclick="order()"><i class="fa fa-shopping-cart mr-1"></i>ORDER
+                        </button>
+
+                    </th:block>
+                    <th:block th:unless="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}"
+                         class="align-items-center mb-4 pt-2">
+                        <button type="button" class="backcol">품절</button>
+                    </th:block>
+                    </div>
+                </div>
+            </div>
+            <div class="row px-xl-5">
+                <div class="col-10 offset-1 mt-3">
+                    <div class="nav nav-tabs justify-content-center border-secondary mb-4">
+                        <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
+                        <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Information</a>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="tab-pane-1">
+                            <h4 class="mb-3">Product Description</h4>
+                            <p th:text="${item.itemDetail}"></p>
+
+                        </div>
+                        <div class="tab-pane fade" id="tab-pane-2">
+                            <h4 class="mb-3">Additional Picture</h4>
+                            <p th:each="itemImg : ${item.itemImgDtoList}" class="text-center">
+                            <img th:if="${not #strings.isEmpty(itemImg.imgUrl)}" th:src="${itemImg.imgUrl}"
+                                 class="rounded mgb-15" width="800"></p>
+                        </div>
+
+                    </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Shop Detail End -->
+
+
+<!--        <div class="col-lg-10 col-md-10 col-sm-10 offset-1 gap">-->
+<!--        <h5 class="my-3 border-bottom pb-2" th:text="${item.itemNm}"></h5>-->
+<!--        </div>-->
+
+<!--            <div class="col-md-4 offset-1 justify-content-center text-center">-->
+<!--                <input type="hidden" id="itemId" th:value="${item.id}">-->
+<!--&lt;!&ndash;                        <div class="repImgDiv">&ndash;&gt;-->
+<!--                            <img th:src="${item.itemImgDtoList[0].imgUrl}"-->
+<!--                                 th:alt="${item.itemNm}" class="imgsize">-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--            </div>-->
+
+<!--            <div class="col-md-4 offset-2 justify-content-start text-start">-->
+<!--            <span th:if="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}"-->
+<!--                  class="badge badge-warning">-->
+<!--                판매중-->
+<!--            </span>-->
+<!--                <span th:unless="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}"-->
+<!--                      class="badge btn-dark">-->
+<!--                품절-->
+<!--            </span>-->
+<!--                <h4 th:text="${item.itemNm}"></h4>-->
+<!--                <hr className="my-4">-->
+
+<!--                <p th:text="${item.itemDetail}"></p>-->
+
+
+<!--                <div class="d-flex justify-content-evenly">-->
+<!--                    <input type="hidden" th:value="${item.price}" id="price" name="price">-->
+<!--                </div>-->
+
+<!--                <div className="text-right">-->
+<!--                    <div class="h4 text-primary text-left">-->
+<!--&lt;!&ndash;                        <input type="hidden" th:value="${item.price}" id="price" name="price">&ndash;&gt;-->
+<!--                        <span th:text="${item.price}"></span>원-->
+<!--                    </div>-->
 <!--                    <div className="input-group w-50">-->
 <!--                        <div className="input-group-prepend">-->
 <!--                            <span className="input-group-text">수량</span>-->
 <!--                        </div>-->
-<!--                        <input type="number" name="count" id="count" className="form-control" value="1"-->
-<!--                               min="1">-->
+<!--&lt;!&ndash;                        <input type="number" name="count" id="count" className="form-control" value="1"&ndash;&gt;-->
+<!--&lt;!&ndash;                               min="1">&ndash;&gt;-->
 <!--                    </div>-->
-                </div>
-                <hr class="my-4">
+<!--                </div>-->
+<!--                <hr class="my-4">-->
 
-                <table border="0">
-                    <colgroup>
-                        <col style="width:40%;">
-                        <col style="width:18%;">
-                        <col style="width:40%;">
-                    </colgroup>
-                    <tbody class=""><tr>
-                        <td class="text-end"><p th:text="${item.itemNm}"></p></td>
-                        <td class="text-center mr-3">
-                            <input type="number" name="count" id="count" class="form-control" value="1" min="1"></td>
-                        <td class="text-end ml-2">
-                            <p th:text="${item.price}+원"></p>
-                        </td>
-                    </tr></tbody>
-                </table>
-
-
-                <div class="text-right mgt-50 mr-30">
-                    <h5>결제 금액</h5>
-                    <h3 name="totalPrice" id="totalPrice" class="font-weight-bold"></h3>
-                </div>
-                <div th:if="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}"
-                     class="text-right mr-30">
-                    <button type="button" class="btn-outline-warning"
-                            onclick="addCart()">장바구니 담기
-                    </button>
-                    <script>
-                        function addCart() {
-                            if (confirm("장바구니에 담으시겠습니까?")) {
-                                const token = $("meta[name='_csrf']").attr("content")
-                                const header = $("meta[name='_csrf_header']").attr("content");
-                                var url = "/cart";
-                                var paramData = {
-                                    itemId: $("#itemId").val(),
-                                    count: $("#count").val()
-                                };
-
-                                var param = JSON.stringify(paramData);
-
-                                $.ajax({
-                                    url: url,
-                                    type: "POST",
-                                    contentType: "application/json",
-                                    data: param,
-                                    beforeSend: function (xhr) {
-                                        /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
-                                        xhr.setRequestHeader(header, token);
-                                    },
-                                    dataType: "json",
-                                    cache: false,
-                                    success: function (result, status) {
-                                        alert("장바구니에 담았습니다");
-                                        location.href = '/shopping/shopping';
-                                    },
-                                    error: function (jqXHR, status, error) {
-
-                                        if (jqXHR.status == '401') {
-                                            alert('로그인 후 이용해주세요');
-                                            location.href = '/member/login';
-                                        } else {
-                                            alert(jqXHR.responseText);
-                                        }
-
-                                    }
-                                });
-                            }
-                        }
-                    </script>
+<!--                <table border="0">-->
+<!--                    <colgroup>-->
+<!--                        <col style="width:40%;">-->
+<!--                        <col style="width:18%;">-->
+<!--                        <col style="width:40%;">-->
+<!--                    </colgroup>-->
+<!--                    <tbody class=""><tr>-->
+<!--                        <td class="text-end"><p th:text="${item.itemNm}"></p></td>-->
+<!--                        <td class="text-center mr-3">-->
+<!--&lt;!&ndash;                            <input type="number" name="count" id="count" class="form-control" value="1" min="1"></td>&ndash;&gt;-->
+<!--                        <td class="text-end ml-2">-->
+<!--                            <p th:text="${item.price}+원"></p>-->
+<!--                        </td>-->
+<!--                    </tr></tbody>-->
+<!--                </table>-->
 
 
-                    <button type="button" class="btn-outline-warning"
-                            onclick="order()">주문하기
-                    </button>
-                    <script>
-                        function order() {
-                            if (confirm("주문하시겠습니까?")) {
+<!--                <div class="text-right mgt-50 mr-30">-->
+<!--                    <h5>결제 금액</h5>-->
+<!--&lt;!&ndash;                    <h3 name="totalPrice" id="totalPrice" class="font-weight-bold"></h3>&ndash;&gt;-->
+<!--                </div>-->
+<!--                <div th:if="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}"-->
+<!--                     class="text-right mr-30">-->
+<!--                    <button type="button" class="btn-outline-warning"-->
+<!--                            onclick="addCart()">장바구니 담기-->
+<!--                    </button>-->
 
-                                const token = $("meta[name='_csrf']").attr("content")
-                                const header = $("meta[name='_csrf_header']").attr("content");
-                                var url = "/order";
-                                var paramData = {
-                                    itemId: $("#itemId").val(),
-                                    count: $("#count").val()
-                                };
+<!--                    <button type="button" class="btn-outline-warning"-->
+<!--                            onclick="order()">주문하기-->
+<!--                    </button>-->
 
-                                var param = JSON.stringify(paramData);
+<!--                </div>-->
+<!--                <div th:unless="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}"-->
+<!--                     class="text-right mr-30">-->
+<!--                    <button type="button" class="btn btn-danger btn-lg">품절</button>-->
+<!--                </div>-->
+<!--&lt;!&ndash;                 </div>&ndash;&gt;-->
+<!--        </div>-->
+<!--    </div>-->
 
-                                $.ajax({
-                                    url: url,
-                                    type: "POST",
-                                    contentType: "application/json",
-                                    data: param,
-                                    beforeSend: function (xhr) {
-                                        /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
-                                        xhr.setRequestHeader(header, token);
-                                    },
-                                    dataType: "json",
-                                    cache: false,
-                                    success: function (result, status) {
-                                        alert("주문이 완료 되었습니다.");
-                                        location.href = '/shopping/shopping';
-                                    },
-                                    error: function (jqXHR, status, error) {
-
-                                        if (jqXHR.status == '401') {
-                                            alert('로그인 후 이용해주세요');
-                                            location.href = '/member/login';
-                                        } else {
-                                            alert(jqXHR.responseText);
-                                        }
-
-                                    }
-                                });
-                            }
-                        }
-                    </script>
-
-                </div>
-                <div th:unless="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL}"
-                     class="text-right mr-30">
-                    <button type="button" class="btn btn-danger btn-lg">품절</button>
-                </div>
-<!--                 </div>-->
-        </div>
-
-    </div>
-
-        <div class="col-lg-10 col-md-10 col-sm-10 offset-1 gap">
-                <hr>
-                <h4 class="display-5">상품 상세 설명</h4>
-                <hr class="my-4">
-                <p class="lead text-center" th:text="${item.itemDetail}"></p>
-                <div th:each="itemImg : ${item.itemImgDtoList}" class="text-center">
-                    <img th:if="${not #strings.isEmpty(itemImg.imgUrl)}" th:src="${itemImg.imgUrl}"
-                         class="rounded mgb-15" width="800">
-                </div>
-        </div>
-    </div>
-</div>
+<!--        <div class="col-lg-10 col-md-10 col-sm-10 offset-1 gap">-->
+<!--                <hr>-->
+<!--                <h4 class="display-5">상품 상세 설명</h4>-->
+<!--                <hr class="my-4">-->
+<!--                <p class="lead text-center" th:text="${item.itemDetail}"></p>-->
+<!--                <div th:each="itemImg : ${item.itemImgDtoList}" class="text-center">-->
+<!--                    <img th:if="${not #strings.isEmpty(itemImg.imgUrl)}" th:src="${itemImg.imgUrl}"-->
+<!--                         class="rounded mgb-15" width="800">-->
+<!--                </div>-->
+<!--        </div>-->
 <th:block th:include="/include/user_footer.html"></th:block>
 <!--<th:block th:include="/include/common_js.html"></th:block>-->
 </body>
