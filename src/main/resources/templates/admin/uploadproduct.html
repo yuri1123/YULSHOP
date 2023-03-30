@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<sec:csrfMetaTags/>
 
 <head>
     <th:block th:include="/include/admin_head.html"></th:block>
@@ -133,6 +134,7 @@
 <!--            파일을 전송할 때는 enctype(인코딩타입)값으로 multipart/form-data를 입력-->
 <!--            모든 문자를 인코딩 하지 않고, method 속성값이 post인 경우에만 사용할 수 있음-->
         <form role="form" method="post" enctype="multipart/form-data" th:object="${itemFormDto}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <div class="row col-12 mt-40 text-start justify-content-start mb-80 ">
                 <input type="hidden" th:field="*{id}">
                 <table>

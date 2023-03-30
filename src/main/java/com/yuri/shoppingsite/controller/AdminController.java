@@ -489,7 +489,7 @@ public class AdminController {
                 // type 필드가 null이 아닌 경우 처리할 로직
             }
             boardService.createNotice(noticeFormDto);
-        return "admin/adminnoticelist";
+        return "redirect:/admin/noticelist";
     }
 
 
