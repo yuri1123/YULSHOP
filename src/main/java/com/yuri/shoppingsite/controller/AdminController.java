@@ -198,9 +198,6 @@ public class AdminController {
     public @ResponseBody ResponseEntity updateCategory(@PathVariable Long id,
                                                        String category,
                                                        Principal principal) {
-        if (!itemService.validateItem(id, principal.getName())) {
-            return new ResponseEntity<String>("수정권한이 없습니다.", HttpStatus.FORBIDDEN);
-        }
         System.out.println(id);
         System.out.println(category);
         itemService.updateCategory(id, Category.valueOf(category));

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-
+<sec:csrfMetaTags/>
 <head>
   <th:block th:include="/include/admin_head.html"></th:block>
   <th:block th:include="/include/common_css.html"></th:block>
@@ -68,7 +68,7 @@
   </style>
 
     <meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
-    <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf}">
 
 </head>
 <body>
@@ -99,8 +99,8 @@
 
    if(confirm("저장하시겠습니까?")){
 
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
+   const token = $("meta[name='_csrf']").attr("content")
+   const header = $("meta[name='_csrf_header']").attr("content");
     var id = $("#itemId").val();
     var category = $("#category").val();
 
@@ -149,7 +149,7 @@
     </div>
 
     <form th:action="@{'/admin/categorychange/' + ${items.number}}" role="form" method="get" th:object="${items}">
-
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
       <div class="col-8 offset-4 pb-2">
 
