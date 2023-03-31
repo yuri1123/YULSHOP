@@ -41,13 +41,4 @@ public class NaverUserInfo implements OAuth2UserInfo{
         return attributesResponse.get("nickname").toString();
     }
 
-    @Override
-    public String getBirth() {
-        return attributesResponse.get("birth").toString();
-    }
-
-    @Override
-    public String getPhone() {
-        return attributesResponse.get("phone").toString();
-    }
 }

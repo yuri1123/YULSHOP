@@ -2,6 +2,7 @@
 <html lang="ko">
 <html xmlns:th="http://www.thymleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<sec:csrfMetaTags/>
 <head>
     <th:block th:include="/include/common_css.html"></th:block>
     <meta charset="UTF-8">
@@ -105,6 +106,9 @@
 
 
     </style>
+    <meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf}">
+
 </head>
 <body>
 
@@ -140,6 +144,7 @@
              <div class="text-center" id="flex-align">
                  <div class="login-wrapper">
                     <form role="form" method="post" th:action="@{/member/login}" id="login-form" class="text-center">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 <!--                        <div th:if="${param.error}">-->
 <!--                            <div class="alert alert-danger">-->
 <!--                                사용자 ID 또는 비밀번호를 확인해 주세요!-->
@@ -155,8 +160,9 @@
 <!--                            아이디 기억하기-->
 <!--                        </label>-->
                         <input type="submit" value="로그인">
-                        <a th:href="@{/oauth2/authorization/naver}"><img class="logo_img" width="40vw" height="40vh" src="/assets/yuls/naver.png"></a>
-                        <a href="/oauth2/authorization/google"><img class="logo_img" width="40vw" height="40vh" src="/assets/yuls/google.png"></a>
+                        <a href="/oauth2/authorization/naver"><img class="logo_img mr-2" width="40vw" height="40vh" src="/assets/yuls/naver.png"></a>
+                        <a href="/oauth2/authorization/google"><img class="logo_img mr-2" width="40vw" height="40vh" src="/assets/yuls/google.png"></a>
+                        <a href="/oauth2/authorization/kakao"><img class="logo_img" width="40vw" height="40vh" src="/assets/yuls/kakao.png"></a>
                      </form>
 
                      <script th:inline="javascript">

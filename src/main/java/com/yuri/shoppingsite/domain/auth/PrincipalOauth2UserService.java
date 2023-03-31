@@ -1,8 +1,8 @@
-package com.yuri.shoppingsite.service;
+package com.yuri.shoppingsite.domain.auth;
 
 import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.constant.Role;
-import com.yuri.shoppingsite.domain.auth.PrincipalDetails;
+import com.yuri.shoppingsite.domain.auth.*;
 import com.yuri.shoppingsite.domain.user.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,8 +27,21 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        String provider = userRequest.getClientRegistration().getRegistrationId();    //google
-        String providerId = oAuth2User.getAttribute("sub");
+        OAuth2UserInfo oAuth2UserInfo = null;	//추가
+        String provider = userRequest.getClientRegistration().getRegistrationId();
+
+        //추가
+        if(provider.equals("google")){
+            oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
+        }
+        else if(provider.equals("naver")){
+            oAuth2UserInfo = new NaverUserInfo(oAuth2User.getAttributes());
+        }
+        else if(provider.equals("kakao")){	//추가
+            oAuth2UserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
+        }
+
+        String providerId = oAuth2UserInfo.getProviderId();	//수정
         String name = provider+"_"+providerId;  			// 사용자가 입력한 적은 없지만 만들어준다
 
         String uuid = UUID.randomUUID().toString().substring(0, 6);
@@ -48,6 +61,6 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             memberRepository.save(byUsername);
         }
 
-        return new PrincipalDetails(byUsername, oAuth2User.getAttributes());
+        return new PrincipalDetails(byUsername, oAuth2UserInfo);
     }
 }

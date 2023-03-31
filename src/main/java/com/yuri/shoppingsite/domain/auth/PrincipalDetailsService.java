@@ -1,4 +1,4 @@
-package com.yuri.shoppingsite.service;
+package com.yuri.shoppingsite.domain.auth;
 
 import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.domain.auth.PrincipalDetails;

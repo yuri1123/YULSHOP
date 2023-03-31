@@ -16,7 +16,8 @@ import java.util.Map;
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private Member member;
-    private Map<String, Object> attributes;
+    //private Map<String, Object> attributes;
+    private OAuth2UserInfo oAuth2UserInfo;
 
     //UserDetails : Form 로그인 시 사용
     public PrincipalDetails(Member member) {
@@ -24,11 +25,18 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     }
 
     //OAuth2User : OAuth2 로그인 시 사용
-    public PrincipalDetails(Member member, Map<String, Object> attributes) {
-        //PrincipalOauth2UserService 참고
+    //public PrincipalDetails(User user, Map<String, Object> attributes) {
+    //    //PrincipalOauth2UserService 참고
+    //    this.user = user;
+    //    this.attributes = attributes;
+    //}
+
+    public PrincipalDetails(Member member, OAuth2UserInfo oAuth2UserInfo) {
         this.member = member;
-        this.attributes = attributes;
+        this.oAuth2UserInfo = oAuth2UserInfo;
     }
+
+
 
     /**
      * UserDetails 구현
@@ -64,17 +72,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     public String getUsername() {
         return member.getName();
     }
-    public String getNickname() {
-        return member.getNickname();
-    }
 
-    public String getBirth() {
-        return member.getBirth();
-    }
-
-    public String getPhone() {
-        return member.getPhone();
-    }
 
     /**
      * UserDetails 구현
@@ -127,7 +125,8 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
      */
     @Override
     public Map<String, Object> getAttributes() {
-        return attributes;
+        //return attributes;
+        return oAuth2UserInfo.getAttributes();
     }
 
     /**
@@ -136,7 +135,8 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
      */
     @Override
     public String getName() {
-        String sub = attributes.get("sub").toString();
-        return sub;
+        //String sub = attributes.get("sub").toString();
+        //return sub;
+        return oAuth2UserInfo.getProviderId();
     }
 }

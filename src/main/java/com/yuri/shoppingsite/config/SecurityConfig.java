@@ -1,6 +1,6 @@
 package com.yuri.shoppingsite.config;
 
-import com.yuri.shoppingsite.service.PrincipalOauth2UserService;
+import com.yuri.shoppingsite.domain.auth.PrincipalOauth2UserService;
 import com.yuri.shoppingsite.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
