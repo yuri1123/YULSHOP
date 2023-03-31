@@ -58,6 +58,7 @@ public class CommunityController {
         return "community/qnaboard";
     }
 
+    //공지사항 상세보기
     @GetMapping("community/noticedtl/{id}")
     public String noticedtl(@PathVariable("id") Long id, Model model){
         Board board = boardService.getNoticebyId(id);

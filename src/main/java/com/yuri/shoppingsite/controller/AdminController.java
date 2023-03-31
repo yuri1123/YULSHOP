@@ -15,6 +15,8 @@ import com.yuri.shoppingsite.domain.community.NoticeFormDto;
 import com.yuri.shoppingsite.domain.company.Company;
 import com.yuri.shoppingsite.domain.company.CompanyFormDto;
 import com.yuri.shoppingsite.domain.shop.*;
+import com.yuri.shoppingsite.domain.user.MemberAccountDto;
+import com.yuri.shoppingsite.domain.user.MemberFormDto;
 import com.yuri.shoppingsite.domain.user.MemberSearchDto;
 import com.yuri.shoppingsite.domain.user.Member;
 import com.yuri.shoppingsite.service.*;
@@ -467,6 +469,21 @@ public class AdminController {
 //        }
         return "admin/adminnoticelist";
     }
+
+    //공지사항 상세보기
+    @GetMapping("admin/adnoticedtl/{id}")
+    public String adminNoticeDtl(@PathVariable("id") Long id, Model model){
+        try {
+            NoticeFormDto noticeFormDto = boardService.getNoticeFormbyId(id);
+            model.addAttribute("noticeFormDto", noticeFormDto);
+        } catch (EntityNotFoundException e){
+            model.addAttribute("errorMessage","존재하지 않는 글입니다.");
+            model.addAttribute("noticeFormDto",new NoticeFormDto());
+            return "admin/adnoticedtl";
+        }
+        return "admin/adnoticedtl";
+    }
+
 
 
     //공지사항 등록하기 가기 페이지

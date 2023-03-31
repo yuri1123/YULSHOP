@@ -118,11 +118,11 @@
           <tr th:each="board, status: ${boardList}">
             <td th:text="${board.id}"></td>
             <td>
-              <a th:href="'/community/noticelist/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
+              <a th:href="'/admin/adnoticedtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
             </td>
-            <td th:text="${board.view}"></td>
             <td th:text="${board.createdBy}"></td>
             <td th:text="${#temporals.format(board.regTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${board.view}"></td>
           </tr>
           </tbody>
         </table>
