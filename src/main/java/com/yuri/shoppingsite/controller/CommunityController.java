@@ -27,7 +27,7 @@ public class CommunityController {
     //community - notice
 
     //공지사항 리스트 페이지로 이동
-    @GetMapping("community/noticelist")
+    @GetMapping(value = {"community/noticelist","community/noticelist/{page}"})
     public String goNotice(Model model, CommunitySearchDto communitySearchDto,
                            @PathVariable("page") Optional<Integer> page){
         System.out.println("notice 리스트로 이동하기");
@@ -58,7 +58,7 @@ public class CommunityController {
 
 
     //리뷰게시판 페이지로 이동
-    @GetMapping("community/review")
+    @GetMapping(value = {"community/reviewlist","community/reviewlist/{page}"})
     public String goReview(Model model, CommunitySearchDto communitySearchDto,
                            @PathVariable("page") Optional<Integer> page){
         System.out.println("review 리스트로 이동하기");
@@ -75,7 +75,7 @@ public class CommunityController {
     }
 
     //Q&A 게시판 페이지로 이동
-    @GetMapping("community/qnaboard")
+    @GetMapping(value = {"community/qnalist","community/qnalist/{page}"})
     public String goqnaboard(Model model, CommunitySearchDto communitySearchDto,
                              @PathVariable("page") Optional<Integer> page){
         System.out.println("review 리스트로 이동하기");

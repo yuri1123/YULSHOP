@@ -1,30 +1,14 @@
-<!doctype html>
-<html lagn="ko" xmlns:th="http://www.thymeleaf.org"
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 <head>
     <th:block th:include="/include/common_css.html"></th:block>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
     <style>
         #gap {
             margin-top: 80px;
-            margin-bottom: 50px;
-        }
-
-        .hover:hover {
-            color: #a367e7;
-        }
-
-        .backcol {
-            background: #1e1e1e;
-            border: #1e1e1e;
-        }
-        .backcol:hover{
-            background: #a367e7;
-            border: #a367e7;
-        }
-        .fontcolors {
-            margin-top:40px;
-            margin-bottom: 40px;
-            font-size: 15px;
+            /*margin-bottom: 10px;*/
         }
 
         .page-link {
@@ -40,26 +24,14 @@
             border-color: #ccc;
 
         }
+        .br {
+            border-radius: 30px;
+            /*height: 35px;*/
+        }
         .page-link:focus, .page-link:hover {
             color: #000;
             background-color: #fafafa;
             border-color: #ccc;
-        }
-
-        .rad{
-            border-radius: 10px;
-            padding: 10px 30px;
-        }
-
-        .mar {
-            margin-right: 20px;
-        }
-
-        .acol {
-            color: black;
-        }
-        .mar2 {
-            margin: 0px 10px;
         }
         .newbadge {
             position: absolute;
@@ -85,76 +57,144 @@
             font-weight: bold;
         }
     </style>
-
-
 </head>
+
 <body>
+
+<script th:inline="javascript">
+
+    $(document).ready(function(){
+        $("#searchBtn").on("click",function(e) {
+            e.preventDefault();
+            page(0);
+        });
+    });
+
+    function page(page){
+        let searchDateType = $("#searchDateType").val();
+        let searchTypeStatus = $("#searchTypeStatus").val();
+        let searchBy = $("#searchBy").val();
+        let searchQuery = $("#searchQuery").val();
+
+        location.href="/community/reviewlist/" + page
+            + "?searchDateType=" + searchDateType
+            + "&searchTypeStatus=" + searchTypeStatus
+            + "&searchBy=" + searchBy
+            + "&searchQuery=" + searchQuery;
+    }
+
+</script>
 
 <th:block th:include="/include/header.html"></th:block>
 
 <section class="latest-product-area">
 
-
     <div class="container">
-        <div class="row product-btn d-flex justify-content-start align-items-end" id="gap">
+        <div class="row product-btn d-flex text-start" id="gap">
             <!-- Section Tittle -->
-            <div class="col-xl-5 col-lg-6 col-md-5">
+            <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-2">
                 <div class="section-tittle mb-30">
                     <h2>REVIEW</h2>
                 </div>
             </div>
-            <div class="col-xl-8 col-lg-7 col-md-7">
-                <div class="properties__button f-right">
-                </div>
-            </div>
         </div>
 
-        <!-- Nav Card -->
-        <div class="tab-content" id="nav-tabContent">
-            <!-- card one -->
-            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <form th:action="@{'/community/reviewlist/' + ${boardList.number}}" role="form" method="get" th:object="${boardList}">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            <div class="col-8 offset-4 pb-2">
+                <!--        검색하기-->
+                <div  class="form-inline justify-content-center" th:object="${communitySearchDto}">
+                    <select th:field="*{searchDateType}" class="form-control m-1 align-middle border br" style="width:auto;">
+                        <option value="all">전체기간</option>
+                        <option value="1d">1일</option>
+                        <option value="1w">1주</option>
+                        <option value="1m">1개월</option>
+                        <option value="6m">6개월</option>
+                    </select>
+                    <select th:field="*{searchTypeStatus}" class="form-control m-1 align-middle border br" style="width:auto;">
+                        <option value="">게시글유형(전체)</option>
+                        <option value="NOTICE">공지사항</option>
+                        <option value="REVIEW">리뷰게시판</option>
+                        <option value="QNA">Q&A게시판</option>
+                    </select>
+                    <select th:field="*{searchBy}" class="form-control m-1 align-middle border br" style="width:auto;">
+                        <option value="title">글제목</option>
+                        <option value="createdBy">등록자</option>
+                        <option value="itemNm">상품명</option>
+                    </select>
+                    <input th:field="*{searchQuery}" type="text" class="form-control m-1" placeholder="검색어를 입력해주세요">
+                    <button id="searchBtn" type="submit" class="btn-primary backcol rad">검색</button>
                 </div>
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-10 offset-1">
 
-                <div class="row">
-                        <div class="col-12">
+                <table class="table table">
+                    <thead class="text-center">
+                    <tr>
+                        <th>순번</th>
+                        <th>상품명</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>등록일</th>
+                        <th>조회수</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-center">
 
-                                    <div class="product-caption">
-                                        <table class="table table">
-                                            <thead class="text-center">
-                                            <tr>
-                                                <th>게시물아이디</th>
-                                                <th>제목</th>
-                                                <th>등록자</th>
-                                                <th>등록일</th>
-                                                <th>조회수</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody class="text-center">
-                                            <tr th:each="board, status: ${boardList}">
-                                                <td th:text="${board.id}"></td>
-                                                <td>
-                                                    <a th:href="'/community/noticedtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
-                                                </td>
-                                                <td th:text="${board.createdBy}"></td>
-                                                <td th:text="${#temporals.format(board.regTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                                <td th:text="${board.view}"></td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                    <tr th:each="board, status: ${boardList}">
+                        <td th:text="${board.id}"></td>
+                        <td th:text="${board.itemNm}"></td>
+                        <td>
+                            <th:blcok th:if="${board.type == 'NOTICE'}">
+                                <a th:href="'/community/noticedtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
+                            </th:blcok>
+                            <th:blcok th:if="${board.type == 'QNA'}">
+                                <a th:href="'/community/qnadtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
+                            </th:blcok>
+                            <th:blcok th:if="${board.type == 'REVIEW'}">
+                                <a th:href="'/community/reviewdtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
+                            </th:blcok>
+                        </td>
+                        <td th:text="${board.createdBy}"></td>
+                        <td th:text="${#temporals.format(board.regTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td th:text="${board.view}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="justify-content-center mb-5 mt-5">
 
+                    <!--        페이징 처리 시작-->
+                    <div th:with="start=${(boardList.number/maxPage)*maxPage +1}, end=(${(boardList.totalPages == 0) ? 1 : (start + (maxPage - 1) < boardList.totalPages ? start + (maxPage - 1) : boardList.totalPages)})" >
+                        <ul class="pagination justify-content-center">
+
+                            <li class="page-item" th:classappend="${boardList.first}?'disabled'">
+                                <a style="font-size: 13px" th:onclick="'javascript:page(' + ${boardList.number -1} + ')'" aria-label='Previous' class="page-link">
+                                    <span aria-hidden='true'>이전</span>
                                 </a>
-                            </div>
+                            </li>
 
-                        </div>
-                    </th:block>
+                            <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${boardList.number eq (page -1)}?'active':''">
+                                <a style="font-size: 13px"  th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+                            </li>
+
+                            <li class="page-item" th:classappend="${boardList.last}?'disabled'">
+                                <a style="font-size: 13px" th:onclick="'javascript:page(' + ${boardList.number +   1} + ')'" aria-label='Next' class="page-link">
+                                    <span aria-hidden='true'>다음</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+
                 </div>
             </div>
-        </div>
-        <!-- End Nav Card -->
+        </form>
+    </div>
     </div>
 </section>
-<th:block th:include="/include/user_footer.html"></th:block>
+
+
+<th:block th:include="include/user_footer.html"/>
 <th:block th:include="/include/common_js.html"></th:block>
 </body>
 </html>
