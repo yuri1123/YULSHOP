@@ -71,8 +71,6 @@ public class CommunityController {
     }
 
 
-
-
 //    //qna 게시판으로 이동
 //    @GetMapping("community/qna")
 //    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,

@@ -3,11 +3,13 @@ package com.yuri.shoppingsite.controller;
 import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.domain.auth.PrincipalDetails;
+import com.yuri.shoppingsite.domain.community.Board;
 import com.yuri.shoppingsite.domain.company.Company;
 import com.yuri.shoppingsite.domain.shop.ItemFormDto;
 import com.yuri.shoppingsite.domain.user.Member;
 import com.yuri.shoppingsite.domain.user.MemberAccountDto;
 import com.yuri.shoppingsite.domain.user.MemberFormDto;
+import com.yuri.shoppingsite.service.BoardService;
 import com.yuri.shoppingsite.service.CompanyService;
 import com.yuri.shoppingsite.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +37,9 @@ public class MemberController {
     @Autowired
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
-
     @Autowired
     private final CompanyService companyService;
+    private final BoardService boardService;
 
     //회원가입 페이지로 이동
     @GetMapping("/signup")
@@ -196,7 +198,9 @@ public class MemberController {
 
     //내가 쓴 게시물 보기 페이지로 이동
     @GetMapping("/myboard")
-    public String myboard(Model model){
+    public String myboard(Model model,Principal principal){
+        List<Board> boardList = boardService.getBoardList(principal.getName());
+        model.addAttribute("boardList",boardList);
         List<Company> companyList = companyService.getcompanyList();
         Company company = companyList.get(0);
         System.out.println(company);
@@ -224,6 +228,7 @@ public class MemberController {
         model.addAttribute("company",company);
         return "member/deliveryaddressenroll";
     }
+
 
 
 

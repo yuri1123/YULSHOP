@@ -1,7 +1,9 @@
 package com.yuri.shoppingsite.service;
 
+import com.yuri.shoppingsite.Repository.BoardRepository;
 import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.constant.Role;
+import com.yuri.shoppingsite.domain.community.Board;
 import com.yuri.shoppingsite.domain.shop.*;
 import com.yuri.shoppingsite.domain.user.MemberAccountDto;
 import com.yuri.shoppingsite.domain.user.MemberFormDto;
@@ -34,6 +36,7 @@ public class MemberService implements UserDetailsService {
     //멤버의 상태를 저장함(중복되지 않는)
     @Autowired
     private final MemberRepository memberRepository;
+
     public Member saveMember(Member member) {
         validateDuplicateMember(member);
         return memberRepository.save(member);
@@ -149,6 +152,7 @@ public class MemberService implements UserDetailsService {
         member.updateAccount(memberAccountDto);
         return member.getId();
     }
+
 
 
 }

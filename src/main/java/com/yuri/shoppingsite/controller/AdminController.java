@@ -484,6 +484,24 @@ public class AdminController {
         return "admin/adnoticedtl";
     }
 
+    //공지사항 수정하기
+    @PostMapping("admin/updatenotice/{id}")
+    public String updateNotice(@Valid NoticeFormDto noticeFormDto,
+                                BindingResult bindingResult,
+                                Model model, @PathVariable Long id) throws Exception {
+        System.out.println("수정하기 폼 오남");
+        if (bindingResult.hasErrors()) {
+            return "admin/adnoticedtl";
+        }
+        try {
+            boardService.updateNotice(noticeFormDto);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "상품 수정 중 에러가 발생하였습니다.");
+            return "admin/adnoticedtl";
+        }
+        return "redirect:/admin/noticelist";
+    }
+
 
 
     //공지사항 등록하기 가기 페이지

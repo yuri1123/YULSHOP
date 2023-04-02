@@ -11,8 +11,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -60,6 +62,12 @@ public class BoardService {
         Board board = boardRepository.findallNoticebyid(id);
         NoticeFormDto noticeFormDto = NoticeFormDto.of(board);
         return noticeFormDto;
+    }
+
+    //회원이 쓴 게시글 보기
+    public List<Board> getBoardList(String name){
+        List<Board> boardList = boardRepository.findByCreatedBy(name);
+    return boardList;
     }
 
 }

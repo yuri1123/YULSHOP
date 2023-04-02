@@ -29,4 +29,12 @@ public interface BoardRepository extends JpaRepository<Board, Long>,
 
     @Query("select b from Board b where b.type='NOTICE' and b.id=:id")
     Board findallNoticebyid(@Param("id") Long id);
+
+    @Query("select b from Board b where b.id=:id")
+    Board findByid(Long id);
+
+    @Query("select b from Board b where b.createdBy=:name")
+    List<Board> findByCreatedBy(@Param("name") String name);
+
+
 }

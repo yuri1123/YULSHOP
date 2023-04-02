@@ -139,27 +139,26 @@
         </thead>
         <tbody class="text-center">
 
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+        <tr th:each="board, status: ${boardList}">
+          <td th:text="${board.id}"></td>
+          <td th:text="${board.type}"></td>
+          <td>
+            <th:blcok th:if="${board.type == 'NOTICE'}">
+            <a th:href="'/community/noticedtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
+            </th:blcok>
+            <th:blcok th:if="${board.type == 'QNA'}">
+              <a th:href="'/community/qnadtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
+            </th:blcok>
+            <th:blcok th:if="${board.type == 'REVIEW'}">
+              <a th:href="'/community/reviewdtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
+            </th:blcok>
+          </td>
+          <td th:text="${board.createdBy}"></td>
+          <td th:text="${#temporals.format(board.regTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+          <td th:text="${board.view}"></td>
         </tr>
-
-        <!--          <tr th:each="item, status: ${items.getContent()}">-->
-        <!--            <td th:text="${item.id}"></td>-->
-        <!--            <td>-->
-        <!--              <a th:href="'/admin/item/'+${item.id}" th:text="${item.itemNm}" class="black-color hover"></a>-->
-        <!--            </td>-->
-        <!--            <td th:text="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL} ? '판매중' : '품절'"></td>-->
-        <!--            <td th:text="${item.createdBy}"></td>-->
-        <!--            <td th:text="${item.regTime}"></td>-->
-        <!--          </tr>-->
         </tbody>
       </table>
-
       <!--        <div class="justify-content-center mb-5 mt-5">-->
 
       <!--          &lt;!&ndash;        페이징 처리 시작&ndash;&gt;-->
