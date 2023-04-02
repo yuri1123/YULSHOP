@@ -73,13 +73,13 @@
 
   function page(page){
     let searchDateType = $("#searchDateType").val();
-    let searchSellStatus = $("#searchSellStatus").val();
+    let searchTypeStatus = $("#searchTypeStatus").val();
     let searchBy = $("#searchBy").val();
     let searchQuery = $("#searchQuery").val();
 
-    location.href="/admin/items/" + page
+    location.href="/member/myboard/" + page
             + "?searchDateType=" + searchDateType
-            + "&searchSellStatus=" + searchSellStatus
+            + "&searchTypeStatus=" + searchTypeStatus
             + "&searchBy=" + searchBy
             + "&searchQuery=" + searchQuery;
   }
@@ -100,30 +100,33 @@
       </div>
     </div>
 
-    <!--    <form th:action="@{'/admin/items/' + ${items.number}}" role="form" method="get" th:object="${items}">-->
-    <!--      <div class="col-8 offset-4 pb-2">-->
-    <!--        &lt;!&ndash;        검색하기&ndash;&gt;-->
-    <!--        <div  class="form-inline justify-content-center" th:object="${itemSearchDto}">-->
-    <!--          <select th:field="*{searchDateType}" class="form-control m-1" style="width:auto;">-->
-    <!--            <option value="all">전체기간</option>-->
-    <!--            <option value="1d">1일</option>-->
-    <!--            <option value="1w">1주</option>-->
-    <!--            <option value="1m">1개월</option>-->
-    <!--            <option value="6m">6개월</option>-->
-    <!--          </select>-->
-    <!--          <select th:field="*{searchSellStatus}" class="form-control m-1" style="width:auto;">-->
-    <!--            <option value="">판매상태(전체)</option>-->
-    <!--            <option value="SELL">판매</option>-->
-    <!--            <option value="SOLD_OUT">품절</option>-->
-    <!--          </select>-->
-    <!--          <select th:field="*{searchBy}" class="form-control m-1" style="width:auto;">-->
-    <!--            <option value="itemNm">상품명</option>-->
-    <!--            <option value="createdBy">등록자</option>-->
-    <!--          </select>-->
-    <!--          <input th:field="*{searchQuery}" type="text" class="form-control m-1" placeholder="검색어를 입력해주세요">-->
-    <!--          <button id="searchBtn" type="submit" class="btn-primary backcol rad">검색</button>-->
-    <!--        </div>-->
-    <!--      </div>-->
+        <form th:action="@{'/member/myboard/' + ${boardList.number}}" role="form" method="get" th:object="${boardList}">
+          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+          <div class="col-8 offset-4 pb-2">
+            <!--        검색하기-->
+            <div  class="form-inline justify-content-center" th:object="${communitySearchDto}">
+              <select th:field="*{searchDateType}" class="form-control m-1" style="width:auto;">
+                <option value="all">전체기간</option>
+                <option value="1d">1일</option>
+                <option value="1w">1주</option>
+                <option value="1m">1개월</option>
+                <option value="6m">6개월</option>
+              </select>
+              <select th:field="*{searchTypeStatus}" class="form-control m-1" style="width:auto;">
+                <option value="">게시글유형(전체)</option>
+                <option value="NOTICE">공지사항</option>
+                <option value="REVIEW">리뷰게시판</option>
+                <option value="QNA">Q&A게시판</option>
+              </select>
+              <select th:field="*{searchBy}" class="form-control m-1" style="width:auto;">
+                <option value="title">글제목</option>
+                <option value="createdBy">등록자</option>
+                <option value="itemNm">상품명</option>
+              </select>
+              <input th:field="*{searchQuery}" type="text" class="form-control m-1" placeholder="검색어를 입력해주세요">
+              <button id="searchBtn" type="submit" class="btn-primary backcol rad">검색</button>
+            </div>
+          </div>
     <div class="col-lg-10 col-md-10 col-sm-10 offset-1">
 
       <table class="table table">
@@ -159,34 +162,34 @@
         </tr>
         </tbody>
       </table>
-      <!--        <div class="justify-content-center mb-5 mt-5">-->
+              <div class="justify-content-center mb-5 mt-5">
 
-      <!--          &lt;!&ndash;        페이징 처리 시작&ndash;&gt;-->
-      <!--          <div th:with="start=${(items.number/maxPage)*maxPage +1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >-->
-      <!--            <ul class="pagination justify-content-center">-->
+                <!--        페이징 처리 시작-->
+                <div th:with="start=${(boardList.number/maxPage)*maxPage +1}, end=(${(boardList.totalPages == 0) ? 1 : (start + (maxPage - 1) < boardList.totalPages ? start + (maxPage - 1) : boardList.totalPages)})" >
+                  <ul class="pagination justify-content-center">
 
-      <!--              <li class="page-item" th:classappend="${items.first}?'disabled'">-->
-      <!--                <a th:onclick="'javascript:page(' + ${items.number -1} + ')'" aria-label='Previous' class="page-link">-->
-      <!--                  <span aria-hidden='true'>Previous</span>-->
-      <!--                </a>-->
-      <!--              </li>-->
+                    <li class="page-item" th:classappend="${boardList.first}?'disabled'">
+                      <a th:onclick="'javascript:page(' + ${boardList.number -1} + ')'" aria-label='Previous' class="page-link">
+                        <span aria-hidden='true'>Previous</span>
+                      </a>
+                    </li>
 
-      <!--              <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq (page -1)}?'active':''">-->
-      <!--                <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>-->
-      <!--              </li>-->
+                    <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${boardList.number eq (page -1)}?'active':''">
+                      <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+                    </li>
 
-      <!--              <li class="page-item" th:classappend="${items.last}?'disabled'">-->
-      <!--                <a th:onclick="'javascript:page(' + ${items.number +   1} + ')'" aria-label='Next' class="page-link">-->
-      <!--                  <span aria-hidden='true'>Next</span>-->
-      <!--                </a>-->
-      <!--              </li>-->
+                    <li class="page-item" th:classappend="${boardList.last}?'disabled'">
+                      <a th:onclick="'javascript:page(' + ${boardList.number +   1} + ')'" aria-label='Next' class="page-link">
+                        <span aria-hidden='true'>Next</span>
+                      </a>
+                    </li>
 
-      <!--            </ul>-->
-      <!--          </div>-->
+                  </ul>
+                </div>
 
-      <!--        </div>-->
-      <!--      </div>-->
-      <!--    </form>-->
+              </div>
+            </div>
+          </form>
     </div>
   </div>
 </section>

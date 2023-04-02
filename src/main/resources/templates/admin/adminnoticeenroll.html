@@ -86,7 +86,7 @@
 
 
     <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-2">
-      <form role="form" method="post" th:object="${noticeFormDto}">
+      <form role="form" method="POST" th:object="${noticeFormDto}">
           <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
           <select type="hidden" th:field = "*{type}" class="form-select">
               <option value="NOTICE" selected>공지사항</option>
@@ -106,30 +106,6 @@
               <textarea  th:field="*{content}" id="summernote" type="text" th:class="form-control"
                         name="boardContents" rows="10"></textarea>
 
-<!--              <script>-->
-<!--                  $('#summernote').summernote({-->
-<!--                      placeholder: 'Hello stand alone ui',-->
-<!--                      tabsize: 2,-->
-<!--                      height: 450,-->
-<!--                      focus: true,-->
-<!--                      lang: "ko-KR",-->
-<!--                      toolbar: [-->
-<!--                          // [groupName, [list of button]]-->
-<!--                          ['fontname', ['fontname']],-->
-<!--                          ['fontsize', ['fontsize']],-->
-<!--                          ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],-->
-<!--                          ['color', ['forecolor', 'color']],-->
-<!--                          ['table', ['table']],-->
-<!--                          ['para', ['ul', 'ol', 'paragraph']],-->
-<!--                          ['height', ['height']],-->
-<!--                          ['insert', ['picture', 'link', 'video']],-->
-<!--                          ['view', ['fullscreen', 'help']]-->
-<!--                      ],-->
-
-<!--                      fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],-->
-<!--                  });-->
-<!--              </script>-->
-<!--              -->
               <script>
     $('#summernote').summernote({
         // 에디터 높이
@@ -177,7 +153,7 @@
 <!--          <p th:if="${#fields.hasErrors('noticeView')}" th:errors="*{noticeView}" class="fieldError">Incorrect data</p>-->
 
           <div class="col-3 offset-9">
-              <input class="btn-primary backcol rad" type="submit" th:formaction="@{/admin/noticeenroll}" th:value="저장하기">
+              <input class="btn-primary backcol rad" type="submit" th:formaction="@{/admin/adminnoticeenroll}" th:value="저장하기">
 <!--              <input class="btn-primary backcol rad" type="submit" th:formaction="@{/admin/updatenotice}" th:value="수정하기">-->
               <input class="btn-primary backcol rad" type="reset" th:value="초기화하기">
           </div>

@@ -2,19 +2,14 @@ package com.yuri.shoppingsite.service;
 
 import com.yuri.shoppingsite.Repository.BoardRepository;
 import com.yuri.shoppingsite.domain.community.Board;
+import com.yuri.shoppingsite.domain.community.CommunitySearchDto;
 import com.yuri.shoppingsite.domain.community.NoticeFormDto;
-import com.yuri.shoppingsite.domain.company.Company;
-import com.yuri.shoppingsite.domain.company.CompanyFormDto;
-import com.yuri.shoppingsite.domain.shop.Item;
-import com.yuri.shoppingsite.domain.shop.ItemFormDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-
-import javax.persistence.EntityNotFoundException;
-import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -64,10 +59,16 @@ public class BoardService {
         return noticeFormDto;
     }
 
-    //회원이 쓴 게시글 보기
-    public List<Board> getBoardList(String name){
-        List<Board> boardList = boardRepository.findByCreatedBy(name);
-    return boardList;
+//    //회원이 쓴 게시글 보기
+//    public List<Board> getMyBoardList(String name){
+//        List<Board> boardList = boardRepository.findByCreatedBy(name);
+//    return boardList;
+//    }
+
+    //내가쓴 게시글 가져오기, 페이징, 검색
+    public Page<Board> getMyBoardList(CommunitySearchDto communitySearchDto, Pageable pageable,
+                                      String name){
+        return boardRepository.getMyBoardPage(communitySearchDto, pageable, name);
     }
 
 }

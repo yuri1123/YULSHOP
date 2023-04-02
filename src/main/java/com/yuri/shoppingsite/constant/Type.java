@@ -1,5 +1,5 @@
 package com.yuri.shoppingsite.constant;
 
-public enum BoardType {
+public enum Type {
    NOTICE,REVIEW,QNA
 }

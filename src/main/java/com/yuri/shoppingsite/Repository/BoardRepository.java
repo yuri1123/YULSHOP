@@ -4,8 +4,13 @@ import com.yuri.shoppingsite.constant.Category;
 import com.yuri.shoppingsite.constant.ItemSellStatus;
 import com.yuri.shoppingsite.domain.chart.CategoryItemsInterface;
 import com.yuri.shoppingsite.domain.community.Board;
+import com.yuri.shoppingsite.domain.community.CommunitySearchDto;
 import com.yuri.shoppingsite.domain.company.Company;
 import com.yuri.shoppingsite.domain.shop.Item;
+import com.yuri.shoppingsite.domain.user.Member;
+import com.yuri.shoppingsite.domain.user.MemberSearchDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,7 +25,7 @@ import java.util.List;
 //두번째는 기본키 타입을 넣음
 
 public interface BoardRepository extends JpaRepository<Board, Long>,
-        QuerydslPredicateExecutor<Item>, ItemRepositoryCustom {
+        QuerydslPredicateExecutor<Board>, BoardRepositoryCustom {
 
 
     //notice

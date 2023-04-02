@@ -515,11 +515,11 @@ public class AdminController {
     public String uploadnotice(@Valid NoticeFormDto noticeFormDto,
                                BindingResult bindingResult,
                                Model model) {
-            if (noticeFormDto.getType() == null) {
-                // type 필드가 null인 경우 처리할 로직
-            } else {
-                // type 필드가 null이 아닌 경우 처리할 로직
-            }
+//            if (noticeFormDto.getType() == null) {
+//                // type 필드가 null인 경우 처리할 로직
+//            } else {
+//                // type 필드가 null이 아닌 경우 처리할 로직
+//            }
             boardService.createNotice(noticeFormDto);
         return "redirect:/admin/noticelist";
     }

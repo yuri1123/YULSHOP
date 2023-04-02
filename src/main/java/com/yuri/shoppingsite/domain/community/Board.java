@@ -1,5 +1,6 @@
 package com.yuri.shoppingsite.domain.community;
 
+import com.yuri.shoppingsite.constant.Type;
 import com.yuri.shoppingsite.domain.common.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,5 +1,6 @@
 package com.yuri.shoppingsite.domain.community;
 
+import com.yuri.shoppingsite.constant.Type;
 import com.yuri.shoppingsite.domain.company.Company;
 import com.yuri.shoppingsite.domain.company.CompanyFormDto;
 import lombok.Getter;

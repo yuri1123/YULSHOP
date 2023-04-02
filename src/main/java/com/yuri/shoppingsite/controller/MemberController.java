@@ -4,16 +4,21 @@ import com.yuri.shoppingsite.Repository.MemberRepository;
 import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.domain.auth.PrincipalDetails;
 import com.yuri.shoppingsite.domain.community.Board;
+import com.yuri.shoppingsite.domain.community.CommunitySearchDto;
 import com.yuri.shoppingsite.domain.company.Company;
 import com.yuri.shoppingsite.domain.shop.ItemFormDto;
 import com.yuri.shoppingsite.domain.user.Member;
 import com.yuri.shoppingsite.domain.user.MemberAccountDto;
 import com.yuri.shoppingsite.domain.user.MemberFormDto;
+import com.yuri.shoppingsite.domain.user.MemberSearchDto;
 import com.yuri.shoppingsite.service.BoardService;
 import com.yuri.shoppingsite.service.CompanyService;
 import com.yuri.shoppingsite.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +33,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RequestMapping("/member")
 @Controller
@@ -197,13 +203,18 @@ public class MemberController {
     }
 
     //내가 쓴 게시물 보기 페이지로 이동
-    @GetMapping("/myboard")
-    public String myboard(Model model,Principal principal){
-        List<Board> boardList = boardService.getBoardList(principal.getName());
-        model.addAttribute("boardList",boardList);
+    @GetMapping(value = {"/myboard","/myboard/{page}"})
+    public String myboard(Model model, Principal principal, CommunitySearchDto communitySearchDto,
+                          @PathVariable("page") Optional<Integer> page){
+
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<Board> boardList = boardService.getMyBoardList(communitySearchDto, pageable, principal.getName());
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("communitySearchDto", communitySearchDto);
+        model.addAttribute("maxPage", 10);
+
         List<Company> companyList = companyService.getcompanyList();
         Company company = companyList.get(0);
-        System.out.println(company);
         model.addAttribute("company",company);
         return "member/myboard";
     }
