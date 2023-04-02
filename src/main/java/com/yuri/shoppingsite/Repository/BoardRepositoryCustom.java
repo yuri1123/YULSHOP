@@ -10,6 +10,9 @@ import org.springframework.data.domain.Pageable;
 public interface BoardRepositoryCustom {
 
     Page<Board> getBoardPage(CommunitySearchDto communitySearchDto, Pageable pageable);
+    Page<Board> getNoticeBoardPage(CommunitySearchDto communitySearchDto, Pageable pageable);
+    Page<Board> getReviewBoardPage(CommunitySearchDto communitySearchDto, Pageable pageable);
+    Page<Board> getQnaBoardPage(CommunitySearchDto communitySearchDto, Pageable pageable);
     Page<Board> getMyBoardPage(CommunitySearchDto communitySearchDto, Pageable pageable
     ,String name);
 }

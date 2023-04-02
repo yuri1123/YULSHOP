@@ -1,17 +1,22 @@
 package com.yuri.shoppingsite.controller;
 
 import com.yuri.shoppingsite.domain.community.Board;
+import com.yuri.shoppingsite.domain.community.CommunitySearchDto;
 import com.yuri.shoppingsite.domain.company.Company;
 import com.yuri.shoppingsite.domain.shop.ItemFormDto;
 import com.yuri.shoppingsite.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
@@ -21,41 +26,22 @@ public class CommunityController {
     private final CompanyService companyService;
     //community - notice
 
-    //notice 리스트 페이지로 이동
+    //공지사항 리스트 페이지로 이동
     @GetMapping("community/noticelist")
-    public String goNotice(Model model){
+    public String goNotice(Model model, CommunitySearchDto communitySearchDto,
+                           @PathVariable("page") Optional<Integer> page){
         System.out.println("notice 리스트로 이동하기");
-        List<Board> boardList = boardService.getNotice();
-        model.addAttribute("boardList",boardList);
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<Board> boardList = boardService.getNoticeBoardList(communitySearchDto, pageable);
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("communitySearchDto", communitySearchDto);
+        model.addAttribute("maxPage", 10);
 
         List<Company> companyList = companyService.getcompanyList();
         Company company = companyList.get(0);
         System.out.println(company);
         model.addAttribute("company",company);
     return "community/noticelist";
-    }
-
-
-    //review 게시판 페이지로 이동
-    @GetMapping("community/review")
-    public String goReview(Model model){
-        System.out.println("review 리스트로 이동하기");
-        List<Company> companyList = companyService.getcompanyList();
-        Company company = companyList.get(0);
-        System.out.println(company);
-        model.addAttribute("company",company);
-        return "community/review";
-    }
-
-    //qna 게시판 페이지로 이동
-    @GetMapping("community/qnaboard")
-    public String goqnaboard(Model model){
-        System.out.println("qnaboard 리스트로 이동하기");
-        List<Company> companyList = companyService.getcompanyList();
-        Company company = companyList.get(0);
-        System.out.println(company);
-        model.addAttribute("company",company);
-        return "community/qnaboard";
     }
 
     //공지사항 상세보기
@@ -69,6 +55,44 @@ public class CommunityController {
 
         return "community/noticedtl";
     }
+
+
+    //리뷰게시판 페이지로 이동
+    @GetMapping("community/review")
+    public String goReview(Model model, CommunitySearchDto communitySearchDto,
+                           @PathVariable("page") Optional<Integer> page){
+        System.out.println("review 리스트로 이동하기");
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<Board> boardList = boardService.getReviewBoardList(communitySearchDto, pageable);
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("communitySearchDto", communitySearchDto);
+        model.addAttribute("maxPage", 10);
+
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        model.addAttribute("company",company);
+        return "community/reviewlist";
+    }
+
+    //Q&A 게시판 페이지로 이동
+    @GetMapping("community/qnaboard")
+    public String goqnaboard(Model model, CommunitySearchDto communitySearchDto,
+                             @PathVariable("page") Optional<Integer> page){
+        System.out.println("review 리스트로 이동하기");
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<Board> boardList = boardService.getQnaBoardList(communitySearchDto, pageable);
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("communitySearchDto", communitySearchDto);
+        model.addAttribute("maxPage", 10);
+
+        List<Company> companyList = companyService.getcompanyList();
+        Company company = companyList.get(0);
+        System.out.println(company);
+        model.addAttribute("company",company);
+        return "community/qnalist";
+    }
+
+
 
 
 //    //qna 게시판으로 이동

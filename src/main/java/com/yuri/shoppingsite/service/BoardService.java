@@ -71,4 +71,17 @@ public class BoardService {
         return boardRepository.getMyBoardPage(communitySearchDto, pageable, name);
     }
 
+    //공지사항 게시글 가져오기, 페이징, 검색
+    public Page<Board> getNoticeBoardList(CommunitySearchDto communitySearchDto, Pageable pageable){
+        return boardRepository.getNoticeBoardPage(communitySearchDto, pageable);
+    }
+
+    //리뷰게시판 게시글 가져오기, 페이징, 검색
+    public Page<Board> getReviewBoardList(CommunitySearchDto communitySearchDto, Pageable pageable){
+        return boardRepository.getReviewBoardPage(communitySearchDto, pageable);
+    }
+    //qna 게시글 가져오기, 페이징, 검색
+    public Page<Board> getQnaBoardList(CommunitySearchDto communitySearchDto, Pageable pageable){
+        return boardRepository.getQnaBoardPage(communitySearchDto, pageable);
+    }
 }

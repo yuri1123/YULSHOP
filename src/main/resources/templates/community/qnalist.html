@@ -100,7 +100,7 @@
       <!-- Section Tittle -->
       <div class="col-xl-5 col-lg-6 col-md-5">
         <div class="section-tittle mb-30">
-          <h2>REVIEW</h2>
+          <h2>Q&A</h2>
         </div>
       </div>
       <div class="col-xl-8 col-lg-7 col-md-7">
@@ -113,17 +113,37 @@
     <div class="tab-content" id="nav-tabContent">
       <!-- card one -->
       <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-
       </div>
 
       <div class="row">
-        <div class="col-xl-4 col-lg-4 col-md-6">
+        <div class="col-12">
 
-          <div class="single-product mb-60">
-
-          </div>
+          <!--                            <div class="single-product mb-60">-->
+          <!--                      -->
+          <!--                                    </div>-->
           <div class="product-caption">
-
+            <table class="table table">
+              <thead class="text-center">
+              <tr>
+                <th>게시물아이디</th>
+                <th>제목</th>
+                <th>등록자</th>
+                <th>등록일</th>
+                <th>조회수</th>
+              </tr>
+              </thead>
+              <tbody class="text-center">
+              <tr th:each="board, status: ${boardList}">
+                <td th:text="${board.id}"></td>
+                <td>
+                  <a th:href="'/community/noticedtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
+                </td>
+                <td th:text="${board.createdBy}"></td>
+                <td th:text="${#temporals.format(board.regTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${board.view}"></td>
+              </tr>
+              </tbody>
+            </table>
           </div>
 
           </a>

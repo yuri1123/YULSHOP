@@ -71,6 +71,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
         return null;
     }
 
+    //전체게시판 + 페이징 + 검색
     @Override
     public Page<Board> getBoardPage(CommunitySearchDto communitySearchDto, Pageable pageable){
 
@@ -93,10 +94,87 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
 
             return new PageImpl<>(content, pageable, total);
     }
-
+    //공지사항 + 페이징 + 검색
     private BooleanExpression nameLike(String searchQuery){
             return StringUtils.isEmpty(searchQuery) ?
                     null : QMember.member.name.like("%"+searchQuery+"%");
+    }
+
+    @Override
+    public Page<Board> getNoticeBoardPage(CommunitySearchDto communitySearchDto, Pageable pageable){
+
+        List<Board> content = queryFactory
+                .selectFrom(QBoard.board)
+                .where(regDtsAfter(communitySearchDto.getSearchDateType()),
+                        searchTypeStatusEq(communitySearchDto.getSearchTypeStatus()),
+                        searchByLike(communitySearchDto.getSearchBy(),
+                                communitySearchDto.getSearchQuery()))
+                .where(QBoard.board.type.eq("NOTICE"))
+                .orderBy(QBoard.board.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        long total = queryFactory.select(Wildcard.count).from(QBoard.board)
+                .where(QBoard.board.type.eq("NOTICE"))
+                .where(regDtsAfter(communitySearchDto.getSearchDateType()),
+                        searchTypeStatusEq(communitySearchDto.getSearchTypeStatus()),
+                        searchByLike(communitySearchDto.getSearchBy(),
+                                communitySearchDto.getSearchQuery()))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+
+    @Override
+    public Page<Board> getReviewBoardPage(CommunitySearchDto communitySearchDto, Pageable pageable){
+
+        List<Board> content = queryFactory
+                .selectFrom(QBoard.board)
+                .where(regDtsAfter(communitySearchDto.getSearchDateType()),
+                        searchTypeStatusEq(communitySearchDto.getSearchTypeStatus()),
+                        searchByLike(communitySearchDto.getSearchBy(),
+                                communitySearchDto.getSearchQuery()))
+                .where(QBoard.board.type.eq("REVIEW"))
+                .orderBy(QBoard.board.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        long total = queryFactory.select(Wildcard.count).from(QBoard.board)
+                .where(QBoard.board.type.eq("REVIEW"))
+                .where(regDtsAfter(communitySearchDto.getSearchDateType()),
+                        searchTypeStatusEq(communitySearchDto.getSearchTypeStatus()),
+                        searchByLike(communitySearchDto.getSearchBy(),
+                                communitySearchDto.getSearchQuery()))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+
+    @Override
+    public Page<Board> getQnaBoardPage(CommunitySearchDto communitySearchDto, Pageable pageable){
+
+        List<Board> content = queryFactory
+                .selectFrom(QBoard.board)
+                .where(regDtsAfter(communitySearchDto.getSearchDateType()),
+                        searchTypeStatusEq(communitySearchDto.getSearchTypeStatus()),
+                        searchByLike(communitySearchDto.getSearchBy(),
+                                communitySearchDto.getSearchQuery()))
+                .where(QBoard.board.type.eq("QNA"))
+                .orderBy(QBoard.board.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        long total = queryFactory.select(Wildcard.count).from(QBoard.board)
+                .where(QBoard.board.type.eq("QNA"))
+                .where(regDtsAfter(communitySearchDto.getSearchDateType()),
+                        searchTypeStatusEq(communitySearchDto.getSearchTypeStatus()),
+                        searchByLike(communitySearchDto.getSearchBy(),
+                                communitySearchDto.getSearchQuery()))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
     }
 
     @Override
