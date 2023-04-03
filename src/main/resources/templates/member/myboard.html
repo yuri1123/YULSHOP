@@ -143,7 +143,12 @@
 
         <tr th:each="board, status: ${boardList}">
           <td th:text="${board.id}"></td>
-          <td th:text="${board.type}"></td>
+          <td>
+            <span th:if="${board.type == 'NOTICE'}"  class="badge badge alert-danger">NOTICE</span>
+            <span th:if="${board.type == 'REVIEW'}"  class="badge badge alert-info">REVIEW</span>
+            <span th:if="${board.type == 'QNA'}" class="badge badge alert-warning">Q&A</span>
+
+          </td>
           <td>
             <th:blcok th:if="${board.type == 'NOTICE'}">
             <a th:href="'/community/noticedtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>

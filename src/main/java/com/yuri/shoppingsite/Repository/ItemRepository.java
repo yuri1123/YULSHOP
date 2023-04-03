@@ -71,5 +71,8 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
     @Query("select i from Item i where i.itemSellStatus='SOLD_OUT'")
     List<Item> getSoldOut();
 
+    //아이템 이름 리스트 가져오기
+    @Query("select i.itemNm from Item i")
+    List<String> getItemNames();
 
 }

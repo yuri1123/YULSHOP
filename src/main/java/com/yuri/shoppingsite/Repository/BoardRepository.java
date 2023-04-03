@@ -32,8 +32,17 @@ public interface BoardRepository extends JpaRepository<Board, Long>,
     @Query("select b from Board b where b.type='NOTICE'")
     List<Board> findallNotice();
 
+    //공지사항 id로 찾기
     @Query("select b from Board b where b.type='NOTICE' and b.id=:id")
     Board findallNoticebyid(@Param("id") Long id);
+
+    //리뷰글 id로 찾기
+    @Query("select b from Board b where b.type='REVIEW' and b.id=:id")
+    Board findallReviewbyId(@Param("id") Long id);
+
+    //질의글 id로 찾기
+    @Query("select b from Board b where b.type='QNA' and b.id=:id")
+    Board findallQnabyId(@Param("id") Long id);
 
     @Query("select b from Board b where b.id=:id")
     Board findByid(Long id);

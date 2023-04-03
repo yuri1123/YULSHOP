@@ -236,4 +236,10 @@ public class ItemService {
         List<Item> soldout = itemRepository.getSoldOut();
         return soldout;
     }
+
+    //아이템 이름 리스트 가져오기
+    public List<String> getItemNames(){
+        List<String> itemNames = itemRepository.getItemNames();
+        return itemNames;
+    }
 }

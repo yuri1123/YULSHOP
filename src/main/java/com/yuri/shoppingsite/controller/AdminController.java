@@ -511,15 +511,14 @@ public class AdminController {
         return "admin/adminnoticeenroll";
     }
 
+    //공지사항 등록하기
     @PostMapping("admin/adminnoticeenroll")
     public String uploadnotice(@Valid NoticeFormDto noticeFormDto,
                                BindingResult bindingResult,
                                Model model) {
-//            if (noticeFormDto.getType() == null) {
-//                // type 필드가 null인 경우 처리할 로직
-//            } else {
-//                // type 필드가 null이 아닌 경우 처리할 로직
-//            }
+        if (bindingResult.hasErrors()) {
+            return "admin/adminnoticeenroll";
+        }
             boardService.createNotice(noticeFormDto);
         return "redirect:/admin/noticelist";
     }

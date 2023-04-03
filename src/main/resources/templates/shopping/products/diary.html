@@ -7,7 +7,20 @@
       margin-top: 80px;
       /*margin-bottom: 10px;*/
     }
-
+    .backcolb {
+      background: #42a1e8;
+      border: #1e1e1e;
+      width: 70px;
+      height: 40px;
+      border-radius: 10px;
+    }
+    .backcolb:hover{
+      background: #a367e7;
+      border: #a367e7;
+      width: 70px;
+      height: 40px;
+      border-radius: 10px;
+    }
     .page-link {
       color: #000;
       background-color: #fff;
@@ -133,7 +146,7 @@
           <option value="createdBy">등록자</option>
         </select>
         <input th:field="*{searchQuery}" type="text" class="form-control m-1" placeholder="검색어를 입력해주세요">
-        <button id="searchBtn" type="submit" class="btn-primary backcol rad">검색</button>
+        <button id="searchBtn" type="submit" class="btn-primary backcolb rad">검색</button>
       </div>
 
     <!-- Nav Card one -->

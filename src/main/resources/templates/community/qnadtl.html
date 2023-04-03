@@ -1,0 +1,183 @@
+<!doctype html>
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:include="/include/common_css.html"></th:block>
+    <style>
+        #gap {
+            margin-top: 80px;
+            margin-bottom: 50px;
+        }
+
+        .hover:hover {
+            color: #a367e7;
+        }
+
+        .backcol {
+            background: #1e1e1e;
+            border: #1e1e1e;
+        }
+        .backcol:hover{
+            background: #a367e7;
+            border: #a367e7;
+        }
+        .fontcolors {
+            margin-top:40px;
+            margin-bottom: 40px;
+            font-size: 15px;
+        }
+
+        .page-link {
+            color: #000;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+        .page-item.active .page-link {
+            z-index: 1;
+            color: #555;
+            font-weight:bold;
+            background-color: #f1f1f1;
+            border-color: #ccc;
+
+        }
+        .page-link:focus, .page-link:hover {
+            color: #000;
+            background-color: #fafafa;
+            border-color: #ccc;
+        }
+
+        .rad{
+            border-radius: 10px;
+            padding: 10px 30px;
+        }
+
+        .mar {
+            margin-right: 20px;
+        }
+
+        .acol {
+            color: black;
+        }
+        .mar2 {
+            margin: 0px 10px;
+        }
+        .newbadge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #f4511e;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .soldoutbadge{
+            position: absolute;
+            top: 10px;
+            right: 50px;
+            background-color: #82b1ff;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+
+
+</head>
+<body>
+
+<th:block th:include="/include/header.html"></th:block>
+
+<section class="latest-product-area">
+
+
+    <div class="container">
+        <div class="row product-btn d-flex justify-content-start align-items-end" id="gap">
+            <!-- Section Tittle -->
+            <div class="col-xl-5 col-lg-6 col-md-5">
+                <div class="section-tittle mb-30">
+                    <h2>Q & A</h2>
+                </div>
+            </div>
+            <div class="col-md-3 offset-md-8 mb-3">
+                <div class="properties__button f-right">
+                    <button class="backcol rad"><a th:href="@{/community/qnalist}">목록가기</a></button>
+                    <th:block th:if="${board.createdBy == #authentication.principal.username}">
+                        <button class="backcol rad"><a th:href="@{'/community/qnaupdate/'+ ${board.id}}">수정하기</a></button>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+        <!-- Nav Card -->
+        <div class="tab-content" id="nav-tabContent">
+            <!-- card one -->
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                </div>
+
+                <div class="row">
+                        <div class="col-12">
+
+                                    <div class="product-caption">
+
+                                        <table>
+                                            <colgroup>
+                                                <col style="width:20vw;">
+                                                <col style="width:80vw;">
+                                            </colgroup>
+                                            <tbody>
+                                            <tr>
+                                                <th class="justify-content-center text-center align-middle" scope="row">글제목</th>
+                                                <td class="text-start justify-content-center align-middle">
+                                                    [[${board.title}]]
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th><hr></th>
+                                                <td><hr></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="justify-content-center text-center align-middle" scope="row">작성자</th>
+                                                <td class="justify-content-start text-start align-middle">
+                                                    [[${board.createdBy}]]
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th><hr></th>
+                                                <td><hr></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="justify-content-center text-center align-middle" scope="row">글내용</th>
+                                                <td class="justify-content-start text-start align-middle">
+                                                    <p th:utext="${board.content}"></p>
+                                                </td>
+                                            </tr>
+<!--                                            <tr>-->
+<!--                                                <th></th>-->
+<!--                                                <td class="text-end align-middle">-->
+<!--                                                    <button type="button" class="btn-primary backcol rad" th:text="목록가기" th:href="@{/admin/noticelist}"></button>-->
+<!--                                                </td>-->
+<!--                                            </tr>-->
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+
+                                </a>
+                            </div>
+
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+        <!-- End Nav Card -->
+    </div>
+</section>
+<th:block th:include="/include/user_footer.html"></th:block>
+<th:block th:include="/include/common_js.html"></th:block>
+</body>
+</html>

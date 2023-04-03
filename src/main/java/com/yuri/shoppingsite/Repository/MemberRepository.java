@@ -1,6 +1,5 @@
 package com.yuri.shoppingsite.Repository;
 
-import com.yuri.shoppingsite.constant.ItemSellStatus;
 import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.domain.user.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,10 +19,5 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
         @Modifying(clearAutomatically = true)
         @Query("update Member m set m.role=:role where m.id=:id")
         int updateUserRole(@Param(value="id") Long id, @Param(value="role") Role role);
-
-//        @Modifying(clearAutomatically = true)
-//        @Query("update Member m set m.accountbank=:accountbank, m.accountnum=:accountnum, m.accountname=:accountname where m.name=:name")
-//        int updateAccount(@Param(value="name") Long name, @Param(value="accountbank") String accountbank,
-//                          @Param(value="accountnum") String accountnum,@Param(value="accountname") String accountname);
 
 }

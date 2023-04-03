@@ -2,23 +2,23 @@ package com.yuri.shoppingsite.domain.community;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.annotation.LastModifiedBy;
 
+import javax.persistence.Lob;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class QuestionFormDto {
+public class QnaFormDto {
 
     private Long id;
     private String type;
-    @NotEmpty(message="제목은 필수항목입니다")
-    @Size(max=200)
+    @NotBlank(message = "제목은 필수 입력값입니다.")
     private String title;
     @NotBlank(message = "내용은 필수 입력값입니다.")
+    @Lob
     private String content;
     private int view;
     private String createdBy;
@@ -28,5 +28,9 @@ public class QuestionFormDto {
     private LocalDateTime regTime;
     private LocalDateTime updateTime;
 
+    private static ModelMapper modelMapper = new ModelMapper();
+    public static QnaFormDto of(Board board){
+        return modelMapper.map(board, QnaFormDto.class);
+    }
 
 }
