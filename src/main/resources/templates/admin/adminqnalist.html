@@ -3,109 +3,115 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
+  <th:block th:include="/include/admin_head.html"></th:block>
   <th:block th:include="/include/common_css.html"></th:block>
   <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
   <style>
-    #gap {
-      margin-top: 80px;
-      /*margin-bottom: 10px;*/
-    }
+        #gap {
+            margin-top: 80px;
+            margin-bottom: 50px;
+        }
 
-    .page-link {
-      color: #000;
-      background-color: #fff;
-      border: 1px solid #ccc;
-    }
-    .page-item.active .page-link {
-      z-index: 1;
-      color: #555;
-      font-weight:bold;
-      background-color: #f1f1f1;
-      border-color: #ccc;
+        .hover:hover {
+            color: #a367e7;
+        }
 
-    }
-    .br {
-      border-radius: 30px;
-      /*height: 35px;*/
-    }
-    .page-link:focus, .page-link:hover {
-      color: #000;
-      background-color: #fafafa;
-      border-color: #ccc;
-    }
+        .backcol {
+          background: #1e1e1e;
+          border: #1e1e1e;
+          width: 120px;
+          height: 40px;
+          border-radius: 10px;
+        }
+        .backcol:hover{
+          background: #a367e7;
+          border: #a367e7;
+          width: 120px;
+          height: 40px;
+          border-radius: 10px;
+        }
+        .backcolb {
+          background: #42a1e8;
+          border: #1e1e1e;
+          width: 100px;
+          height: 40px;
+          border-radius: 10px;
+        }
+        .backcolb:hover{
+          background: #a367e7;
+          border: #a367e7;
+          width: 100px;
+          height: 40px;
+          border-radius: 10px;
+        }
+        .page-link {
+            color: #000;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+        .page-item.active .page-link {
+            z-index: 1;
+            color: #555;
+            font-weight:bold;
+            background-color: #f1f1f1;
+            border-color: #ccc;
 
-    .backcol {
-      background: #1e1e1e;
-      border: #1e1e1e;
-      width: 100px;
-      height: 40px;
-      border-radius: 10px;
-    }
-    .backcol:hover{
-      background: #a367e7;
-      border: #a367e7;
-      width: 100px;
-      height: 40px;
-      border-radius: 10px;
-    }
-    .backcolb {
-      background: #42a1e8;
-      border: #1e1e1e;
-      width: 70px;
-      height: 40px;
-      border-radius: 10px;
-    }
-    .backcolb:hover{
-      background: #a367e7;
-      border: #a367e7;
-      width: 70px;
-      height: 40px;
-      border-radius: 10px;
-    }
-  </style>
+        }
+        .page-link:focus, .page-link:hover {
+            color: #000;
+            background-color: #fafafa;
+            border-color: #ccc;
+        }
+
+        .rad{
+            border-radius: 10px;
+            padding: 10px 30px;
+        }
+
+        .mar {
+            margin-right: 20px;
+        }
+
+    </style>
 </head>
-
+<meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
+<meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
 <body>
 
 <script th:inline="javascript">
 
-  $(document).ready(function(){
-    $("#searchBtn").on("click",function(e) {
-      e.preventDefault();
-      page(0);
+    $(document).ready(function(){
+        $("#searchBtn").on("click",function(e) {
+            e.preventDefault();
+            page(0);
+        });
     });
-  });
 
-  function page(page){
-    let searchDateType = $("#searchDateType").val();
-    let searchTypeStatus = $("#searchTypeStatus").val();
-    let searchBy = $("#searchBy").val();
-    let searchQuery = $("#searchQuery").val();
+    function page(page){
+      let searchDateType = $("#searchDateType").val();
+      let searchTypeStatus = $("#searchTypeStatus").val();
+      let searchBy = $("#searchBy").val();
+      let searchQuery = $("#searchQuery").val();
 
-    location.href="/community/qnalist/" + page
-            + "?searchDateType=" + searchDateType
-            + "&searchTypeStatus=" + searchTypeStatus
-            + "&searchBy=" + searchBy
-            + "&searchQuery=" + searchQuery;
-  }
+      location.href="/admin/adminqnalist/" + page
+              + "?searchDateType=" + searchDateType
+              + "&searchTypeStatus=" + searchTypeStatus
+              + "&searchBy=" + searchBy
+              + "&searchQuery=" + searchQuery;
+    }
 
 </script>
 
-<th:block th:include="/include/header.html"></th:block>
+<th:block th:include="/include/admin_header.html"/>
+<th:block th:include="/include/admin_sidebar.html"/>
 
-<section class="latest-product-area">
+<div class="container-fluid">
+  <div class="row">
 
-  <div class="container">
-    <div class="row product-btn d-flex text-start" id="gap">
-      <!-- Section Tittle -->
-      <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-2">
-        <div class="section-tittle mb-30">
-        <h2>Q & A</h2>
-        </div>
-      </div>
+    <div class="col-lg-12 col-md-12 col-sm-12" id="gap">
+      <h1 class="text-center">공지사항 목록</h1>
     </div>
-
-    <form th:action="@{'/community/qnalist/' + ${boardList.number}}" role="form" method="get" th:object="${boardList}">
+    <form th:action="@{'/admin/adminqnalist/' + ${boardList.number}}" role="form" method="get" th:object="${boardList}">
       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
       <div class="col-8 offset-4 pb-2">
         <!--        검색하기-->
@@ -117,29 +123,22 @@
             <option value="1m">1개월</option>
             <option value="6m">6개월</option>
           </select>
-<!--          <select th:field="*{searchTypeStatus}" class="form-control m-1 align-middle border br" style="width:auto;">-->
-<!--            <option value="">게시글유형(전체)</option>-->
-<!--            <option value="NOTICE">공지사항</option>-->
-<!--            <option value="REVIEW">리뷰게시판</option>-->
-<!--            <option value="QNA">Q&A게시판</option>-->
-<!--          </select>-->
           <select th:field="*{searchBy}" class="form-control m-1 align-middle border br" style="width:auto;">
             <option value="title">글제목</option>
             <option value="createdBy">등록자</option>
-<!--            <option value="itemNm">상품명</option>-->
+            <!--            <option value="itemNm">상품명</option>-->
           </select>
           <input th:field="*{searchQuery}" type="text" class="form-control m-1" placeholder="검색어를 입력해주세요">
           <button id="searchBtn" type="submit" class="btn-primary backcolb rad mr-1">검색</button>
-          <button type="button" class="backcol rad"><a th:href="@{/community/qnacreate}">문의글 작성</a></button>
         </div>
       </div>
-      <div class="col-lg-10 col-md-10 col-sm-10 offset-1">
-
+    <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-85">
+      <div class="product-caption">
         <table class="table table">
           <thead class="text-center">
           <tr>
             <th>순번</th>
-<!--            <th>분류</th>-->
+            <!--            <th>분류</th>-->
             <th>제목</th>
             <th>작성자</th>
             <th>등록일</th>
@@ -150,27 +149,19 @@
 
           <tr th:each="board, status: ${boardList}">
             <td th:text="${board.id}"></td>
-<!--            <td th:text="${board.type}"></td>-->
+            <!--            <td th:text="${board.type}"></td>-->
             <td>
-              <th:blcok th:if="${board.type == 'NOTICE'}">
-                <a th:href="'/community/noticedtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
-              </th:blcok>
-              <th:blcok th:if="${board.type == 'QNA'}">
-                <a th:href="'/community/qnadtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
-              </th:blcok>
-              <th:blcok th:if="${board.type == 'REVIEW'}">
-                <a th:href="'/community/reviewdtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
-              </th:blcok>
+                <a th:href="'/admin/adminqnadtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
               <span class="text-danger small ms-2"
                     th:if="${#lists.size(board.answers) > 0}"
                     th:text="${#lists.size(board.answers)}">
               </span>
             </td>
             <th:block th:if="|${#strings.length(board.createdBy) >= 10}|">
-            <td th:text="${#strings.substring(board.createdBy, 0, 10)}"></td>
+              <td th:text="${#strings.substring(board.createdBy, 0, 10)}"></td>
             </th:block>
             <th:block th:unless="|${#strings.length(board.createdBy) >= 10}|">
-            <td th:text="${board.createdBy}"></td>
+              <td th:text="${board.createdBy}"></td>
             </th:block>
             <td th:text="${#temporals.format(board.regTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
             <td th:text="${board.view}"></td>
@@ -201,16 +192,16 @@
 
             </ul>
           </div>
-
         </div>
       </div>
+        </div>
     </form>
-  </div>
-  </div>
-</section>
+</div>
 
 
-<th:block th:include="include/user_footer.html"/>
-<th:block th:include="/include/common_js.html"></th:block>
+<th:block th:include="/include/admin_footer.html"/>
+<th:block th:include="/include/admin_js.html"/>
+
+</div>
 </body>
 </html>

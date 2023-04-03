@@ -30,14 +30,6 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
-//    public Long updateCompany(CompanyFormDto companyFormDto) {
-//        List<Company> companyList = companyRepository.findAllcompany();
-//        Long id = companyList.get(0).getId();
-//        Company company = companyRepository.findByid(id);
-//        company.updateCompany(companyFormDto);
-//        return company.getId();
-//    }
-
     public void updateCompany(CompanyFormDto companyFormDto) {
         Company company = companyRepository.findById(companyFormDto.getId()).orElse(null);
         if (company != null) {

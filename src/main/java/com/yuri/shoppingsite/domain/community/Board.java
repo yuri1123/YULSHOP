@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -25,7 +26,6 @@ public class Board extends BaseEntity {
     @Lob
     private String content;
     private int view;
-//    @OneToMany(mappedBy = "Board", cascade = CascadeType.REMOVE)
-//    private List<Answer> answerList;
-
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Answer> answers = new ArrayList<>();
 }

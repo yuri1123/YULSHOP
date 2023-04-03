@@ -3,15 +3,13 @@ package com.yuri.shoppingsite.controller;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.yuri.shoppingsite.Repository.CompanyRepository;
-import com.yuri.shoppingsite.Repository.ItemRepository;
+import com.yuri.shoppingsite.Repository.*;
 import com.yuri.shoppingsite.constant.Category;
 import com.yuri.shoppingsite.constant.ItemSellStatus;
 import com.yuri.shoppingsite.constant.Role;
 import com.yuri.shoppingsite.domain.chart.CategoryItemsInterface;
 import com.yuri.shoppingsite.domain.chart.MainGraphInterface;
-import com.yuri.shoppingsite.domain.community.Board;
-import com.yuri.shoppingsite.domain.community.NoticeFormDto;
+import com.yuri.shoppingsite.domain.community.*;
 import com.yuri.shoppingsite.domain.company.Company;
 import com.yuri.shoppingsite.domain.company.CompanyFormDto;
 import com.yuri.shoppingsite.domain.shop.*;
@@ -48,6 +46,9 @@ public class AdminController {
     private final ItemService itemService;
     private final OrderService orderService;
     private final MemberService memberService;
+    private final AnswerService answerService;
+    private final BoardRepository boardRepository;
+    private final AnswerRepository answerRepository;
     @Autowired
     CompanyService companyService;
     @Autowired
@@ -455,7 +456,7 @@ public class AdminController {
         return "admin/productsellingresult";
     }
 
-    private final CompanyRepository companyRepository;
+
 
     //커뮤니티
     //공지사항 목록보기
@@ -502,8 +503,6 @@ public class AdminController {
         return "redirect:/admin/noticelist";
     }
 
-
-
     //공지사항 등록하기 가기 페이지
     @GetMapping("admin/noticeenroll")
     public String adminnoticeenroll(Model model, NoticeFormDto noticeFormDto) {
@@ -523,10 +522,45 @@ public class AdminController {
         return "redirect:/admin/noticelist";
     }
 
+    //QNA ADMIN 게시판 가기
+    @GetMapping(value = {"admin/adminqnalist","admin/adminqnalist/{page}"})
+    public String goAdminQnaBoard(Model model, CommunitySearchDto communitySearchDto,
+                             @PathVariable("page") Optional<Integer> page){
+        System.out.println("Q&A 리스트로 이동하기");
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<Board> boardList = boardService.getQnaBoardList(communitySearchDto, pageable);
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("communitySearchDto", communitySearchDto);
+        model.addAttribute("maxPage", 10);
 
+        return "admin/adminqnalist";
+    }
 
+    //Q&A Admin 상세보기
+    @GetMapping("admin/adminqnadtl/{id}")
+    public String qnadtl(@PathVariable("id") Long boardId, Model model, AnswerFormDto answerFormDto){
+        Board board = boardService.getQnaById(boardId);
+        model.addAttribute("board",board);
+        model.addAttribute("answerFormDto", answerFormDto);
+        List<Answer> answers = answerRepository.findByBoard(board);
+//        List<Answer> answerList = answerService.getAnswerList(id);
+        model.addAttribute("answers", answers);
+        return "admin/adminqnadtl";
+    }
 
-
-
+    //Q&A 답변등록하기
+    @PostMapping("admin/adminqnadtl/{boardId}/answers")
+    public String uploadAnswer(@Valid AnswerFormDto answerFormDto,
+                               BindingResult bindingResult,
+                               Model model,@PathVariable Long boardId,
+                               @ModelAttribute Answer answer) {
+        if (bindingResult.hasErrors()) {
+            return "admin/adminqnadtl";
+        }
+        Board board = boardRepository.findById(boardId).orElse(null);
+        answer.setBoard(board);
+        answerRepository.save(answer);
+        return "redirect:/admin/adminqnalist";
+    }
 
 }

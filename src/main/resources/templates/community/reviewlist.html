@@ -183,6 +183,10 @@
                             <th:blcok th:if="${board.type == 'REVIEW'}">
                                 <a th:href="'/community/reviewdtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
                             </th:blcok>
+                            <span class="text-danger small ms-2"
+                                  th:if="${#lists.size(board.answers) > 0}"
+                                  th:text="${#lists.size(board.answers)}">
+                            </span>
                         </td>
                         <th:block th:if="|${#strings.length(board.createdBy) >= 10}|">
                             <td th:text="${#strings.substring(board.createdBy, 0, 10)}"></td>
