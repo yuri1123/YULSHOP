@@ -135,4 +135,10 @@ public class BoardService {
         boardRepository.save(board);
     }
 
+    //조회수 증가
+    @Transactional
+    public int updateView(Long id){
+        int result = boardRepository.updateView(id);
+    return result;
+    }
 }

@@ -50,5 +50,8 @@ public interface BoardRepository extends JpaRepository<Board, Long>,
     @Query("select b from Board b where b.createdBy=:name")
     List<Board> findByCreatedBy(@Param("name") String name);
 
+    @Modifying
+    @Query("update Board b set b.view=b.view+1 where b.id=:id")
+    Integer updateView(@Param("id") Long id);
 
 }

@@ -55,12 +55,12 @@ public class CommunityController {
     //공지사항 상세보기
     @GetMapping("community/noticedtl/{id}")
     public String noticedtl(@PathVariable("id") Long id, Model model){
+        boardService.updateView(id);
         Board board = boardService.getNoticeById(id);
         model.addAttribute("board",board);
         List<Company> companyList = companyService.getcompanyList();
         Company company = companyList.get(0);
         model.addAttribute("company",company);
-
         return "community/noticedtl";
     }
 
@@ -86,13 +86,13 @@ public class CommunityController {
     @GetMapping("community/reviewdtl/{id}")
     public String reviewdtl(@PathVariable("id") Long id, Model model,
                             Principal principal){
+        boardService.updateView(id);
         Board board = boardService.getReviewById(id);
         model.addAttribute("board",board);
 
         List<Company> companyList = companyService.getcompanyList();
         Company company = companyList.get(0);
         model.addAttribute("company",company);
-
         return "community/reviewdtl";
     }
 
@@ -191,13 +191,13 @@ public class CommunityController {
     //Q&A 상세보기
     @GetMapping("community/qnadtl/{id}")
     public String qnadtl(@PathVariable("id") Long id, Model model){
+        boardService.updateView(id);
         Board board = boardService.getQnaById(id);
         model.addAttribute("board",board);
 
         List<Answer> answers = answerRepository.findByBoard(board);
 //        List<Answer> answerList = answerService.getAnswerList(id);
         model.addAttribute("answers", answers);
-
         List<Company> companyList = companyService.getcompanyList();
         Company company = companyList.get(0);
         model.addAttribute("company",company);
