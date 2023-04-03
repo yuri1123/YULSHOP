@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -43,6 +45,7 @@ public class MemberController {
     @Autowired
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+    private final MemberRepository memberRepository;
     @Autowired
     private final CompanyService companyService;
     private final BoardService boardService;
@@ -127,9 +130,6 @@ public class MemberController {
         return result;
     }
 
-
-
-    MemberRepository memberRepository;
     Member member;
     //마이페이지로 이동
     @GetMapping("/mypage")
@@ -190,9 +190,9 @@ public class MemberController {
         return "redirect:/member/personalinfo";
     }
 
-    //쿠폰 관리 페이지로 이동
+    //새비번 페이지로 이동
     @GetMapping("/newpassword")
-    public String coupon(Principal principal, Model model){
+    public String newpassword(Principal principal, Model model){
         MemberFormDto memberFormDto = memberService.getmemberDto(principal.getName());
         model.addAttribute("memberFormDto", memberFormDto);
         List<Company> companyList = companyService.getcompanyList();
@@ -201,6 +201,30 @@ public class MemberController {
         model.addAttribute("company",company);
         return "member/newpassword";
     }
+
+    //비번 변경
+    @PostMapping("/newpassword")
+    public String newpassword(Principal principal,
+                              @RequestParam("currentPassword") String currentPassword,
+                              @RequestParam("newPassword") String newPassword,
+                              RedirectAttributes redirectAttributes){
+        String username = principal.getName();
+        Member member = memberRepository.findByName(username);
+
+        if (!passwordEncoder.matches(currentPassword, member.getPassword())) {
+            redirectAttributes.addFlashAttribute("error", "기존 비밀번호가 일치하지 않습니다.");
+            return "redirect:/member/newpassword";
+        }
+
+        member.setPassword(passwordEncoder.encode(newPassword));
+        memberRepository.save(member);
+
+        SecurityContextHolder.clearContext();
+
+        redirectAttributes.addFlashAttribute("success", "비밀번호가 변경되었습니다. 다시 로그인해주세요.");
+        return "redirect:/member/mypage";
+    }
+
 
     //내가 쓴 게시물 보기 페이지로 이동
     @GetMapping(value = {"/myboard","/myboard/{page}"})
