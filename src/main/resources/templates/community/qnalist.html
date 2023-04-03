@@ -162,7 +162,12 @@
                 <a th:href="'/community/reviewdtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
               </th:blcok>
             </td>
+            <th:block th:if="|${#strings.length(board.createdBy) >= 10}|">
+            <td th:text="${#strings.substring(board.createdBy, 0, 10)}"></td>
+            </th:block>
+            <th:block th:unless="|${#strings.length(board.createdBy) >= 10}|">
             <td th:text="${board.createdBy}"></td>
+            </th:block>
             <td th:text="${#temporals.format(board.regTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
             <td th:text="${board.view}"></td>
           </tr>
