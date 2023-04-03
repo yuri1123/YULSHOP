@@ -366,14 +366,10 @@ public class AdminController {
     //재고변경 하기
     @PatchMapping(value = "/admin/stockupdate/modify/{id}")
     public @ResponseBody ResponseEntity updateStock(@PathVariable Long id,
-                                                    Integer addStock, Integer stockNumber,
+                                                    @RequestParam Integer addstock,
+                                                    Integer stockNumber,
                                                     Principal principal) {
-        System.out.println(id);
-        System.out.println(addStock);
-
-//        stockNumber = itemRepository.findStockById(id);
-//        itemService.updatestock(id,addStock, stockNumber);
-//
+        itemService.addStock(id,addstock);
         return new ResponseEntity<Long>(id, HttpStatus.OK);
     }
 

@@ -75,4 +75,8 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
     @Query("select i.itemNm from Item i")
     List<String> getItemNames();
 
+    @Modifying
+    @Query("update Item i set i.stockNumber=i.stockNumber+:addstock where i.id=:id")
+    int AddStock(@Param(value = "id") Long id, @Param(value = "addstock") Integer addstock);
+
 }

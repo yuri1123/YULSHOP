@@ -242,4 +242,12 @@ public class ItemService {
         List<String> itemNames = itemRepository.getItemNames();
         return itemNames;
     }
+
+    //수량 추가/감소
+
+    public int addStock(Long id, Integer addStock){
+        int result = itemRepository.AddStock(id,addStock);
+        return result;
+    }
+
 }
