@@ -55,7 +55,7 @@ public class AdminController {
     BoardService boardService;
 
     //관리자 페이지로 가기
-    @GetMapping(value = {"/admin/adminmain", "/admin/adminmain/{year}"})
+    @GetMapping(value = {"/admin/adminmain"})
     public String adminmain(Model model) {
         int memberCount = memberService.getMemberCount();
         int sellingCount = itemService.getSellingCount();
@@ -558,5 +558,4 @@ public class AdminController {
         answerRepository.save(answer);
         return "redirect:/admin/adminqnalist";
     }
-
 }

@@ -100,37 +100,6 @@ public class MemberController {
         return "member/login";
     }
 
-    // !!!! OAuth로 로그인 시 이 방식대로 하면 CastException 발생함
-    @GetMapping("/form/loginInfo")
-    @ResponseBody
-    public String formLoginInfo(Authentication authentication, @AuthenticationPrincipal PrincipalDetails principalDetails){
-
-        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        Member member = principal.getMember();
-        System.out.println(member);
-
-        Member user1 = principalDetails.getMember();
-        System.out.println(user1);
-        //User(id=2, username=11, password=$2a$10$m/1Alpm180jjsBpYReeml.AzvGlx/Djg4Z9/JDZYz8TJF1qUKd1fW, email=11@11, role=ROLE_USER, createTime=2022-01-30 19:07:43.213, provider=null, providerId=null)
-        //user == user1
-
-        return member.toString();
-    }
-    @GetMapping("/loginInfo")
-    @ResponseBody
-    public String loginInfo(Authentication authentication, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        String result = "";
-
-        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        if(principal.getMember().getProvider() == null) {
-            result = result + "Form 로그인 : " + principal;
-        }else{
-            result = result + "OAuth2 로그인 : " + principal;
-        }
-        return result;
-    }
-
-    Member member;
     //마이페이지로 이동
     @GetMapping("/mypage")
     public String mypage(Model model,Principal principal){
@@ -242,29 +211,5 @@ public class MemberController {
         model.addAttribute("company",company);
         return "member/myboard";
     }
-
-
-    //배송지관리 리스트페이지로 이동
-    @GetMapping("/delivery/list")
-    public String deleverylist(Model model){
-        List<Company> companyList = companyService.getcompanyList();
-        Company company = companyList.get(0);
-        System.out.println(company);
-        model.addAttribute("company",company);
-        return "member/deliveryaddresslist";
-    }
-
-    //배송지관리 등록페이지로 이동
-    @GetMapping("/delivery/enroll")
-    public String deliveryenroll(Model model){
-        List<Company> companyList = companyService.getcompanyList();
-        Company company = companyList.get(0);
-        System.out.println(company);
-        model.addAttribute("company",company);
-        return "member/deliveryaddressenroll";
-    }
-
-
-
 
 }

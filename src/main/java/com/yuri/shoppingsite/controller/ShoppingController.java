@@ -49,7 +49,7 @@ public class ShoppingController {
     }
 
     @GetMapping(value={"shopping/diary","shopping/diary/{page}"})
-    public String navDiary(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model) {
+    public String diary(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model) {
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
         Page<MainItemDto> diaryItems = itemService.getDiaryItemPage(itemSearchDto, pageable);
@@ -213,38 +213,5 @@ public class ShoppingController {
         model.addAttribute("company",company);
         return "shopping/latest";
     }
-
-
-
-
-//    @GetMapping("shopping/test")
-//    public void gotest(Model model){
-//        ItemDTO itemDTO = new ItemDTO();
-//        itemDTO.setItemNm("테스트상품1");
-//        itemDTO.setItemDetail("상품 상세 설명");
-//        itemDTO.setPrice(10000);
-//        itemDTO.setRegTime(LocalDateTime.now());
-//
-//        model.addAttribute("itemDTO",itemDTO);
-//
-//        List<ItemDTO> itemDTOList = new ArrayList<>();
-//        for(int i=1; i<10; i++){
-//            ItemDTO itemDTO1 = new ItemDTO();
-//            itemDTO1.setItemDetail("상품 상세 설명");
-//            itemDTO1.setItemNm("테스트상품"+i);
-//            itemDTO1.setPrice(1000*i);
-//            itemDTO1.setRegTime(LocalDateTime.now());
-//
-//            itemDTOList.add(itemDTO1);
-//            model.addAttribute("itemDtoList",itemDTOList);
-//        }
-//    }
-//
-//    @GetMapping("shopping/test2")
-//    public void test2(String param1, String param2, Model model) {
-//        model.addAttribute("param1",param1);
-//        model.addAttribute("param2",param2);
-//    }
-
 
 }

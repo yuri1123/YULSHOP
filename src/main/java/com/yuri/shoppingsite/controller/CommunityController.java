@@ -269,6 +269,4 @@ public class CommunityController {
         }
         return "redirect:/community/qnalist";
     }
-
-    }
-
+}
