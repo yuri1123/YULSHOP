@@ -23,12 +23,14 @@ public class MainItemDto {
     private Integer price;
     private ItemSellStatus itemSellStatus;
     private LocalDateTime regTime;
+    private String createdBy;
     private Integer addCount;
 
     private Integer orderTotalCount;
     @QueryProjection
     public MainItemDto(Long id, Category category, String itemNm, String itemDetail, String imgUrl,Integer price,
-                       int stockNumber, ItemSellStatus itemSellStatus,LocalDateTime regTime, int addCount, int orderTotalCount){
+                       int stockNumber, ItemSellStatus itemSellStatus,LocalDateTime regTime, int addCount,
+                       String createdBy,int orderTotalCount){
         this.id = id;
         this.category = category;
         this.itemNm = itemNm;
@@ -39,6 +41,7 @@ public class MainItemDto {
         this.itemSellStatus = itemSellStatus;
         this.regTime = regTime;
         this.addCount = addCount;
+        this.createdBy = createdBy;
         this.orderTotalCount = orderTotalCount;
     }
 }

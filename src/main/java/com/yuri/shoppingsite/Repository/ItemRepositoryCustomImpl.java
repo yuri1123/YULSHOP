@@ -134,6 +134,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                     item.itemSellStatus,
                                     item.regTime,
                                     item.addCount,
+                                    item.createdBy,
                                     item.orderTotalCount)
                     )
                     .from(itemImg)
@@ -181,6 +182,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemSellStatus,
                                 item.regTime,
                                 item.addCount,
+                                item.createdBy,
                                 item.orderTotalCount)
                 )
                 .from(itemImg)
@@ -282,6 +284,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemSellStatus,
                                 item.regTime,
                                 item.addCount,
+                                item.createdBy,
                                 item.orderTotalCount)
                 )
                 .from(itemImg)
@@ -333,6 +336,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemSellStatus,
                                 item.regTime,
                                 item.addCount,
+                                item.createdBy,
                                 item.orderTotalCount)
                 )
                 .from(itemImg)
@@ -386,6 +390,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemSellStatus,
                                 item.regTime,
                                 item.addCount,
+                                item.createdBy,
                                 item.orderTotalCount)
                 )
                 .from(itemImg)
@@ -439,6 +444,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemSellStatus,
                                 item.regTime,
                                 item.addCount,
+                                item.createdBy,
                                 item.orderTotalCount)
                 )
                 .from(itemImg)
@@ -492,6 +498,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemSellStatus,
                                 item.regTime,
                                 item.addCount,
+                                item.createdBy,
                                 item.orderTotalCount)
                 )
                 .from(itemImg)
@@ -544,6 +551,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemSellStatus,
                                 item.regTime,
                                 item.addCount,
+                                item.createdBy,
                                 item.orderTotalCount)
                 )
                 .from(itemImg)
@@ -597,6 +605,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemSellStatus,
                                 item.regTime,
                                 item.addCount,
+                                item.createdBy,
                                 item.orderTotalCount)
                 )
                 .from(itemImg)
