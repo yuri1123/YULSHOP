@@ -118,6 +118,10 @@ public class ItemService {
     }
 
     @Transactional(readOnly = true)
+    public Page<MainItemDto> getAllCategoryItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getALLCategoryItemPage(itemSearchDto, pageable);
+    }
+    @Transactional(readOnly = true)
     public Page<MainItemDto> getDiaryItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return itemRepository.getDiaryItemPage(itemSearchDto, pageable);
     }

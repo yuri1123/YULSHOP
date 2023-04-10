@@ -10,7 +10,9 @@
       margin-top: 80px;
       /*margin-bottom: 10px;*/
     }
-
+    .hover1:hover{
+      color:  #a367e7;
+    }
     .page-link {
       color: #000;
       background-color: #fff;
@@ -151,13 +153,13 @@
           </td>
           <td>
             <th:blcok th:if="${board.type == 'NOTICE'}">
-            <a th:href="'/community/noticedtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
+            <a th:href="'/community/noticedtl/'+${board.id}" th:text="${board.title}" class="black-color hover1"></a>
             </th:blcok>
             <th:blcok th:if="${board.type == 'QNA'}">
-              <a th:href="'/community/qnadtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
+              <a th:href="'/community/qnadtl/'+${board.id}" th:text="${board.title}" class="black-color hover1"></a>
             </th:blcok>
             <th:blcok th:if="${board.type == 'REVIEW'}">
-              <a th:href="'/community/reviewdtl/'+${board.id}" th:text="${board.title}" class="black-color hover"></a>
+              <a th:href="'/community/reviewdtl/'+${board.id}" th:text="${board.title}" class="black-color hover1"></a>
             </th:blcok>
           </td>
           <td th:text="${board.createdBy}"></td>

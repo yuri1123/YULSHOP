@@ -484,8 +484,8 @@ public class AdminController {
     //공지사항 수정하기
     @PostMapping("admin/updatenotice/{id}")
     public String updateNotice(@Valid NoticeFormDto noticeFormDto,
-                                BindingResult bindingResult,
-                                Model model, @PathVariable Long id) throws Exception {
+                               BindingResult bindingResult,
+                               Model model, @PathVariable Long id) throws Exception {
         System.out.println("수정하기 폼 오남");
         if (bindingResult.hasErrors()) {
             return "admin/adnoticedtl";
@@ -514,14 +514,14 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "admin/adminnoticeenroll";
         }
-            boardService.createNotice(noticeFormDto);
+        boardService.createNotice(noticeFormDto);
         return "redirect:/admin/noticelist";
     }
 
     //QNA ADMIN 게시판 가기
     @GetMapping(value = {"admin/adminqnalist","admin/adminqnalist/{page}"})
     public String goAdminQnaBoard(Model model, CommunitySearchDto communitySearchDto,
-                             @PathVariable("page") Optional<Integer> page){
+                                  @PathVariable("page") Optional<Integer> page){
         System.out.println("Q&A 리스트로 이동하기");
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<Board> boardList = boardService.getQnaBoardList(communitySearchDto, pageable);

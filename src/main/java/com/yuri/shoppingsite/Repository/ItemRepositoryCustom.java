@@ -10,6 +10,7 @@ public interface ItemRepositoryCustom {
 
     Page<MainItemDto> getALLMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
     Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
+    Page<MainItemDto> getALLCategoryItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
     Page<MainItemDto> getDiaryItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
     Page<MainItemDto> getWallDecoItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
     Page<MainItemDto> getPenItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
@@ -25,7 +26,6 @@ public interface ItemRepositoryCustom {
 
     Page<ResultCategoryItemDto> getResultCategoryItemDto(ItemSearchDto itemSearchDto, Pageable pageable);
 
-    Page<MainItemDto> getALLCategoryItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
 
 
 //    List<MainGraphDto> getMainGraphData();

@@ -134,7 +134,7 @@
                 cache: false,
                 success: function (result, status) {
                     alert("주문이 취소 되었습니다.");
-                    location.href = 'order/orders/' + [[${page}]];
+                    location.href = '/order/orders/' + [[${page}]];
                 },
                 error: function (jqXHR, status, error) {
                     if (jqXHR.status == '401' || jqXHR.status == '500') {

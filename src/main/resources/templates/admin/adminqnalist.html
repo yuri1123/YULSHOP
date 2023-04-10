@@ -109,7 +109,7 @@
   <div class="row">
 
     <div class="col-lg-12 col-md-12 col-sm-12" id="gap">
-      <h1 class="text-center">공지사항 목록</h1>
+      <h1 class="text-center">Q&A 목록</h1>
     </div>
     <form th:action="@{'/admin/adminqnalist/' + ${boardList.number}}" role="form" method="get" th:object="${boardList}">
       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

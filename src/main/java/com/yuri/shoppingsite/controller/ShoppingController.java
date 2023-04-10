@@ -30,7 +30,7 @@ public class ShoppingController {
     public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
-        Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
+        Page<MainItemDto> items = itemService.getAllCategoryItemPage(itemSearchDto, pageable);
         List<Item> newItems = itemService.getNew();
         model.addAttribute("newItems",newItems);
         List<Item> soldOut = itemService.getSoldOut();

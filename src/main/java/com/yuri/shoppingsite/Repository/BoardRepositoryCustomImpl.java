@@ -71,6 +71,12 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
         return null;
     }
 
+
+    private BooleanExpression nameLike(String searchQuery){
+        return StringUtils.isEmpty(searchQuery) ?
+                null : QMember.member.name.like("%"+searchQuery+"%");
+    }
+
     //전체게시판 + 페이징 + 검색
     @Override
     public Page<Board> getBoardPage(CommunitySearchDto communitySearchDto, Pageable pageable){
@@ -94,12 +100,8 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
 
             return new PageImpl<>(content, pageable, total);
     }
-    //공지사항 + 페이징 + 검색
-    private BooleanExpression nameLike(String searchQuery){
-            return StringUtils.isEmpty(searchQuery) ?
-                    null : QMember.member.name.like("%"+searchQuery+"%");
-    }
 
+    //공지사항 + 페이징 + 검색
     @Override
     public Page<Board> getNoticeBoardPage(CommunitySearchDto communitySearchDto, Pageable pageable){
 
