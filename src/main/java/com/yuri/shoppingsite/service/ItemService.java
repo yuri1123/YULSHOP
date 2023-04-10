@@ -97,14 +97,14 @@ public class ItemService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
-        return itemRepository.getAdminItemPage(itemSearchDto, pageable);
+    public Page<MainItemDto> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getAdminItemPage(itemSearchDto,pageable);
     }
 
 
-    public Page<MainItemDto> getAllMain(ItemSearchDto itemSearchDto, Pageable pageable){
-        return itemRepository.getALLMainItemPage(itemSearchDto, pageable);
-    }
+//    public Page<MainItemDto> getAllMain(ItemSearchDto itemSearchDto, Pageable pageable){
+//        return itemRepository.getALLMainItemPage(itemSearchDto, pageable);
+//    }
 
     public Page<MainItemDto> getAdminCategoryPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return itemRepository.getALLCategoryItemPage(itemSearchDto,pageable);

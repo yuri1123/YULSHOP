@@ -108,36 +108,60 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         return null;
     }
 
-    @Override
-    public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
 
-        List<Item> content = queryFactory
-                .selectFrom(QItem.item)
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(),
-                                itemSearchDto.getSearchQuery()))
-                .orderBy(QItem.item.id.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-
-        long total = queryFactory.select(Wildcard.count).from(QItem.item)
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
-                .fetchOne()
-                ;
-
-        return new PageImpl<>(content, pageable, total);
-    }
 
     private BooleanExpression itemNmLike(String searchQuery){
         return StringUtils.isEmpty(searchQuery) ?
                 null : QItem.item.itemNm.like("%"+searchQuery+"%");
     }
 
+    @Override
+    public Page<MainItemDto> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
 
+            QItem item = QItem.item;
+            QItemImg itemImg = QItemImg.itemImg;
+
+            List<MainItemDto> content = queryFactory
+                    .select(
+                            new QMainItemDto(
+                                    item.id,
+                                    item.category,
+                                    item.itemNm,
+                                    item.itemDetail,
+                                    itemImg.imgUrl,
+                                    item.price,
+                                    item.stockNumber,
+                                    item.itemSellStatus,
+                                    item.regTime,
+                                    item.addCount,
+                                    item.orderTotalCount)
+                    )
+                    .from(itemImg)
+                    .join(itemImg.item, item)
+                    .where(itemImg.repimgYn.eq("Y"))
+                    .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+                            searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+                            searchByLike(itemSearchDto.getSearchBy(),
+                                    itemSearchDto.getSearchQuery()))
+                    .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                    .orderBy(item.orderTotalCount.desc())
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .fetch();
+
+            long total = queryFactory
+                    .select(Wildcard.count)
+                    .from(itemImg)
+                    .join(itemImg.item, item)
+                    .where(itemImg.repimgYn.eq("Y"))
+                    .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+                            searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+                            searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
+                    .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                    .fetchOne();
+
+            return new PageImpl<>(content, pageable, total);
+        }
 
     @Override
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
@@ -189,56 +213,56 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
         return new PageImpl<>(content, pageable, total);
     }
-    @Override
-    public Page<MainItemDto> getALLMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
-        QItem item = QItem.item;
-        QItemImg itemImg = QItemImg.itemImg;
-
-        List<MainItemDto> content = queryFactory
-                .select(
-                        new QMainItemDto(
-                                item.id,
-                                item.category,
-                                item.itemNm,
-                                item.itemDetail,
-                                itemImg.imgUrl,
-                                item.price,
-                                item.stockNumber,
-                                item.itemSellStatus,
-                                item.regTime,
-                                item.addCount,
-                                item.orderTotalCount)
-                )
-                .from(itemImg)
-                .join(itemImg.item, item)
-                .where(itemImg.repimgYn.eq("Y"))
-                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
-                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(),
-                                itemSearchDto.getSearchQuery()))
-                .where(itemNmLike(itemSearchDto.getSearchQuery()))
-                .orderBy(item.orderTotalCount.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-
-        long total = queryFactory
-                .select(Wildcard.count)
-                .from(itemImg)
-                .join(itemImg.item, item)
-                .where(itemImg.repimgYn.eq("Y"))
-                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
-                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
-                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
-                .where(itemNmLike(itemSearchDto.getSearchQuery()))
-                .fetchOne();
-
-        return new PageImpl<>(content, pageable, total);
-    }
+//    @Override
+//    public Page<MainItemDto> getALLMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+//        QItem item = QItem.item;
+//        QItemImg itemImg = QItemImg.itemImg;
+//
+//        List<MainItemDto> content = queryFactory
+//                .select(
+//                        new QMainItemDto(
+//                                item.id,
+//                                item.category,
+//                                item.itemNm,
+//                                item.itemDetail,
+//                                itemImg.imgUrl,
+//                                item.price,
+//                                item.stockNumber,
+//                                item.itemSellStatus,
+//                                item.regTime,
+//                                item.addCount,
+//                                item.orderTotalCount)
+//                )
+//                .from(itemImg)
+//                .join(itemImg.item, item)
+//                .where(itemImg.repimgYn.eq("Y"))
+//                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+//                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(),
+//                                itemSearchDto.getSearchQuery()))
+//                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+//                .orderBy(item.orderTotalCount.desc())
+//                .offset(pageable.getOffset())
+//                .limit(pageable.getPageSize())
+//                .fetch();
+//
+//        long total = queryFactory
+//                .select(Wildcard.count)
+//                .from(itemImg)
+//                .join(itemImg.item, item)
+//                .where(itemImg.repimgYn.eq("Y"))
+//                .where(item.itemSellStatus.eq(ItemSellStatus.SELL)
+//                        .or(item.itemSellStatus.eq(ItemSellStatus.SOLD_OUT)))
+//                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+//                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+//                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
+//                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+//                .fetchOne();
+//
+//        return new PageImpl<>(content, pageable, total);
+//    }
 
     @Override
     public Page<MainItemDto> getALLCategoryItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {

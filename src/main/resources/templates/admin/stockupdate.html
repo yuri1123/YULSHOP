@@ -113,8 +113,8 @@
 
             var url = "/admin/stockupdate/modify/" + id +"?addstock=" + addstock;
 
-            alert(id);
-            alert(addstock);
+            // alert(id);
+            // alert(addstock);
 
             $.ajax({
                 url      : url,
@@ -218,7 +218,7 @@
 
                         <td th:text="|${#numbers.formatInteger(items.stockNumber,1,'COMMA')}개|"></td>
                         <td class="d-flex">
-                            <input type="number" name="addstock" id="addstock" min="1" style="width: 70px" class="mr-3">
+                        <input type="number" name="addstock" id="addstock" min="1" style="width: 70px" class="mr-3">
                             <span class="backcol1 white-color" onclick="updateStock()">저장</span>
                         </td>
                     </tr>
@@ -252,8 +252,8 @@
                 </div>
             </div>
         </form>
-    </div>
-</div>
+                </div>
+            </div>
 
 <th:block th:include="/include/admin_footer.html"/>
 <th:block th:include="/include/admin_js.html"/>

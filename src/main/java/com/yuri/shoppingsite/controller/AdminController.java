@@ -103,7 +103,7 @@ public class AdminController {
     public String itemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
-        Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
+        Page<MainItemDto> items = itemService.getAdminItemPage(itemSearchDto, pageable);
 
         model.addAttribute("items", items);
         model.addAttribute("itemSearchDto", itemSearchDto);
@@ -189,7 +189,7 @@ public class AdminController {
     @GetMapping(value = {"/admin/categorychange", "/admin/categorychange/{page}"})
     public String categoryChange(ItemSearchDto itemSearchDto, Model model, @PathVariable("page") Optional<Integer> page) {
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
-        Page<MainItemDto> categoryItem = itemService.getAdminCategoryPage(itemSearchDto, pageable);
+        Page<MainItemDto> categoryItem = itemService.getAdminItemPage(itemSearchDto, pageable);
         model.addAttribute("items", categoryItem);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 10);
@@ -212,7 +212,7 @@ public class AdminController {
     @GetMapping(value = {"/admin/sellingstatechange", "/admin/sellingstatechange/{page}"})
     public String sellingStateChange(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
-        Page<MainItemDto> sellingStateChange = itemService.getAllMain(itemSearchDto, pageable);
+        Page<MainItemDto> sellingStateChange = itemService.getAdminItemPage(itemSearchDto, pageable);
         model.addAttribute("items", sellingStateChange);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 10);
@@ -341,7 +341,7 @@ public class AdminController {
     public String stocknow(Model model, @PathVariable("page") Optional<Integer> page,
                            ItemSearchDto itemSearchDto) {
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
-        Page<MainItemDto> sellingStateChange = itemService.getAllMain(itemSearchDto, pageable);
+        Page<MainItemDto> sellingStateChange = itemService.getAdminItemPage(itemSearchDto, pageable);
         model.addAttribute("items", sellingStateChange);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 10);
@@ -353,7 +353,7 @@ public class AdminController {
     public String stockUpdatePage(Model model, @PathVariable("page") Optional<Integer> page,
                                   ItemSearchDto itemSearchDto) {
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
-        Page<MainItemDto> sellingStateChange = itemService.getAllMain(itemSearchDto, pageable);
+        Page<MainItemDto> sellingStateChange = itemService.getAdminItemPage(itemSearchDto, pageable);
         model.addAttribute("items", sellingStateChange);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 10);
