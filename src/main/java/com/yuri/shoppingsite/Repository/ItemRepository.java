@@ -94,7 +94,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
     void deleteCartItemById(@Param("id") Long id);
 
     @Modifying
-    @Query("delete from OrderItem o where o.item.id = :id")
+    @Query("delete from order_item o where o.item.id = :id")
     void deleteOrderItemById(@Param("id") Long id);
 
 }

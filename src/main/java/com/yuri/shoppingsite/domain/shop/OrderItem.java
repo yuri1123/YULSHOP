@@ -10,12 +10,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name="order_item")
+@Entity(name="order_item")
 @Getter
 @Setter
-//@AllArgsConstructor
-//@NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderItem extends BaseEntity {
 
     @Id
