@@ -61,6 +61,8 @@
         }
 
     </style>
+    <meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf}">
 </head>
 
 <body>
@@ -86,6 +88,44 @@
             + "&searchBy=" + searchBy
             + "&searchQuery=" + searchQuery;
     }
+
+    function deleteItem(obj){
+
+        if(confirm("정말로 이 상품을 삭제하시겠습니까?")){
+
+            var id = obj.dataset.id;
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/admin/items/delete/" + id;
+
+            $.ajax({
+                url      : url,
+                type     : "DELETE", //삭제요청이므로 delete type 사용
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    //삭제 요청이 정상 처리되면 유저권한 페이지 새로고침
+                    location.href='/admin/items';
+                },
+                error : function(jqXHR, status, error){
+                    alert("실패임")
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/member/login';
+                    } else{
+                        alert(jqXHR.responseJSON.message);
+                    }
+
+                }
+            });
+        }
+    }
+
 
 </script>
 
@@ -137,17 +177,23 @@
                             <th>상태</th>
                             <th>등록자</th>
                             <th>등록일</th>
+                            <th>삭제하기</th>
                         </tr>
                         </thead>
                         <tbody class="text-center">
                         <tr th:each="item, status: ${items.getContent()}">
-                            <td th:text="${item.id}"></td>
+                            <td th:text="${item.id}" id="itemId"></td>
                             <td>
                                 <a th:href="'/admin/item/'+${item.id}" th:text="${item.itemNm}" class="black-color hover"></a>
                             </td>
                             <td th:text="${item.itemSellStatus == T(com.yuri.shoppingsite.constant.ItemSellStatus).SELL} ? '판매중' : '품절'"></td>
                             <td th:text="${item.createdBy}"></td>
                             <td th:text="${#temporals.format(item.regTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td class="text-center align-middle justify-content-center">
+                            <button type="button" class="close text-center" aria-label="Close">
+                                <span aria-hidden="true" th:data-id="${item.id}" class="text-center mr-50 justify-content-center" onclick="deleteItem(this)">&times;</span>
+                            </button>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

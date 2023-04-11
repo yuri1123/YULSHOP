@@ -112,6 +112,20 @@ public class AdminController {
         return "admin/productlist";
     }
 
+    //상품 삭제
+    @DeleteMapping(value = "/admin/items/delete/{id}")
+    public @ResponseBody ResponseEntity deleteItem(
+            @PathVariable("id") Long id, Principal principal) {
+//        //삭제 권한 체크
+        if (!memberService.validateMember(principal.getName())) {
+            return new ResponseEntity<String>("삭제 권한이 없습니다.", HttpStatus.FORBIDDEN);
+        }
+        //상품 삭제
+        itemService.deleteItem(id);
+        return new ResponseEntity<Long>(id, HttpStatus.OK);
+    }
+
+
 
     //상품 등록 페이지로 가기(insert)
     @GetMapping("admin/uploadproduct")

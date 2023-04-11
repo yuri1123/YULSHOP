@@ -79,4 +79,22 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
     @Query("update Item i set i.stockNumber=i.stockNumber+:addstock where i.id=:id")
     int AddStock(@Param(value = "id") Long id, @Param(value = "addstock") Integer addstock);
 
+
+    //아이템 삭제하기(상품, 상품이미지, 주문, 장바구니)
+    @Modifying
+    @Query("delete from ItemImg i where i.item.id = :id")
+    void deleteItemImgByItemId(@Param("id") Long id);
+
+    @Modifying
+    @Query("delete from Item i where i.id = :id")
+    void deleteItemById(@Param("id") Long id);
+
+    @Modifying
+    @Query("delete from CartItem c where c.item.id = :id")
+    void deleteCartItemById(@Param("id") Long id);
+
+    @Modifying
+    @Query("delete from OrderItem o where o.item.id = :id")
+    void deleteOrderItemById(@Param("id") Long id);
+
 }

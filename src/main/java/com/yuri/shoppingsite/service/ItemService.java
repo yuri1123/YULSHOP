@@ -254,4 +254,13 @@ public class ItemService {
         return result;
     }
 
+    //아이템 삭제하기(상품,상품이미지)
+    @Transactional
+    public void deleteItem(Long id){
+      itemRepository.deleteItemImgByItemId(id);
+      itemRepository.deleteOrderItemById(id);
+      itemRepository.deleteCartItemById(id);
+      itemRepository.deleteItemById(id);
+    }
+
 }
