@@ -93,20 +93,21 @@
             + "&searchQuery=" + searchQuery;
   }
 
-  function updateAuth(){
+  function updateAuth(memberId,role){
 
     if(confirm("저장하시겠습니까?")){
 
       var token = $("meta[name='_csrf']").attr("content");
       var header = $("meta[name='_csrf_header']").attr("content");
-      var id = $("#memberId").val();
-      var role = $("#userRole").val();
+      // var id = $("#memberId").val();
+      // var role = $("#userRole").val();
 
-      var url = "/admin/userauth/modify/" + id +"?role=" + role;
+      var url = "/admin/userauth/modify/" + memberId +"?role=" + role;
 
       $.ajax({
         url      : url,
         type     : "PUT",
+        data: {"memberId": memberId, "role": role},
         beforeSend : function(xhr){
           /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
           xhr.setRequestHeader(header, token);
@@ -135,8 +136,8 @@
    if(confirm("정말로 이 유저를 삭제하시겠습니까?")){
 
     var id = obj.dataset.id;
-     var headerName = $("meta[name='_csrf_header']").attr("content");
      var token = $("meta[name='_csrf']").attr("content");
+     var header = $("meta[name='_csrf_header']").attr("content");
 
     var url = "/admin/member/" + id;
 
@@ -154,7 +155,7 @@
         location.href='/admin/userauth';
       },
       error : function(jqXHR, status, error){
-
+      alert("실패임")
         if(jqXHR.status == '401' || jqXHR.status == '500'){
           alert('로그인 후 이용해주세요');
           location.href='/member/login';
@@ -242,7 +243,7 @@
 
           <td th:text="${#temporals.format(member.regTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
           <td class="justify-content-center text-center d-flex">
-            <select class="mr-3" id="userRole">
+            <select class="mr-3" id="role">
               <th:block th:if="${member.role == T(com.yuri.shoppingsite.constant.Role).ADMIN}" >
                 <option th:value="ADMIN" selected>관리자</option>
                 <option th:value="USER">일반회원</option>
@@ -279,7 +280,7 @@
                 <option th:value="PLATINUM" selected>플래티넘회원</option>
               </th:block>
             </select>
-            <span class="backcol1 white-color" onclick="updateAuth()">저장</span>
+            <button type="button" class="backcol1 white-color update-stock-btn">저장</button>
           </td>
 
           </td>
@@ -292,7 +293,13 @@
         </tr>
         </tbody>
       </table>
-
+      <script th:inline="javascript">
+        $(".update-stock-btn").on('click',function () {
+          var memberId = $(this).closest('tr').find('#memberId').val(); // 해당 행의 itemId 가져오기
+          var role = $(this).closest('tr').find('#role').val(); // 해당 행의 addstock 가져오기
+          updateAuth(memberId, role); // updateStock 함수 호출
+        });
+      </script>
       <div class="justify-content-center mb-5 mt-5">
 
         <!--        페이징 처리 시작-->

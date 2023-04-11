@@ -222,14 +222,14 @@ public class AdminController {
     //상품 판매상태 변경
     @PutMapping(value = "/admin/sellingstatechange/modify/{id}")
     public @ResponseBody ResponseEntity updateItemSellStatus(@PathVariable Long id,
-                                                             String itemSellStatus,
+                                                             ItemSellStatus itemSellStatus,
                                                              Principal principal) {
 //        if(!itemService.validateItem(id,principal.getName())){
 //            return new ResponseEntity<String>("수정권한이 없습니다.", HttpStatus.FORBIDDEN);
 //        }
         System.out.println(id);
         System.out.println(itemSellStatus);
-        itemService.updateItemSellStatus(id, ItemSellStatus.valueOf(itemSellStatus));
+        itemService.updateItemSellStatus(id, itemSellStatus);
         return new ResponseEntity<Long>(id, HttpStatus.OK);
     }
 
@@ -313,11 +313,11 @@ public class AdminController {
     //    //유저 권한 변경
     @PutMapping(value = "/admin/userauth/modify/{id}")
     public @ResponseBody ResponseEntity updateUserRole(@PathVariable Long id,
-                                                       String role,
+                                                       Role role,
                                                        Principal principal) {
         System.out.println(id);
         System.out.println(role);
-        memberService.updateUserRole(id, Role.valueOf(role));
+        memberService.updateUserRole(id, role);
         return new ResponseEntity<Long>(id, HttpStatus.OK);
     }
 
