@@ -88,6 +88,7 @@
         });
     });
 
+
     function page(page){
         let searchDateType = $("#searchDateType").val();
         let searchSellStatus = $("#searchSellStatus").val();
@@ -102,16 +103,15 @@
     }
 
 
-    function updateStock(){
-
+    function updateStock(itemId,addstock){
         if(confirm("저장하시겠습니까?")){
 
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
-            var id = $("#itemId").val();
-            var addstock = $("#addstock").val();
+            // var id = $("#itemId").val();
+            // var addstock = $("#addstock").val();
 
-            var url = "/admin/stockupdate/modify/" + id +"?addstock=" + addstock;
+            var url = "/admin/stockupdate/modify/" + itemId +"?addstock=" + addstock;
 
             // alert(id);
             // alert(addstock);
@@ -119,6 +119,7 @@
             $.ajax({
                 url      : url,
                 type     : "PATCH",
+                data: {"itemId": itemId, "addstock": addstock},
                 beforeSend : function(xhr){
                     /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
                     xhr.setRequestHeader(header, token);
@@ -185,7 +186,7 @@
 
             <div class="col-lg-10 col-md-10 col-sm-10 offset-1 mb-2">
 
-                <table class="table table">
+                <table class="table table ">
                     <thead class="text-center">
                     <tr>
                         <th>순번</th>
@@ -198,7 +199,7 @@
                     </tr>
                     </thead>
                     <tbody class="text-center">
-                    <tr th:each="items, status: ${items}">
+                    <tr th:each="items, status: ${items}" class="update-stock-form">
                         <td th:text="${items.id}"></td>
                         <td type="hidden"><input type="hidden" id="itemId" name="itemId" th:value="${items.id}"></td>
                         <td>
@@ -218,13 +219,20 @@
 
                         <td th:text="|${#numbers.formatInteger(items.stockNumber,1,'COMMA')}개|"></td>
                         <td class="d-flex">
-                        <input type="number" name="addstock" id="addstock" min="1" style="width: 70px" class="mr-3">
-                            <span class="backcol1 white-color" onclick="updateStock()">저장</span>
+                        <input type="number" name="addstock" id="addstock" value="0" style="width: 70px" class="mr-3">
+                        <button type="button" class="backcol1 white-color update-stock-btn">저장</button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
 
+                <script th:inline="javascript">
+                    $(".update-stock-btn").on('click',function () {
+                        var itemId = $(this).closest('tr').find('#itemId').val(); // 해당 행의 itemId 가져오기
+                        var addstock = $(this).closest('tr').find('#addstock').val(); // 해당 행의 addstock 가져오기
+                        updateStock(itemId, addstock); // updateStock 함수 호출
+                    });
+                </script>
                 <div class="justify-content-center mb-5 mt-5">
 
                     <!--        페이징 처리 시작-->

@@ -199,11 +199,11 @@ public class AdminController {
     //상품 카테고리 수정 업데이트
     @PutMapping(value = "/admin/categorychange/modify/{id}")
     public @ResponseBody ResponseEntity updateCategory(@PathVariable Long id,
-                                                       String category,
+                                                       Category category,
                                                        Principal principal) {
         System.out.println(id);
         System.out.println(category);
-        itemService.updateCategory(id, Category.valueOf(category));
+        itemService.updateCategory(id,category);
         return new ResponseEntity<Long>(id, HttpStatus.OK);
     }
 

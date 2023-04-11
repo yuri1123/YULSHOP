@@ -95,23 +95,24 @@
     }
 
 
-  function updateCategory(){
+  function updateCategory(itemId,category){
 
    if(confirm("저장하시겠습니까?")){
 
    const token = $("meta[name='_csrf']").attr("content")
    const header = $("meta[name='_csrf_header']").attr("content");
-    var id = $("#itemId").val();
-    var category = $("#category").val();
+    // var id = $("#itemId").val();
+    // var category = $("#category").val();
 
 
-    var url = "/admin/categorychange/modify/" + id +"?category=" + category;
+    var url = "/admin/categorychange/modify/" + itemId +"?category=" + category;
 
-       // alert(category);
-       // alert(id);
+       alert(itemId);
+       alert(category);
     $.ajax({
       url      : url,
       type     : "PUT",
+      data: {"itemId": itemId, "category": category},
       beforeSend : function(xhr){
         /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
         xhr.setRequestHeader(header, token);
@@ -258,13 +259,18 @@
                     <option th:value="ACCESSORY"selected >ACCESSORY</option>
                 </th:block>
             </select>
-            <span class="backcol1 white-color" onclick="updateCategory()">저장</span>
-
+              <button type="button" class="backcol1 white-color update-stock-btn">저장</button>
           </td>
         </tr>
         </tbody>
       </table>
-
+        <script th:inline="javascript">
+            $(".update-stock-btn").on('click',function () {
+                var itemId = $(this).closest('tr').find('#itemId').val(); // 해당 행의 itemId 가져오기
+                var category = $(this).closest('tr').find('#category').val(); // 해당 행의 addstock 가져오기
+                updateCategory(itemId, category); // updateStock 함수 호출
+            });
+        </script>
         <div class="justify-content-center mb-5 mt-5">
 
             <!--        페이징 처리 시작-->
