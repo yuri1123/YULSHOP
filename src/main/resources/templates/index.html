@@ -3,21 +3,21 @@
 <html xmlns:th="http://www.thymleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"></html>
     <head>
 
-        <th:block th:include="@{/resources/templates/include/common_css.html}"></th:block>
+        <div th:include="@{/templates/include/common_css.html}"></div>
    </head>
    <body>
 
     <!-- Preloader Start -->
-         <th:block th:include="@{/include/preloader.html}"></th:block>
+         <div th:include="@{/include/preloader.html}"></div>
 
     <!--     Header Start-->
     <header>
-<!--         <th:block th:include="@{/include/header.html}"></th:block>-->
+         <div th:include="@{/include/header.html}"></div>
     </header>
 
     <main>
         <!-- slider Area Start -->
-<!--        <th:block th:include="@{/include/mainview.html}"></th:block>-->
+        <div th:include="@{/include/mainview.html}"></div>
         <!-- slider Area End-->
 
         <!-- Category Area Start-->
@@ -169,7 +169,7 @@
                                 </div>
 
                             </div>
-                        </th:block>
+                        </div>
                     </div>
 
                 </div>
@@ -355,7 +355,7 @@
 <!--        &lt;!&ndash; Gallery End&ndash;&gt;-->
 
     </main>
-<!--    <th:block th:include="@{/include/user_footer.html}"></th:block>-->
-<!--    <th:block th:include="@{/include/common_js.html}"></th:block>-->
+    <div th:include="@{/include/user_footer.html}"></div>
+    <div th:include="@{/include/common_js.html}"></div>
     </body>
 </html>
